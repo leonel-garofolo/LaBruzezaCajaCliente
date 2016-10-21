@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.control.Button?>
+<?import org.salondeventas.cliente.desktop.view.control.NumberField?>
+
+
+<fx:root type="javafx.scene.layout.Pane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+	<children>
+      <VBox fx:id="pnlBotones">
+         <children>
+      		<BorderPane fx:id="pnlBorder" style="padding-top: 2cm">      			                  
+      			<top>
+      				<HBox fx:id="hButtonFilter" BorderPane.alignment="CENTER">
+                     
+#foreach($attribute in $entity.attributes)
+#if($attribute.isIntegerType()) 
+						<children>
+      					 	<NumberField fx:id="txt${attribute.name}" promptText="%${entity.name}.grilla.col.${attribute.name}" maxWidth="50" >
+      					 		<tooltip><Tooltip text="%${entity.name}.grilla.col.${attribute.name}"></Tooltip></tooltip>      					 		
+      					 	</NumberField>			 				     
+      					 </children>
+#end
+#if($attribute.isStringType())
+      					 <children>
+      					 	<TextField fx:id="txt${attribute.name}" promptText="%${entity.name}.grilla.col.${attribute.name}" maxWidth="150" >
+      					 		<tooltip><Tooltip text="%${entity.name}.grilla.col.${attribute.name}"></Tooltip></tooltip>
+      					 	</TextField>      					 	       			 				
+      					 </children>
+#end      					  
+#end
+						 <children>
+      					 	<Button  fx:id="btnBuscar" text="Buscar" maxWidth="60" />      					 		      					 	       			 			
+      					 </children>
+      					 <children>
+      					 	<Button  fx:id="btnLimpiar" text="Limpiar" maxWidth="60" />      					 		      					 	       			 			
+      					 </children>
+      				</HBox>
+               </top>
+      		   <center>
+				  <TableView fx:id="tbl${entity}" BorderPane.alignment="CENTER">
+				  	 <columns>
+#foreach($attribute in $entity.attributes)
+#if($attribute.isIntegerType()) 
+ 						<TableColumn fx:id="${attribute.name}" prefWidth="50.0" text="%${entity.name}.grilla.col.${attribute.name}" >
+#end
+#if($attribute.isStringType())
+						<TableColumn fx:id="${attribute.name}" prefWidth="150.0" text="%${entity.name}.grilla.col.${attribute.name}" >
+#end
+#if($attribute.type == "BigDecimal")
+						<TableColumn fx:id="${attribute.name}" prefWidth="50.0" text="%${entity.name}.grilla.col.${attribute.name}" >
+#end
+#if($attribute.isUtilDateType())
+						<TableColumn fx:id="${attribute.name}" prefWidth="150.0" text="%${entity.name}.grilla.col.${attribute.name}" >
+#end
+ 						<cellValueFactory>
+			                <PropertyValueFactory property="${attribute.name}" />
+			            </cellValueFactory>
+		      		    </TableColumn>	 
+#end                             
+					</columns>
+				</TableView>
+			</center>
+               
+      		</BorderPane>
+         </children>
+      </VBox>
+	</children>
+</fx:root>

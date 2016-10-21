@@ -1,0 +1,12 @@
+// ENTITY_java.vm
+package ${target.javaPackageFromFolder($SRC)};
+#foreach( $import in $java.imports($entity.attributes) )
+import $import;
+#end
+
+public class ${entity.name} {
+#foreach($attribute in $entity.attributes)
+    private $attribute.type $attribute.name;
+#end
+
+}

@@ -1,0 +1,186 @@
+#set($uncapitalizedEntityName = $fn.uncapitalize(${entity.name}) )
+package ${target.javaPackageFromFolder($SRC)};
+
+import java.io.IOException;
+import java.util.ResourceBundle;
+import java.util.Set;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
+#foreach($attribute in $entity.attributes)
+#if($attribute.isUtilDateType())
+import java.time.LocalDate;
+#end
+#if($attribute.type == "byte[]")
+import javafx.scene.image.ImageView;
+#end
+#end
+
+
+
+import ${ROOT_PKG}.PropertyResourceBundleMessageInterpolator;
+import ${ROOT_PKG}.modelo.${entity.name};
+
+public class Panel${entity.name} extends BorderPane implements EventHandler<ActionEvent>{
+	private boolean modoEdit = false;
+	private PanelGrilla${entity.name} father;
+	
+	@FXML
+	private VBox vBoxMsg;
+
+#foreach($attribute in $entity.attributes)
+
+#if($attribute.isIntegerType() || $attribute.type == "BigDecimal")
+	@FXML
+	private TextField txt${attribute.name};
+#end
+#if($attribute.isStringType())
+	@FXML
+	private TextField txt${attribute.name};
+#end
+#if($attribute.isUtilDateType())
+	@FXML
+	private DatePicker dpr${attribute.name};
+#end	    
+#if($attribute.type == "byte[]")
+	@FXML
+	private ImageView byt${attribute.name};
+#end
+#end
+
+	public Panel${entity.name}(PanelGrilla${entity.name} father) {
+		this.modoEdit = false;
+		this.father = father;
+		initComponentes();
+    }
+
+	public Panel${entity.name}(PanelGrilla${entity.name} father, int id) {
+		this.modoEdit = true;
+		this.father = father;
+		initComponentes();
+		loadEntity(id);		
+    }
+
+	private void loadEntity(int id) {
+		try {
+			${entity.name} un${entity.name} = new ${entity.name}();
+			un${entity.name}.setId${uncapitalizedEntityName}(id);
+			un${entity.name} =father.getServicio().load(un${entity.name});
+			loadForm(un${entity.name});
+		} catch (Exception e) {
+			Label label = new Label();
+	    	label.setText("Se ha producido un error en el servidor. Intente mas tarde.");
+	    	vBoxMsg.getChildren().addAll(label);
+			e.printStackTrace();
+		}
+	}
+
+	private void initComponentes(){
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(this.getClass().getSimpleName() + ".fxml"));
+		fxmlLoader.setRoot(this);
+		fxmlLoader.setController(this);
+		fxmlLoader.setResources(ResourceBundle.getBundle("i18n.ValidationMessages"));
+
+        try {
+            fxmlLoader.load();
+        } catch (IOException exception) {
+            throw new RuntimeException(exception);
+        }
+        
+        this.setTop(father.generarPanelFormulario());
+        this.setLeft(null);
+        this.setRight(null);
+        father.btnGuardar.setOnAction(this);        
+        father.btnCancelar.setOnAction(this);
+        father.getTab().setContent(this);
+        
+#foreach($attribute in $entity.attributes)
+#if($attribute.isUtilDateType())
+		dpr${attribute.name}.setValue(LocalDate.now());			
+#end	
+#end
+	}
+
+	public void loadForm(${entity.name} ${uncapitalizedEntityName}){
+		if(${uncapitalizedEntityName} !=null){
+#foreach($attribute in $entity.attributes)
+			if(${uncapitalizedEntityName}.get$fn.capitalize(${attribute.name})() != null){
+#if(${attribute.isIntegerType()} || $attribute.type == "BigDecimal")
+				txt${attribute.name}.setText(String.valueOf(${uncapitalizedEntityName}.get$fn.capitalize(${attribute.name})()));
+#end
+#if(${attribute.isStringType()})
+				txt${attribute.name}.setText(${uncapitalizedEntityName}.get$fn.capitalize(${attribute.name})());
+#end			
+#if($attribute.isUtilDateType())			
+				dpr${attribute.name}.setValue(new java.sql.Date(${uncapitalizedEntityName}.get$fn.capitalize(${attribute.name})().getTime()).toLocalDate());		
+#end	
+			}
+#end			
+		}
+	}
+
+	private ${entity.name} get${entity.name}() {
+		${entity.name} un${entity.name} = new ${entity.name}();
+#foreach($attribute in $entity.attributes)
+#if(${attribute.isIntegerType()})
+		try{
+			un${entity.name}.set$fn.capitalize(${attribute.name})(Integer.valueOf(txt${attribute.name}.getText()));
+		}catch (NumberFormatException e) {
+			un${entity.name}.set$fn.capitalize(${attribute.name})(null);
+		}
+#end
+#if(${attribute.isStringType()})
+		un${entity.name}.set$fn.capitalize(${attribute.name})(txt${attribute.name}.getText());
+#end
+#if(${attribute.isUtilDateType()})		
+		un${entity.name}.set$fn.capitalize(${attribute.name})(java.sql.Date.valueOf(dpr${attribute.name}.getValue()));
+#end
+#end
+		
+		Label label = null;	
+		vBoxMsg.getChildren().clear();
+		Validator validator =PropertyResourceBundleMessageInterpolator.getValidation();
+	    Set<ConstraintViolation<${entity.name}>> inputErrors = validator.validate(un${entity.name}); 
+	    for(ConstraintViolation<${entity.name}> error: inputErrors){	    	
+	    	label = new Label();
+	    	label.setText(error.getMessage());
+	    	vBoxMsg.getChildren().addAll(label);	    	
+	    }
+	    if(vBoxMsg.getChildren().size() > 0){
+	    	return null;
+	    }
+		return un${entity.name};
+	}
+
+	@Override
+	public void handle(ActionEvent event) {
+		if(event.getSource().equals(father.btnGuardar)){
+			${entity.name} un${entity.name} = get${entity.name}();
+			if(un${entity.name} != null){
+				try {
+					if(modoEdit){
+						father.getServicio().update(un${entity.name});
+					}else{
+						father.getServicio().insert(un${entity.name});
+					}
+					
+					father.reLoad();    
+				} catch (Exception e) {
+					Label label = new Label();
+			    	label.setText("Se ha producido un error en el servidor. Intente mas tarde.");
+			    	vBoxMsg.getChildren().addAll(label);
+					e.printStackTrace();			
+				}
+			}		
+		}
+		if(event.getSource().equals(father.btnCancelar)){
+			father.reLoad();    
+		}
+	}
+}

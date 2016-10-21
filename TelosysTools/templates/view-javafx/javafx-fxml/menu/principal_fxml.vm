@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="${target.javaPackageFromFolder($SRC)}.Principal">
+   <children>
+      <BorderPane id="borderPane" layoutX="21.0" layoutY="11.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <top>
+            <MenuBar BorderPane.alignment="CENTER">
+              <menus>
+                <Menu mnemonicParsing="false" text="Archivo">
+                  <items>
+                        <MenuItem mnemonicParsing="false" onAction="#handleItemConfiguracionAction" text="%pantalla.name.configuracion" />
+                        <MenuItem mnemonicParsing="false" onAction="#handleItemCerrarSessionAction" text="%pantalla.name.cerrarsesion" />
+						<MenuItem mnemonicParsing="false" onAction="#handleItemSalirAction" text="Salir" />                     
+                  </items>
+                </Menu>
+				<Menu mnemonicParsing="false" text="Pantallas">
+					<items>
+#foreach( $entity in $selectedEntities )
+#set($uncapitalizedEntityName = $fn.uncapitalize(${entity.name}) )
+					<MenuItem mnemonicParsing="false" onAction="#handleItem${entity.name}Action" text="%pantalla.name.${uncapitalizedEntityName}" />
+#end
+					</items>
+				</Menu>
+
+                <Menu mnemonicParsing="false" text="Ayuda">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="Sobre..." />
+                  </items>
+                </Menu>
+              </menus>
+            </MenuBar>
+         </top>
+ 		 <center>
+            <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">             
+            </TabPane>
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane>

@@ -1,0 +1,26 @@
+mensaje.error.notblank.pref= El campo
+mensaje.error.notblank.suf= no puede ser vacio.
+
+mensaje.error.size.pref= El campo
+mensaje.error.size.suf= no puede ser mayor a
+
+#Pantallas
+pantalla.name.configuracion=Configuración
+pantalla.name.cerrarsesion=Cerrar Sesión
+#foreach( $entity in $selectedEntities )
+#set($uncapitalizedEntityName = $fn.uncapitalize(${entity.name}) )
+pantalla.name.${uncapitalizedEntityName}=${entity.name}s
+#end
+
+#foreach( $entity in $selectedEntities )
+#set($capitalizedEntityName = $fn.capitalize(${entity.name}) )
+#Pantalla de ${entity.name}
+#Grilla
+#foreach($attribute in $entity.attributes)
+${entity.name}.grilla.col.${attribute.name}=$fn.capitalize(${attribute.name})
+#end
+#foreach($attribute in $entity.attributes)
+${entity.name}.panel.field.${attribute.name}=$fn.capitalize(${attribute.name}):
+#end
+#end
+

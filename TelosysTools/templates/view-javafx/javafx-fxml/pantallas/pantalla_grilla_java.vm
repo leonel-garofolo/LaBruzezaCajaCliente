@@ -1,0 +1,223 @@
+#set($uncapitalizedEntityName = $fn.uncapitalize(${entity.name}) )
+#set( $dataFields = $entity.getAttributesByCriteria( $const.NOT_KEY, $const.NOT_IN_SELECTED_LINKS ) )
+package ${target.javaPackageFromFolder($SRC)};
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
+
+import ${ROOT_PKG}.modelo.${entity};
+import ${ROOT_PKG}.servicios.I${entity}Servicio;
+import ${ROOT_PKG}.servicios.impl.${entity}Servicio;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.SortedList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+
+public class PanelGrilla${entity} extends PanelControlesABM implements Initializable, IPanelControllerGrilla<I${entity}Servicio>, EventHandler<ActionEvent> {
+	private I${entity}Servicio ${uncapitalizedEntityName}Servicio;
+	private Node top;
+	private Node center;
+	private Node bottom;
+	private Tab tab;
+
+	@FXML
+	VBox pnlBotones;
+
+	@FXML
+	HBox hButtonFilter;
+
+	@FXML
+	private BorderPane pnlBorder;	
+
+	@FXML
+	private Button btnBuscar;
+	
+	@FXML
+	private Button btnLimpiar;
+
+	private ObservableList<${entity}> data;
+	
+	@FXML	
+	private TableView<${entity}> tbl${entity};
+
+#foreach($attribute in $entity.attributes)
+#if($attribute.isIntegerType())
+	@FXML
+	private TextField txt${attribute.name};
+#end
+#if($attribute.isStringType())
+	@FXML
+	private TextField txt${attribute.name};
+#end
+#end
+	
+	public PanelGrilla${entity}(Tab tab) {
+		this.tab = tab;
+       FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(this.getClass().getSimpleName() + ".fxml"));
+		fxmlLoader.setRoot(this);
+		fxmlLoader.setController(this);
+		fxmlLoader.setResources(ResourceBundle.getBundle("i18n.ValidationMessages"));
+        
+        try {
+            fxmlLoader.load();
+        } catch (IOException exception) {
+            throw new RuntimeException(exception);
+        }
+    }
+
+	public void initialize(URL location, ResourceBundle resources) {
+		${uncapitalizedEntityName}Servicio = new ${entity}Servicio();
+		tbl${entity}.setOnMousePressed(new EventHandler<MouseEvent>() {
+		    @Override 
+		    public void handle(MouseEvent event) {
+		        if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+		        	btnEditarAction();          
+		        }
+		    }
+		});
+		loadGrilla();
+
+		pnlBotones.getChildren().add(0, generarPanel());
+		pnlBorder.setPadding(new Insets(10, 0, 0, 0));	
+		this.btnAgregar.setOnAction(this);
+		this.btnEditar.setOnAction(this);
+		this.btnEliminar.setOnAction(this);
+		this.btnBuscar.setOnAction(this);
+		this.btnLimpiar.setOnAction(this);
+	}
+	
+	public void loadGrilla(){
+		try {
+			data = FXCollections.observableArrayList(${uncapitalizedEntityName}Servicio.loadAll());
+			tbl${entity}.setItems(data);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}	
+
+	public I${entity}Servicio get${entity}Servicio() {
+		return ${uncapitalizedEntityName}Servicio;
+	}
+
+	public void set${entity}Servicio(I${entity}Servicio ${uncapitalizedEntityName}Servicio) {
+		this.${uncapitalizedEntityName}Servicio = ${uncapitalizedEntityName}Servicio;
+	}
+
+	@Override
+	public BorderPane getPnlBorder() {
+		return pnlBorder;
+	}
+
+	public void setPnlBorder(BorderPane pnlBorder) {
+		this.pnlBorder = pnlBorder;
+	}
+
+	@Override
+	public I${entity}Servicio getServicio() {
+		return this.${uncapitalizedEntityName}Servicio;
+	}
+
+	public PanelGrilla${entity} getController() {
+		return this;
+	}	
+
+	public TableView<${entity}> getTbl${entity}() {
+		return tbl${entity};
+	}
+
+	public Tab getTab() {
+		return tab;
+	}
+
+	@Override
+	public void reLoad() {
+		tab.setContent(this);
+		loadGrilla();
+	}
+
+	@Override
+	public void handle(ActionEvent event) {
+		if (event.getSource().equals(btnBuscar)) {	
+			loadGrilla();
+			
+			ObservableList<${entity}> filter= data;
+
+#foreach( $field in $entity.keyAttributes )
+#if($field.isIntegerType() || $field.isStringType())
+			if(!txt${field.name}.getText().trim().equals("")){
+#if($field.isIntegerType())
+				filter=filter.filtered(p -> p.${field.getter}() != null && p.${field.getter}() == Integer.valueOf(txt${field.name}.getText()));
+#else
+				filter= filter.filtered(p -> p.${field.getter}() != null && p.${field.getter}().contains(txt${field.name}.getText()));
+#end
+			}
+#end
+#end   
+#foreach( $field in $dataFields )	
+#if($field.isIntegerType() || $field.isStringType())
+			if(!txt${field.name}.getText().trim().equals("")){
+#if($field.isIntegerType())
+				filter=filter.filtered(p -> p.${field.getter}() != null && p.${field.getter}() == Integer.valueOf(txt${field.name}.getText()));
+#else
+				filter= filter.filtered(p -> p.${field.getter}() != null && p.${field.getter}().contains(txt${field.name}.getText()));
+#end
+			}
+#end
+#end		
+			tbl${entity}.setItems(new SortedList<>(filter));							
+		}
+		
+		if (event.getSource().equals(btnLimpiar)) {			
+			for(Node node: hButtonFilter.getChildren()){
+				if(node instanceof TextField){
+					((TextField)node).setText("");
+				}								
+			}		
+			tbl${entity}.setItems(data);							
+		}
+
+		if (event.getSource().equals(btnAgregar)) {
+			new Panel${entity}(PanelGrilla${entity}.this);
+		}
+		if (event.getSource().equals(btnEditar)) {
+			btnEditarAction();					
+		}
+		if (event.getSource().equals(btnEliminar)) {
+			
+			${entity} itemSelected = tbl${entity}.getSelectionModel().getSelectedItem();
+			if(itemSelected != null){
+				try {
+					${uncapitalizedEntityName}Servicio.delete(itemSelected);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			loadGrilla();
+		}
+	}
+	
+	private void btnEditarAction(){
+		int itemSelected = tbl${entity}.getSelectionModel().getSelectedItem().getId${uncapitalizedEntityName}();
+		if(itemSelected > 0){
+			new Panel${entity}(PanelGrilla${entity}.this, itemSelected);
+		}
+	}
+}
