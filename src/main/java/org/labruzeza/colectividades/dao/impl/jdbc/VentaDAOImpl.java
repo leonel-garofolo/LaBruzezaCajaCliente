@@ -234,4 +234,10 @@ public class VentaDAOImpl extends GenericDAO<Venta> implements VentaDAO {
 		setValue(ps, i++, venta.getIdventa() ) ; // "idventa" : java.lang.Integer
 	}
 
+	@Override
+	protected String getSqlLoadAll() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

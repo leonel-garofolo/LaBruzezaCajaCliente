@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.control.Button?>
+<?import org.salondeventas.cliente.desktop.view.control.NumberField?>
+
+
+<fx:root type="javafx.scene.layout.Pane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+	<children>
+      <VBox fx:id="pnlBotones">
+         <children>
+      		<BorderPane fx:id="pnlBorder" style="padding-top: 2cm">      			                  
+      			<top>
+      				<HBox fx:id="hButtonFilter" BorderPane.alignment="CENTER">
+                     
+						<children>
+      					 	<NumberField fx:id="txtidconfiguracion" promptText="%Configuracion.grilla.col.idconfiguracion" maxWidth="50" >
+      					 		<tooltip><Tooltip text="%Configuracion.grilla.col.idconfiguracion"></Tooltip></tooltip>      					 		
+      					 	</NumberField>			 				     
+      					 </children>
+						<children>
+      					 	<NumberField fx:id="txtnrocaja" promptText="%Configuracion.grilla.col.nrocaja" maxWidth="50" >
+      					 		<tooltip><Tooltip text="%Configuracion.grilla.col.nrocaja"></Tooltip></tooltip>      					 		
+      					 	</NumberField>			 				     
+      					 </children>
+						 <children>
+      					 	<Button  fx:id="btnBuscar" text="Buscar" maxWidth="60" />      					 		      					 	       			 			
+      					 </children>
+      					 <children>
+      					 	<Button  fx:id="btnLimpiar" text="Limpiar" maxWidth="60" />      					 		      					 	       			 			
+      					 </children>
+      				</HBox>
+               </top>
+      		   <center>
+				  <TableView fx:id="tblConfiguracion" BorderPane.alignment="CENTER">
+				  	 <columns>
+ 						<TableColumn fx:id="idconfiguracion" prefWidth="50.0" text="%Configuracion.grilla.col.idconfiguracion" >
+ 						<cellValueFactory>
+			                <PropertyValueFactory property="idconfiguracion" />
+			            </cellValueFactory>
+		      		    </TableColumn>	 
+ 						<TableColumn fx:id="nrocaja" prefWidth="50.0" text="%Configuracion.grilla.col.nrocaja" >
+ 						<cellValueFactory>
+			                <PropertyValueFactory property="nrocaja" />
+			            </cellValueFactory>
+		      		    </TableColumn>	 
+						<TableColumn fx:id="fecha" prefWidth="150.0" text="%Configuracion.grilla.col.fecha" >
+ 						<cellValueFactory>
+			                <PropertyValueFactory property="fecha" />
+			            </cellValueFactory>
+		      		    </TableColumn>	 
+					</columns>
+				</TableView>
+			</center>
+               
+      		</BorderPane>
+         </children>
+      </VBox>
+	</children>
+</fx:root>

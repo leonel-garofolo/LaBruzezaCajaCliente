@@ -4,6 +4,8 @@
  */
 package org.labruzeza.colectividades.dao;
 
+import java.util.List;
+
 import org.labruzeza.colectividades.modelo.Producto;
 
 /**
@@ -30,6 +32,8 @@ public interface ProductoDAO {
 	 * @return true if found, false if not found
 	 */
 	public boolean load( Producto producto ) ;
+	
+	public List<Producto> loadAll() ;
 	
     //----------------------------------------------------------------------
 	/**

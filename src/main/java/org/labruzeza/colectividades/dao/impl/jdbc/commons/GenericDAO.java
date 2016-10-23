@@ -9,6 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.sql.DataSource;
 
@@ -71,6 +73,8 @@ public abstract class GenericDAO<T> {
 	 * @return
 	 */
 	protected abstract String  getSqlCountAll();
+	
+	protected abstract String  getSqlLoadAll();
 	
 	/**
 	 * Set the primary key value(s) in the given PreparedStatement
@@ -154,6 +158,29 @@ public abstract class GenericDAO<T> {
 			closeConnection(conn);
 		}
 		return result ;
+	}
+	
+	
+	protected List<T> doLoad(T bean) {
+		Connection conn = null;
+ 
+		try {
+			conn = getConnection();
+			PreparedStatement ps = conn.prepareStatement( getSqlSelect() );		
+			List<T> array = new ArrayList<T>();
+			//--- Execute SQL SELECT 
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				array.add(populateBean(rs, bean));				
+			}			
+			rs.close();
+			ps.close();
+			return array;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			closeConnection(conn);
+		}		
 	}
 
 	//-----------------------------------------------------------------------------------------

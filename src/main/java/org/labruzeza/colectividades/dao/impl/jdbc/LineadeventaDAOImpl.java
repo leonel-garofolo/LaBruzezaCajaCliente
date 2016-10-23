@@ -240,4 +240,10 @@ public class LineadeventaDAOImpl extends GenericDAO<Lineadeventa> implements Lin
 		setValue(ps, i++, lineadeventa.getIdlineadeventa() ) ; // "idLineaDeVenta" : java.lang.Integer
 	}
 
+	@Override
+	protected String getSqlLoadAll() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

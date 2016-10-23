@@ -7,10 +7,11 @@ package org.labruzeza.colectividades.dao.impl.jdbc;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
-import org.labruzeza.colectividades.modelo.Producto;
 import org.labruzeza.colectividades.dao.ProductoDAO;
 import org.labruzeza.colectividades.dao.impl.jdbc.commons.GenericDAO;
+import org.labruzeza.colectividades.modelo.Producto;
 
 /**
  * Producto DAO implementation 
@@ -34,6 +35,9 @@ public class ProductoDAOImpl extends GenericDAO<Producto> implements ProductoDAO
 
 	private final static String SQL_COUNT_ALL = 
 		"select count(*) from producto";
+	
+	private final static String SQL_LOAD_ALL = 
+			"select count(*) from producto";
 
 	private final static String SQL_COUNT = 
 		"select count(*) from producto where idproducto = ?";
@@ -85,6 +89,11 @@ public class ProductoDAOImpl extends GenericDAO<Producto> implements ProductoDAO
 	@Override
 	public boolean load( Producto producto ) {
 		return super.doSelect(producto) ;
+	}
+	
+	@Override
+	public List<Producto> loadAll() {		
+		return super.doLoad(new Producto());
 	}
     //----------------------------------------------------------------------
 	/**
@@ -233,6 +242,13 @@ public class ProductoDAOImpl extends GenericDAO<Producto> implements ProductoDAO
 		setValue(ps, i++, producto.getPrecio() ) ; // "precio" : java.math.BigDecimal
 		//--- Set PRIMARY KEY from bean to PreparedStatement ( SQL "WHERE key=?, ..." )
 		setValue(ps, i++, producto.getIdproducto() ) ; // "idproducto" : java.lang.Integer
+	}
+
+	
+
+	@Override
+	protected String getSqlLoadAll() {
+		return SQL_LOAD_ALL;
 	}
 
 }

@@ -13,6 +13,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import org.javafx.controls.customs.*;
 #foreach($attribute in $entity.attributes)
 #if($attribute.isUtilDateType())
 import java.time.LocalDate;
@@ -38,11 +39,11 @@ public class Panel${entity.name} extends BorderPane implements EventHandler<Acti
 
 #if($attribute.isIntegerType() || $attribute.type == "BigDecimal")
 	@FXML
-	private TextField txt${attribute.name};
+	private NumberField txt${attribute.name};
 #end
 #if($attribute.isStringType())
 	@FXML
-	private TextField txt${attribute.name};
+	private StringField txt${attribute.name};
 #end
 #if($attribute.isUtilDateType())
 	@FXML

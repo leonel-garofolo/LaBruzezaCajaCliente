@@ -235,4 +235,10 @@ public class ConfiguracionDAOImpl extends GenericDAO<Configuracion> implements C
 		setValue(ps, i++, configuracion.getIdconfiguracion() ) ; // "idConfiguracion" : java.lang.Integer
 	}
 
+	@Override
+	protected String getSqlLoadAll() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

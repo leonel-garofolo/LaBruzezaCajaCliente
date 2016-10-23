@@ -6,7 +6,7 @@
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
-
+<?import org.javafx.controls.customs.*?>
 
 <fx:root type="javafx.scene.layout.BorderPane" xmlns:fx="http://javafx.com/fxml">
 	<center>
@@ -20,10 +20,10 @@
 #foreach($attribute in $entity.attributes)
 				<Label text="%${entity.name}.panel.field.${attribute.name}" GridPane.columnIndex="0" GridPane.rowIndex="$foreach.count"/>   
 #if($attribute.isIntegerType() || $attribute.type == "BigDecimal")
-				<TextField fx:id="txt${attribute.name}" maxWidth="100" GridPane.columnIndex="1" GridPane.rowIndex="$foreach.count"/>
+				<NumberField fx:id="txt${attribute.name}" maxWidth="100" GridPane.columnIndex="1" GridPane.rowIndex="$foreach.count"/>
 #end
 #if($attribute.isStringType())
- 				<TextField fx:id="txt${attribute.name}"  maxWidth="200" GridPane.columnIndex="1" GridPane.rowIndex="$foreach.count"/>       
+ 				<StringField fx:id="txt${attribute.name}"  maxWidth="200" GridPane.columnIndex="1" GridPane.rowIndex="$foreach.count"/>       
 #end	
 #if($attribute.isUtilDateType())
  				<DatePicker fx:id="dpr${attribute.name}" GridPane.columnIndex="1" GridPane.rowIndex="$foreach.count"/>       
