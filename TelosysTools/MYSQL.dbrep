@@ -11,6 +11,7 @@
 <column dbComment="" dbDefaultValue="" dbForeignKey="true" dbName="idVenta" dbNotNull="false" dbPosition="2" dbSize="10" dbTypeName="INT" inputType="number" javaName="idventa" javaType="java.lang.Integer" jdbcTypeCode="4" label="Idventa" notNull="false" selected="true"/>
 <column dbComment="" dbDefaultValue="" dbForeignKey="true" dbName="idProducto" dbNotNull="false" dbPosition="3" dbSize="10" dbTypeName="INT" inputType="number" javaName="idproducto" javaType="java.lang.Integer" jdbcTypeCode="4" label="Idproducto" notNull="false" selected="true"/>
 <column dbComment="" dbDefaultValue="" dbName="precio" dbNotNull="false" dbPosition="4" dbSize="9" dbTypeName="DECIMAL" inputType="number" javaName="precio" javaType="java.math.BigDecimal" jdbcTypeCode="3" label="Precio" notNull="false" selected="true"/>
+<column dbComment="" dbDefaultValue="" dbName="cantidad" dbNotNull="false" dbPosition="5" dbSize="10" dbTypeName="INT" inputType="number" javaName="cantidad" javaType="java.lang.Integer" jdbcTypeCode="4" label="Cantidad" notNull="false" selected="true"/>
 <fk name="fk_lineaDeVenta_producto">
 <fkcol colname="idProducto" colref="idproducto" deferrable="7" deleterule="3" sequence="1" tablename="lineadeventa" tableref="producto" updaterule="3"/>
 </fk>

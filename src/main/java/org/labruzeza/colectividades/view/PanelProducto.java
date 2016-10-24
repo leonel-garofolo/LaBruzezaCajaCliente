@@ -103,7 +103,7 @@ public class PanelProducto extends BorderPane implements EventHandler<ActionEven
 	private Producto getProducto() {
 		Producto unProducto = new Producto();
 		try{
-			unProducto.setIdproducto(Integer.valueOf(txtidproducto.getText()));
+			unProducto.setIdproducto(txtidproducto.getValue());
 		}catch (NumberFormatException e) {
 			unProducto.setIdproducto(null);
 		}

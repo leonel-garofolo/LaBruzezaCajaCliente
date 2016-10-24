@@ -5,8 +5,8 @@
 package org.labruzeza.colectividades.modelo;
 
 import java.io.Serializable;
-
 import java.util.Date;
+import java.util.List;
 
 /**
  * Java bean for 'Venta' entity
@@ -33,7 +33,7 @@ public class Venta implements Serializable {
     // DB : fecha DATE 
     private Date fecha;
 
-
+    private List<Lineadeventa> listOfLineadeventa;
 
     //----------------------------------------------------------------------
     // GETTER & SETTER FOR THE KEY FIELD
@@ -64,8 +64,18 @@ public class Venta implements Serializable {
         return this.fecha;
     }
 
+   
+    
+    
+    public List<Lineadeventa> getListOfLineadeventa() {
+		return listOfLineadeventa;
+	}
 
-    //----------------------------------------------------------------------
+	public void setListOfLineadeventa(List<Lineadeventa> listOfLineadeventa) {
+		this.listOfLineadeventa = listOfLineadeventa;
+	}
+
+	//----------------------------------------------------------------------
     // toString METHOD
     //----------------------------------------------------------------------
     public String toString() { 
