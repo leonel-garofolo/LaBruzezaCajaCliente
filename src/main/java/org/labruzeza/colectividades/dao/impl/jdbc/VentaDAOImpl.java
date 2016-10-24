@@ -240,4 +240,10 @@ public class VentaDAOImpl extends GenericDAO<Venta> implements VentaDAO {
 		return null;
 	}
 
+	@Override
+	protected Venta populateBeanAll(ResultSet rs) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

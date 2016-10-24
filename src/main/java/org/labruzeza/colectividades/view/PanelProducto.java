@@ -2,11 +2,8 @@ package org.labruzeza.colectividades.view;
 
 import java.io.IOException;
 import java.util.ResourceBundle;
-import java.util.Set;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
-
+import org.javafx.controls.customs.DecimalField;
 import org.javafx.controls.customs.NumberField;
 import org.javafx.controls.customs.StringField;
 import org.labruzeza.colectividades.modelo.Producto;
@@ -34,7 +31,7 @@ public class PanelProducto extends BorderPane implements EventHandler<ActionEven
 	private StringField txtnombre;
 
 	@FXML
-	private NumberField txtprecio;
+	private DecimalField txtprecio;
 
 	public PanelProducto(PanelGrillaProducto father) {
 		this.modoEdit = false;
@@ -52,8 +49,14 @@ public class PanelProducto extends BorderPane implements EventHandler<ActionEven
 	private void loadEntity(int id) {
 		try {
 			Producto unProducto = new Producto();
-			unProducto.setIdproducto(id);			
-			loadForm(unProducto);
+			unProducto.setIdproducto(id);	
+			boolean eProducto =father.getService().load(unProducto);
+			if(eProducto){
+				loadForm(unProducto);
+			}else{
+				throw new Exception();
+			}
+			
 		} catch (Exception e) {
 			Label label = new Label();
 	    	label.setText("Se ha producido un error en el servidor. Intente mas tarde.");
@@ -105,8 +108,8 @@ public class PanelProducto extends BorderPane implements EventHandler<ActionEven
 			unProducto.setIdproducto(null);
 		}
 		unProducto.setNombre(txtnombre.getText());
-		
-		Label label = null;	
+		unProducto.setPrecio(txtprecio.getValue());
+				
 		vBoxMsg.getChildren().clear();		
 		return unProducto;
 	}
@@ -118,9 +121,9 @@ public class PanelProducto extends BorderPane implements EventHandler<ActionEven
 			if(unProducto != null){
 				try {
 					if(modoEdit){
-					
+						father.getService().update(unProducto);
 					}else{
-						
+						father.getService().insert(unProducto);
 					}
 					
 					father.reLoad();    

@@ -23,6 +23,9 @@ public class ProductoDAOImpl extends GenericDAO<Producto> implements ProductoDAO
 
 	private final static String SQL_SELECT = 
 		"select idproducto, nombre, precio from producto where idproducto = ?";
+	
+	private final static String SQL_SELECT_AlL = 
+			"select idproducto, nombre, precio from producto";
 
 	private final static String SQL_INSERT = 
 		"insert into producto ( nombre, precio ) values ( ?, ? )";
@@ -93,7 +96,7 @@ public class ProductoDAOImpl extends GenericDAO<Producto> implements ProductoDAO
 	
 	@Override
 	public List<Producto> loadAll() {		
-		return super.doLoad(new Producto());
+		return super.doLoadAll();
 	}
     //----------------------------------------------------------------------
 	/**
@@ -177,6 +180,13 @@ public class ProductoDAOImpl extends GenericDAO<Producto> implements ProductoDAO
 	protected String getSqlSelect() {
 		return SQL_SELECT ;
 	}
+	
+	@Override
+	protected String getSqlSelectAll() {
+		return SQL_SELECT_AlL ;
+	}
+	
+	
     //----------------------------------------------------------------------
 	@Override
 	protected String getSqlInsert() {
@@ -214,6 +224,19 @@ public class ProductoDAOImpl extends GenericDAO<Producto> implements ProductoDAO
 	@Override
 	protected Producto populateBean(ResultSet rs, Producto producto) throws SQLException {
 
+		//--- Set data from ResultSet to Bean attributes
+		producto.setIdproducto(rs.getInt("idproducto")); // java.lang.Integer
+		if ( rs.wasNull() ) { producto.setIdproducto(null); }; // not primitive number => keep null value if any
+		producto.setNombre(rs.getString("nombre")); // java.lang.String
+		producto.setPrecio(rs.getBigDecimal("precio")); // java.math.BigDecimal
+		if ( rs.wasNull() ) { producto.setPrecio(null); }; // not primitive number => keep null value if any
+		return producto ;
+	}
+	
+	//----------------------------------------------------------------------
+	@Override
+	protected Producto populateBeanAll(ResultSet rs) throws SQLException {
+		Producto producto = new Producto();
 		//--- Set data from ResultSet to Bean attributes
 		producto.setIdproducto(rs.getInt("idproducto")); // java.lang.Integer
 		if ( rs.wasNull() ) { producto.setIdproducto(null); }; // not primitive number => keep null value if any

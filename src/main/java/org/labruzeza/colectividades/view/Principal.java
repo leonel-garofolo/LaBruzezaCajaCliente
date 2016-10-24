@@ -4,6 +4,8 @@ import java.io.IOException;
 
 import org.javafx.controls.customs.NumberField;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -15,8 +17,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
-public class Principal extends AnchorPane {
+public class Principal extends AnchorPane implements EventHandler<ActionEvent>{
 	@FXML
 	private static Scene scene;
 	
@@ -166,6 +170,38 @@ public class Principal extends AnchorPane {
         }
         
         Image imageDecline = new Image(getClass().getResourceAsStream("/image/settings.png"));
-		btnConfig.setGraphic(new ImageView(imageDecline));		        
+		btnConfig.setGraphic(new ImageView(imageDecline));	
+		btnConfig.setOnAction(this);
+		btnSiguiente.setOnAction(this);
+		btnNuevo.setOnAction(this);
+		btnVolverPrimero.setOnAction(this);
+ 	}
+
+	@Override
+	public void handle(ActionEvent event) {
+		if(event.getSource().equals(btnConfig)){
+			openConfiguracion(event);
+		}
+		if(event.getSource().equals(btnSiguiente)){
+					
+		}
+		if(event.getSource().equals(btnNuevo)){
+			
+		}
+		if(event.getSource().equals(btnVolverPrimero)){
+			
+		}
+		
+	}
+	
+	private void openConfiguracion(ActionEvent event){
+		PanelConfiguracionGeneral pnlConf = new PanelConfiguracionGeneral();	
+        Scene scene = new Scene(pnlConf);
+        Stage stage = new Stage();
+        stage.setTitle("Panel de Configuración");
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(this.getScene().getWindow());
+        stage.setScene(scene);
+        stage.show();
 	}
 }

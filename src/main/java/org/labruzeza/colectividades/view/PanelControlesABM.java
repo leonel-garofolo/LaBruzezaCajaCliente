@@ -4,10 +4,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCodeCombination;
-import javafx.scene.input.KeyCombination;
-import javafx.scene.input.Mnemonic;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 
@@ -54,7 +50,7 @@ public class PanelControlesABM extends Pane {
 		return hbox;
 	}
 	
-	protected HBox generarPanelFormulario(){
+	public HBox generarPanelFormulario(){
 		this.btnGuardar = new Button();
 		this.btnCancelar = new Button();
 		
@@ -62,17 +58,14 @@ public class PanelControlesABM extends Pane {
 		btnGuardar.setGraphic(new ImageView(imageDecline));
 		btnGuardar.setTooltip(new Tooltip("Guardar"));		
 		btnGuardar.setId("btnGuardar");
-		this.getScene().addMnemonic(new Mnemonic(btnGuardar, KeyCombination.keyCombination("SHORTCUT+N")));		
 		
 		imageDecline = new Image(getClass().getResourceAsStream("/image/error.png"));
 		btnCancelar.setGraphic(new ImageView(imageDecline));
 		btnCancelar.setTooltip(new Tooltip("Cancelar"));	
 		btnCancelar.setId("btnCancelar");
-		this.getScene().addMnemonic(new Mnemonic(btnCancelar, new KeyCodeCombination(KeyCode.ESCAPE)));
 		
 		HBox hbox = new HBox();		
 		hbox.getChildren().addAll(btnGuardar, btnCancelar);
-
 			
 		return hbox;
 	}

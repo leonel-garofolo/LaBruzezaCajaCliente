@@ -2,13 +2,13 @@
 
 <?import javafx.geometry.*?>
 <?import javafx.scene.shape.*?>
-<?import org.javafx.controls.customs.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
-<?import org.javafx.controls.customs.NumberField?>
 <?import javafx.scene.control.Tooltip?>
+<?import org.javafx.controls.customs.*?>
+<?import javafx.scene.control.TextField?>
 
 <fx:root type="javafx.scene.layout.AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="565.0" prefWidth="828.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>

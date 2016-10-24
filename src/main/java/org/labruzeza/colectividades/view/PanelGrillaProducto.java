@@ -173,4 +173,8 @@ public class PanelGrillaProducto extends PanelControlesABM implements Initializa
 			new PanelProducto(PanelGrillaProducto.this, itemSelected);
 		}
 	}
+	
+	public ProductoDAO getService(){
+		return productoServicio;
+	}
 }

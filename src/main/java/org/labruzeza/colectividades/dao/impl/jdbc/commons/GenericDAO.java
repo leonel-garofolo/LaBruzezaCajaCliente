@@ -182,6 +182,28 @@ public abstract class GenericDAO<T> {
 			closeConnection(conn);
 		}		
 	}
+	
+	protected List<T> doLoadAll() {
+		Connection conn = null;
+ 
+		try {
+			conn = getConnection();
+			PreparedStatement ps = conn.prepareStatement( getSqlSelectAll() );		
+			List<T> array = new ArrayList<T>();
+			//--- Execute SQL SELECT 
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				array.add(populateBeanAll(rs));				
+			}			
+			rs.close();
+			ps.close();
+			return array;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			closeConnection(conn);
+		}		
+	}
 
 	//-----------------------------------------------------------------------------------------
 	/**
@@ -432,5 +454,11 @@ public abstract class GenericDAO<T> {
 		ps.setBytes(i, value );
 	}
 
+	protected String getSqlSelectAll() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	protected abstract T  populateBeanAll(ResultSet rs) throws SQLException ;
 }
 
