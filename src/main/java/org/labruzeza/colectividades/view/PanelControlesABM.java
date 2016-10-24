@@ -64,7 +64,7 @@ public class PanelControlesABM extends Pane {
 		btnGuardar.setId("btnGuardar");
 		this.getScene().addMnemonic(new Mnemonic(btnGuardar, KeyCombination.keyCombination("SHORTCUT+N")));		
 		
-		imageDecline = new Image(getClass().getResourceAsStream("/image/edit.png"));
+		imageDecline = new Image(getClass().getResourceAsStream("/image/error.png"));
 		btnCancelar.setGraphic(new ImageView(imageDecline));
 		btnCancelar.setTooltip(new Tooltip("Cancelar"));	
 		btnCancelar.setId("btnCancelar");

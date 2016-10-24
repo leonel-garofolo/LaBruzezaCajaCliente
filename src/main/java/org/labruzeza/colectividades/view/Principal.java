@@ -1,28 +1,22 @@
-package org.labruzeza.colectividades.views;
+package org.labruzeza.colectividades.view;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
 import org.javafx.controls.customs.NumberField;
 
-import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Screen;
-import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
-public class Principal extends Application implements Initializable {
+public class Principal extends AnchorPane {
 	@FXML
 	private static Scene scene;
 	
@@ -143,53 +137,35 @@ public class Principal extends Application implements Initializable {
 	private TextField txtPrecio17;
 	@FXML
 	private TextField txtPrecio18;
-
-	private AnchorPane myPane;
 	
+	@FXML
+	private Button btnConfig;
 	
-	@Override
-	public void start(Stage primaryStage) throws Exception {
-		primaryStage.setTitle("Principal");
-		
-		Screen screen = Screen.getPrimary();
-		Rectangle2D bounds = screen.getVisualBounds();
-
-		primaryStage.setX(bounds.getMinX());
-		primaryStage.setY(bounds.getMinY());
-		primaryStage.setWidth(bounds.getWidth());
-		primaryStage.setHeight(bounds.getHeight());		
-		loadPage();
-		primaryStage.setScene(scene);
-		primaryStage.resizableProperty().set(false);
-		primaryStage.show();
-		
-		primaryStage.setOnHiding(new EventHandler<WindowEvent>() {
-
-            public void handle(WindowEvent event) {
-            	System.exit(0);
-            }
-        });
-	}
+	@FXML
+	private Button btnSiguiente;
 	
+	@FXML
+	private Button btnNuevo;
 	
-	@SuppressWarnings("static-access")
-	private void loadPage() throws IOException {
+	@FXML
+	private Button btnVolverPrimero;			
+	
+ 	public Principal(){
+ 		initComponentes();
+ 	}
+	
+ 	private void initComponentes(){
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(this.getClass().getSimpleName() + ".fxml"));
-		this.myPane = (AnchorPane) fxmlLoader.load();					
-		this.scene = new Scene(myPane);
+		fxmlLoader.setRoot(this);
+		fxmlLoader.setController(this);
+		
+        try {
+            fxmlLoader.load();
+        } catch (IOException exception) {
+            throw new RuntimeException(exception);
+        }
+        
+        Image imageDecline = new Image(getClass().getResourceAsStream("/image/settings.png"));
+		btnConfig.setGraphic(new ImageView(imageDecline));		        
 	}
-	
-	public static void iniciar(){
-		String[] args = {};
-		launch(args);
-	}
-
-	public static void main(String[] args) {
-		Principal.iniciar();
-	}
-
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {		
-	}
-
 }

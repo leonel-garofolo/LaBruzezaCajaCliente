@@ -2,8 +2,7 @@ package org.labruzeza.colectividades;
 
 public class App {
 	private void iniciar(){
-		AppClient client = new AppClient();
-		client.start();
+		AppClient.iniciar();		
 	}
 	
 	public static void main(String[] args) throws Exception {

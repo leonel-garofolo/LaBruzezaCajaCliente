@@ -8,18 +8,24 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 <?import org.javafx.controls.customs.NumberField?>
+<?import javafx.scene.control.Tooltip?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="565.0" prefWidth="828.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root type="javafx.scene.layout.AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="565.0" prefWidth="828.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <BorderPane fx:id="borderPane" layoutX="0" prefHeight="562.0" prefWidth="828.0" AnchorPane.bottomAnchor="53.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <bottom>
-            <Pane prefHeight="536.0" prefWidth="828.0" BorderPane.alignment="TOP_LEFT">
+         <top>
+            <Button fx:id="btnConfig" mnemonicParsing="false" BorderPane.alignment="TOP_LEFT">
+            <tooltip><Tooltip text="Configuración" /></tooltip>
+            </Button>
+         </top>
+         <center>
+            <Pane prefHeight="536.0" prefWidth="828.0" BorderPane.alignment="CENTER">
                <children>
                   <GridPane fx:id="gridPane" layoutX="24.0" layoutY="7.0" prefHeight="477.0" prefWidth="369.0">
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="365.0" minWidth="10.0" prefWidth="235.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="304.0" minWidth="10.0" prefWidth="73.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="206.0" minWidth="10.0" prefWidth="68.0" />
+                      <ColumnConstraints fillWidth="false" hgrow="SOMETIMES" maxWidth="304.0" minWidth="10.0" prefWidth="73.0" />
+                      <ColumnConstraints fillWidth="false" hgrow="SOMETIMES" maxWidth="206.0" minWidth="10.0" prefWidth="68.0" />
                     </columnConstraints>
                     <rowConstraints>
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -48,42 +54,44 @@
                               <Font name="Arial" size="12.0" />
                            </font>
                         </Label>
-                        <Label text="PRECIO" GridPane.columnIndex="2" />
-                        <NumberField fx:id="txtCant1" prefHeight="25.0" prefWidth="47.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label text="PRECIO" GridPane.columnIndex="2">
+                           <font>
+                              <Font name="Arial" size="12.0" />
+                           </font></Label>
+                        <NumberField fx:id="txtCant1" maxValue="2" prefHeight="25.0" prefWidth="47.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <TextField fx:id="txtPrecio1" prefHeight="25.0" prefWidth="94.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                        <NumberField fx:id="txtCant2" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <NumberField fx:id="txtCant2" maxValue="2" prefHeight="25.0" prefWidth="47.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <TextField fx:id="txtPrecio2" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                        <NumberField fx:id="txtCant3" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <NumberField fx:id="txtCant3" prefHeight="25.0" prefWidth="47.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                         <TextField fx:id="txtPrecio3" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                        <NumberField fx:id="txtCant4" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <NumberField fx:id="txtCant4" prefWidth="47.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                         <TextField fx:id="txtPrecio4" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-                        <NumberField fx:id="txtCant5" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                        <NumberField fx:id="txtCant5" prefWidth="47.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                         <TextField fx:id="txtPrecio5" GridPane.columnIndex="2" GridPane.rowIndex="5" />
-                        <NumberField fx:id="txtCant6" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                        <NumberField fx:id="txtCant6" prefWidth="47.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                         <TextField fx:id="txtPrecio6" GridPane.columnIndex="2" GridPane.rowIndex="6" />
-                        <NumberField fx:id="txtCant7" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                        <NumberField fx:id="txtCant7" prefWidth="47.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                         <TextField fx:id="txtPrecio7" GridPane.columnIndex="2" GridPane.rowIndex="7" />
-                        <NumberField fx:id="txtCant8" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                        <NumberField fx:id="txtCant8" prefWidth="47.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
                         <TextField fx:id="txtPrecio8" GridPane.columnIndex="2" GridPane.rowIndex="8" />
-                        <NumberField fx:id="txtCant9" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+                        <NumberField fx:id="txtCant9" prefWidth="47.0" GridPane.columnIndex="1" GridPane.rowIndex="9" />
                         <TextField fx:id="txtPrecio9" GridPane.columnIndex="2" GridPane.rowIndex="9" />
-                        <NumberField fx:id="txtCant10" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+                        <NumberField fx:id="txtCant10" prefWidth="47.0" GridPane.columnIndex="1" GridPane.rowIndex="10" />
                         <TextField fx:id="txtPrecio10" GridPane.columnIndex="2" GridPane.rowIndex="10" />
-                        <NumberField fx:id="txtCant11" GridPane.columnIndex="1" GridPane.rowIndex="11" />
+                        <NumberField fx:id="txtCant11" prefWidth="47.0" GridPane.columnIndex="1" GridPane.rowIndex="11" />
                         <TextField fx:id="txtPrecio11" GridPane.columnIndex="2" GridPane.rowIndex="11" />
-                        <NumberField fx:id="txtCant12" GridPane.columnIndex="1" GridPane.rowIndex="12" />
+                        <NumberField fx:id="txtCant12" prefWidth="47.0" GridPane.columnIndex="1" GridPane.rowIndex="12" />
                         <TextField fx:id="txtPrecio12" GridPane.columnIndex="2" GridPane.rowIndex="12" />
-                        <NumberField fx:id="txtCant13" GridPane.columnIndex="1" GridPane.rowIndex="13" />
+                        <NumberField fx:id="txtCant13" prefWidth="47.0" GridPane.columnIndex="1" GridPane.rowIndex="13" />
                         <TextField fx:id="txtPrecio13" GridPane.columnIndex="2" GridPane.rowIndex="13" />
-                        <NumberField fx:id="txtCant14" GridPane.columnIndex="1" GridPane.rowIndex="14" />
+                        <NumberField fx:id="txtCant14" prefWidth="47.0" GridPane.columnIndex="1" GridPane.rowIndex="14" />
                         <TextField fx:id="txtPrecio14" GridPane.columnIndex="2" GridPane.rowIndex="14" />
-                        <TextField GridPane.columnIndex="1" GridPane.rowIndex="16" />
                         <TextField GridPane.columnIndex="2" GridPane.rowIndex="16" />
-                        <NumberField fx:id="txtCant16" GridPane.columnIndex="1" GridPane.rowIndex="16" />
+                        <NumberField fx:id="txtCant16" prefWidth="47.0" GridPane.columnIndex="1" GridPane.rowIndex="16" />
                         <TextField fx:id="txtPrecio16" GridPane.columnIndex="2" GridPane.rowIndex="16" />
-                        <NumberField fx:id="txtCant17" GridPane.columnIndex="1" GridPane.rowIndex="17" />
+                        <NumberField fx:id="txtCant17" prefWidth="47.0" GridPane.columnIndex="1" GridPane.rowIndex="17" />
                         <TextField fx:id="txtPrecio17" GridPane.columnIndex="2" GridPane.rowIndex="17" />
-                        <NumberField fx:id="txtCant18" GridPane.columnIndex="1" GridPane.rowIndex="18" />
+                        <NumberField fx:id="txtCant18" prefWidth="47.0" GridPane.columnIndex="1" GridPane.rowIndex="18" />
                         <TextField fx:id="txtPrecio18" GridPane.columnIndex="2" GridPane.rowIndex="18" />
                         <Label fx:id="lbl1" prefHeight="17.0" prefWidth="221.0" GridPane.rowIndex="1">
                            <font>
@@ -175,7 +183,7 @@
                               <Font name="Arial" size="12.0" />
                            </font>
                         </Label>
-                        <NumberField fx:id="txtCant15" GridPane.columnIndex="1" GridPane.rowIndex="15" />
+                        <NumberField fx:id="txtCant15" prefWidth="47.0" GridPane.columnIndex="1" GridPane.rowIndex="15" />
                         <TextField fx:id="txtPrecio15" GridPane.columnIndex="2" GridPane.rowIndex="15" />
                      </children>
                   </GridPane>
@@ -194,9 +202,6 @@
                   </Pane>
                </children>
             </Pane>
-         </bottom>
-         <top>
-            <Button fx:id="btnConfig" mnemonicParsing="false" text="CONFIGURACIÓN" BorderPane.alignment="TOP_LEFT" />
-         </top></BorderPane>
+         </center></BorderPane>
    </children>
-</AnchorPane>
+</fx:root>
