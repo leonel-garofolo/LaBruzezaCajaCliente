@@ -5,9 +5,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<fx:root prefHeight="542.0" prefWidth="575.0" type="AnchorPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="658.0" prefWidth="766.0" type="AnchorPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <TabPane fx:id="tabPane" prefHeight="545.0" prefWidth="577.0" tabClosingPolicy="UNAVAILABLE">        
+      <TabPane fx:id="tabPane" prefHeight="658.0" prefWidth="766.0" tabClosingPolicy="UNAVAILABLE">        
       </TabPane>
    </children>
 </fx:root>

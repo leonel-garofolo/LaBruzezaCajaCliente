@@ -9,6 +9,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
 import org.javafx.controls.customs.NumberField;
+import org.javafx.controls.customs.StringField;
 import org.labruzeza.colectividades.PropertyResourceBundleMessageInterpolator;
 import org.labruzeza.colectividades.dao.ConfiguracionDAO;
 import org.labruzeza.colectividades.dao.impl.jdbc.ConfiguracionDAOImpl;
@@ -24,9 +25,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
 public class PanelConfiguracion extends BorderPane implements EventHandler<ActionEvent>{
-	private boolean modoEdit = false;	
-	private ConfiguracionDAO configuracionDAO;
-	private PanelControlesABM pnlABM;
+	private boolean modoEdit = false;
+	private ConfiguracionDAO configuracionDao;
 	
 	@FXML
 	private VBox vBoxMsg;
@@ -40,27 +40,25 @@ public class PanelConfiguracion extends BorderPane implements EventHandler<Actio
 
 	@FXML
 	private DatePicker dprfecha;
-
+	
+	@FXML
+	private StringField txtTipoCaja;
+	
+	private PanelControlesABM panelControles;
+	
 	public PanelConfiguracion() {
 		this.modoEdit = false;		
 		initComponentes();
-    }
-
-	public PanelConfiguracion(int id) {
-		this.modoEdit = true;		
-		initComponentes();
-		loadEntity(id);		
+		loadEntity(1);		
     }
 
 	private void loadEntity(int id) {
 		try {
 			Configuracion unConfiguracion = new Configuracion();
 			unConfiguracion.setIdconfiguracion(id);
-			boolean bConfiguracion = configuracionDAO.load(unConfiguracion);
-			if(bConfiguracion){
-				loadForm(unConfiguracion);
-			}else{
-				throw new Exception();
+			boolean eConfiguracion = configuracionDao.load(unConfiguracion);
+			if(eConfiguracion){
+				loadForm(unConfiguracion);	
 			}
 		} catch (Exception e) {
 			Label label = new Label();
@@ -81,34 +79,37 @@ public class PanelConfiguracion extends BorderPane implements EventHandler<Actio
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
-        configuracionDAO = new ConfiguracionDAOImpl();
         
-        pnlABM = new PanelControlesABM();
-        
-        this.setTop(pnlABM.generarPanelFormulario());
+        panelControles = new PanelControlesABM();
+        this.setTop(panelControles.generarPanelFormulario());
         this.setLeft(null);
         this.setRight(null);
-        pnlABM.btnGuardar.setOnAction(this);        
-        pnlABM.btnCancelar.setOnAction(this);      
+        panelControles.btnGuardar.setOnAction(this);        
+        panelControles.btnCancelar.setOnAction(this);
         
 		dprfecha.setValue(LocalDate.now());			
+		
+		configuracionDao =  new ConfiguracionDAOImpl();				
 	}
 
 	public void loadForm(Configuracion configuracion){
 		if(configuracion !=null){
 			if(configuracion.getIdconfiguracion() != null){
-				txtidconfiguracion.setText(String.valueOf(configuracion.getIdconfiguracion()));
+				txtidconfiguracion.setValue(String.valueOf(configuracion.getIdconfiguracion()));
 			}
 			if(configuracion.getNrocaja() != null){
-				txtnrocaja.setText(String.valueOf(configuracion.getNrocaja()));
+				txtnrocaja.setValue(configuracion.getNrocaja());
+			}
+			if(configuracion.getTipocaja() != null){
+				txtTipoCaja.setValue(configuracion.getTipocaja());
 			}
 			if(configuracion.getFecha() != null){
 				dprfecha.setValue(new java.sql.Date(configuracion.getFecha().getTime()).toLocalDate());		
-			}
+			}			
 		}
 	}
 
-	private Configuracion getConfiguracion() {
+	private Configuracion getConfiguracion() {		
 		Configuracion unConfiguracion = new Configuracion();
 		try{
 			unConfiguracion.setIdconfiguracion(Integer.valueOf(txtidconfiguracion.getText()));
@@ -116,11 +117,12 @@ public class PanelConfiguracion extends BorderPane implements EventHandler<Actio
 			unConfiguracion.setIdconfiguracion(null);
 		}
 		try{
-			unConfiguracion.setNrocaja(Integer.valueOf(txtnrocaja.getText()));
+			unConfiguracion.setNrocaja(txtnrocaja.getValue());
 		}catch (NumberFormatException e) {
 			unConfiguracion.setNrocaja(null);
 		}
-		unConfiguracion.setFecha(java.sql.Date.valueOf(dprfecha.getValue()));
+		unConfiguracion.setFecha(java.sql.Date.valueOf(dprfecha.getValue()));	
+		unConfiguracion.setTipocaja(txtTipoCaja.getText());
 		
 		Label label = null;	
 		vBoxMsg.getChildren().clear();
@@ -139,15 +141,16 @@ public class PanelConfiguracion extends BorderPane implements EventHandler<Actio
 
 	@Override
 	public void handle(ActionEvent event) {
-		if(event.getSource().equals(pnlABM.btnGuardar)){
+		if(event.getSource().equals(panelControles.btnGuardar)){
 			Configuracion unConfiguracion = getConfiguracion();
 			if(unConfiguracion != null){
 				try {
 					if(modoEdit){
-						configuracionDAO.update(unConfiguracion);
+						configuracionDao.update(unConfiguracion);
 					}else{
-						configuracionDAO.insert(unConfiguracion);
-					}										
+						configuracionDao.insert(unConfiguracion);
+					}
+										
 				} catch (Exception e) {
 					Label label = new Label();
 			    	label.setText("Se ha producido un error en el servidor. Intente mas tarde.");
@@ -156,13 +159,12 @@ public class PanelConfiguracion extends BorderPane implements EventHandler<Actio
 				}
 			}		
 		}
-		if(event.getSource().equals(pnlABM.btnCancelar)){			
-			reLoad();    
+		if(event.getSource().equals(panelControles.btnCancelar)){
+			closeWindows();
 		}
 	}
-
-	private void reLoad() {
-		// TODO Auto-generated method stub
-		
+	
+	private void closeWindows(){
+		this.getScene().getWindow().hide();
 	}
 }

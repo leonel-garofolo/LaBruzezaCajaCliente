@@ -10,9 +10,9 @@
 <?import org.javafx.controls.customs.*?>
 <?import javafx.scene.control.TextField?>
 
-<fx:root type="javafx.scene.layout.AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="565.0" prefWidth="828.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="-Infinity" prefWidth="-Infinity" type="javafx.scene.layout.AnchorPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <BorderPane fx:id="borderPane" layoutX="0" prefHeight="562.0" prefWidth="828.0" AnchorPane.bottomAnchor="53.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <BorderPane fx:id="borderPane" layoutX="0" prefHeight="-Infinity" prefWidth="-Infinity" AnchorPane.bottomAnchor="53.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
             <Button fx:id="btnConfig" mnemonicParsing="false" BorderPane.alignment="TOP_LEFT">
             <tooltip><Tooltip text="Configuración" /></tooltip>
@@ -21,7 +21,7 @@
          <center>
             <Pane prefHeight="536.0" prefWidth="828.0" BorderPane.alignment="CENTER">
                <children>
-                  <GridPane fx:id="gridPane" layoutX="24.0" layoutY="7.0" prefHeight="477.0" prefWidth="369.0">
+                  <GridPane fx:id="gridPane" hgap="10" layoutX="24.0" layoutY="7.0" prefHeight="477.0" prefWidth="500.0" vgap="23">
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="365.0" minWidth="10.0" prefWidth="235.0" />
                       <ColumnConstraints fillWidth="false" hgrow="SOMETIMES" maxWidth="304.0" minWidth="10.0" prefWidth="73.0" />
@@ -49,159 +49,36 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label prefHeight="21.0" prefWidth="90.0" text="CANTIDAD" GridPane.columnIndex="1">
+                        <Label alignment="CENTER" prefHeight="21.0" prefWidth="90.0" text="CANTIDAD" GridPane.columnIndex="1">
                            <font>
                               <Font name="Arial" size="12.0" />
                            </font>
                         </Label>
-                        <Label text="PRECIO" GridPane.columnIndex="2">
+                        <Label alignment="CENTER" text="PRECIO" GridPane.columnIndex="2">
                            <font>
                               <Font name="Arial" size="12.0" />
                            </font></Label>
-                        <NumberField fx:id="txtCant1" maxValue="2" prefHeight="25.0" prefWidth="47.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <TextField fx:id="txtPrecio1" prefHeight="25.0" prefWidth="94.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                        <NumberField fx:id="txtCant2" maxValue="2" prefHeight="25.0" prefWidth="47.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <TextField fx:id="txtPrecio2" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                        <NumberField fx:id="txtCant3" prefHeight="25.0" prefWidth="47.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <TextField fx:id="txtPrecio3" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                        <NumberField fx:id="txtCant4" prefWidth="47.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                        <TextField fx:id="txtPrecio4" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-                        <NumberField fx:id="txtCant5" prefWidth="47.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                        <TextField fx:id="txtPrecio5" GridPane.columnIndex="2" GridPane.rowIndex="5" />
-                        <NumberField fx:id="txtCant6" prefWidth="47.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                        <TextField fx:id="txtPrecio6" GridPane.columnIndex="2" GridPane.rowIndex="6" />
-                        <NumberField fx:id="txtCant7" prefWidth="47.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-                        <TextField fx:id="txtPrecio7" GridPane.columnIndex="2" GridPane.rowIndex="7" />
-                        <NumberField fx:id="txtCant8" prefWidth="47.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-                        <TextField fx:id="txtPrecio8" GridPane.columnIndex="2" GridPane.rowIndex="8" />
-                        <NumberField fx:id="txtCant9" prefWidth="47.0" GridPane.columnIndex="1" GridPane.rowIndex="9" />
-                        <TextField fx:id="txtPrecio9" GridPane.columnIndex="2" GridPane.rowIndex="9" />
-                        <NumberField fx:id="txtCant10" prefWidth="47.0" GridPane.columnIndex="1" GridPane.rowIndex="10" />
-                        <TextField fx:id="txtPrecio10" GridPane.columnIndex="2" GridPane.rowIndex="10" />
-                        <NumberField fx:id="txtCant11" prefWidth="47.0" GridPane.columnIndex="1" GridPane.rowIndex="11" />
-                        <TextField fx:id="txtPrecio11" GridPane.columnIndex="2" GridPane.rowIndex="11" />
-                        <NumberField fx:id="txtCant12" prefWidth="47.0" GridPane.columnIndex="1" GridPane.rowIndex="12" />
-                        <TextField fx:id="txtPrecio12" GridPane.columnIndex="2" GridPane.rowIndex="12" />
-                        <NumberField fx:id="txtCant13" prefWidth="47.0" GridPane.columnIndex="1" GridPane.rowIndex="13" />
-                        <TextField fx:id="txtPrecio13" GridPane.columnIndex="2" GridPane.rowIndex="13" />
-                        <NumberField fx:id="txtCant14" prefWidth="47.0" GridPane.columnIndex="1" GridPane.rowIndex="14" />
-                        <TextField fx:id="txtPrecio14" GridPane.columnIndex="2" GridPane.rowIndex="14" />
-                        <TextField GridPane.columnIndex="2" GridPane.rowIndex="16" />
-                        <NumberField fx:id="txtCant16" prefWidth="47.0" GridPane.columnIndex="1" GridPane.rowIndex="16" />
-                        <TextField fx:id="txtPrecio16" GridPane.columnIndex="2" GridPane.rowIndex="16" />
-                        <NumberField fx:id="txtCant17" prefWidth="47.0" GridPane.columnIndex="1" GridPane.rowIndex="17" />
-                        <TextField fx:id="txtPrecio17" GridPane.columnIndex="2" GridPane.rowIndex="17" />
-                        <NumberField fx:id="txtCant18" prefWidth="47.0" GridPane.columnIndex="1" GridPane.rowIndex="18" />
-                        <TextField fx:id="txtPrecio18" GridPane.columnIndex="2" GridPane.rowIndex="18" />
-                        <Label fx:id="lbl1" prefHeight="17.0" prefWidth="221.0" GridPane.rowIndex="1">
-                           <font>
-                              <Font name="Arial" size="12.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="lbl2" prefHeight="17.0" prefWidth="221.0" GridPane.rowIndex="2">
-                           <font>
-                              <Font name="Arial" size="12.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="lbl3" prefHeight="17.0" prefWidth="221.0" GridPane.rowIndex="3">
-                           <font>
-                              <Font name="Arial" size="12.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="lbl4" prefHeight="17.0" prefWidth="221.0" GridPane.rowIndex="4">
-                           <font>
-                              <Font name="Arial" size="12.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="lbl5" prefHeight="17.0" prefWidth="221.0" GridPane.rowIndex="5">
-                           <font>
-                              <Font name="Arial" size="12.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="lbl6" prefHeight="17.0" prefWidth="221.0" GridPane.rowIndex="6">
-                           <font>
-                              <Font name="Arial" size="12.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="lbl7" prefHeight="17.0" prefWidth="221.0" GridPane.rowIndex="7">
-                           <font>
-                              <Font name="Arial" size="12.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="lbl8" prefHeight="17.0" prefWidth="221.0" GridPane.rowIndex="8">
-                           <font>
-                              <Font name="Arial" size="12.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="lbl9" prefHeight="17.0" prefWidth="221.0" GridPane.rowIndex="9">
-                           <font>
-                              <Font name="Arial" size="12.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="lbl10" prefHeight="17.0" prefWidth="221.0" GridPane.rowIndex="10">
-                           <font>
-                              <Font name="Arial" size="12.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="lbl12" prefHeight="17.0" prefWidth="221.0" GridPane.rowIndex="12">
-                           <font>
-                              <Font name="Arial" size="12.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="lbl11" prefHeight="17.0" prefWidth="221.0" GridPane.rowIndex="11">
-                           <font>
-                              <Font name="Arial" size="12.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="lbl13" prefHeight="17.0" prefWidth="221.0" GridPane.rowIndex="13">
-                           <font>
-                              <Font name="Arial" size="12.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="lbl14" prefHeight="17.0" prefWidth="221.0" GridPane.rowIndex="14">
-                           <font>
-                              <Font name="Arial" size="12.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="lbl16" prefHeight="17.0" prefWidth="221.0" GridPane.rowIndex="16">
-                           <font>
-                              <Font name="Arial" size="12.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="lbl15" prefHeight="17.0" prefWidth="221.0" GridPane.rowIndex="15">
-                           <font>
-                              <Font name="Arial" size="12.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="lbl17" prefHeight="17.0" prefWidth="221.0" GridPane.rowIndex="17">
-                           <font>
-                              <Font name="Arial" size="12.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="lbl18" prefHeight="17.0" prefWidth="221.0" GridPane.rowIndex="18">
-                           <font>
-                              <Font name="Arial" size="12.0" />
-                           </font>
-                        </Label>
-                        <NumberField fx:id="txtCant15" prefWidth="47.0" GridPane.columnIndex="1" GridPane.rowIndex="15" />
-                        <TextField fx:id="txtPrecio15" GridPane.columnIndex="2" GridPane.rowIndex="15" />
+                        
                      </children>
                   </GridPane>
                   <Button fx:id="btnSiguiente" layoutX="573.0" layoutY="60.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="47.0" text="&gt;|" />
                   <Button fx:id="btnNuevo" layoutX="573.0" layoutY="109.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="47.0" text="&gt;*" />
                   <Button fx:id="btnVolverPrimero" layoutX="573.0" layoutY="157.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="47.0" text="&lt;-" />
-                  <Button layoutX="571.0" layoutY="460.0" mnemonicParsing="false" text="CAJA DIARIA (Z)" />
-                  <Pane layoutX="9.0" layoutY="493.0" prefHeight="39.0" prefWidth="819.0">
-                     <children>
-                        <Label layoutX="14.0" layoutY="11.0" text="TOTAL $:" />
-                        <TextField layoutX="79.0" layoutY="4.0" prefHeight="32.0" prefWidth="82.0" />
-                        <Label layoutX="210.0" layoutY="11.0" prefHeight="17.0" prefWidth="81.0" text="PAGA CON:" />
-                        <TextField layoutX="277.0" layoutY="3.0" prefHeight="32.0" prefWidth="82.0" />
-                        <Button fx:id="btnTicket" layoutX="441.0" layoutY="7.0" mnemonicParsing="false" text="IMPRIME TICKET" />
-                     </children>
-                  </Pane>
+                  <Button fx:id="btnCajaDiaria" layoutX="571.0" layoutY="460.0" mnemonicParsing="false" text="CAJA DIARIA (Z)" />
                </children>
             </Pane>
-         </center></BorderPane>
+         </center>
+         <bottom>
+            <Pane prefHeight="0.0" prefWidth="819.0" BorderPane.alignment="BOTTOM_CENTER">
+               <children>
+                  <Label fx:id="lblTotal" layoutX="338.0" layoutY="11.0" text="TOTAL $:" />
+                  <DecimalField fx:id="txtTotal" layoutX="403.0" layoutY="4.0" prefHeight="32.0" prefWidth="82.0" />
+                  <Label layoutX="210.0" layoutY="11.0" prefHeight="17.0" prefWidth="81.0" text="PAGA CON:" visible="false" />
+                  <TextField layoutX="277.0" layoutY="3.0" prefHeight="32.0" prefWidth="82.0" visible="false" />
+                  <Button fx:id="btnTicket" layoutX="573.0" layoutY="7.0" mnemonicParsing="false" text="IMPRIME TICKET" />
+               </children>
+            </Pane>
+         </bottom></BorderPane>
+      <Label fx:id="lblCaja" layoutX="571.0" layoutY="436.0" prefHeight="35.0" prefWidth="180.0" />
    </children>
 </fx:root>

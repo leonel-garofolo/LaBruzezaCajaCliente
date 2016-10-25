@@ -5,6 +5,7 @@
 <column dbAutoIncremented="true" dbComment="" dbDefaultValue="" dbName="idConfiguracion" dbNotNull="true" dbPosition="1" dbPrimaryKey="true" dbSize="10" dbTypeName="INT" inputType="number" javaName="idconfiguracion" javaType="java.lang.Integer" jdbcTypeCode="4" label="Idconfiguracion" notNull="true" selected="true"/>
 <column dbComment="" dbDefaultValue="" dbName="nroCaja" dbNotNull="false" dbPosition="2" dbSize="10" dbTypeName="INT" inputType="number" javaName="nrocaja" javaType="java.lang.Integer" jdbcTypeCode="4" label="Nrocaja" notNull="false" selected="true"/>
 <column dateType="D" dbComment="" dbDefaultValue="" dbName="fecha" dbNotNull="false" dbPosition="3" dbSize="10" dbTypeName="DATE" inputType="date" javaName="fecha" javaType="java.util.Date" jdbcTypeCode="91" label="Fecha" notNull="false" selected="true"/>
+<column dbComment="" dbDefaultValue="" dbName="tipoCaja" dbNotNull="false" dbPosition="4" dbSize="2" dbTypeName="VARCHAR" inputType="text" javaName="tipocaja" javaType="java.lang.String" jdbcTypeCode="12" label="Tipocaja" maxLength="2" notNull="false" selected="true"/>
 </table>
 <table catalog="LabruzezaDB" databaseType="TABLE" javaBean="Lineadeventa" name="lineadeventa" schema="">
 <column dbAutoIncremented="true" dbComment="" dbDefaultValue="" dbName="idLineaDeVenta" dbNotNull="true" dbPosition="1" dbPrimaryKey="true" dbSize="10" dbTypeName="INT" inputType="number" javaName="idlineadeventa" javaType="java.lang.Integer" jdbcTypeCode="4" label="Idlineadeventa" notNull="true" selected="true"/>

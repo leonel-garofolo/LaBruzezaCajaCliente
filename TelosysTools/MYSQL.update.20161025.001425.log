@@ -1,0 +1,32 @@
+Update date : Tue Oct 25 00:14:26 ART 2016
+ 
+ Table 'configuracion' found in repository
+ . Column 'prod1' deleted
+ . Column 'prod2' deleted
+ . Column 'prod3' deleted
+ . Column 'prod4' deleted
+ . Column 'prod5' deleted
+ . Column 'prod6' deleted
+ . Column 'prod7' deleted
+ . Column 'prod8' deleted
+ . Column 'prod9' deleted
+ . Column 'prod10' deleted
+ . Column 'prod11' deleted
+ . Column 'prod12' deleted
+ . Column 'prod13' deleted
+ . Column 'prod14' deleted
+ . Column 'prod15' deleted
+ . Column 'prod16' deleted
+ . Column 'prod17' deleted
+ . Column 'prod18' deleted
+ . Column 'tipoCaja' added
+ (*) table 'configuracion' updated : 19 change(s)
+ 
+ Table 'lineadeventa' found in repository
+ (=) table 'lineadeventa' unchanged
+ 
+ Table 'producto' found in repository
+ (=) table 'producto' unchanged
+ 
+ Table 'venta' found in repository
+ (=) table 'venta' unchanged

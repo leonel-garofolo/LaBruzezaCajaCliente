@@ -8,23 +8,27 @@
 <?import javafx.scene.layout.*?>
 <?import org.javafx.controls.customs.*?>
 
-<fx:root type="javafx.scene.layout.BorderPane" xmlns:fx="http://javafx.com/fxml">
+<fx:root prefHeight="665.0" prefWidth="572.0" type="javafx.scene.layout.BorderPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
 	<center>
-	 <BorderPane BorderPane.alignment="CENTER" >
+	 <BorderPane BorderPane.alignment="CENTER">
 	  	<top>
-            <VBox fx:id="vBoxMsg"  BorderPane.alignment="CENTER" />
+            <VBox fx:id="vBoxMsg" BorderPane.alignment="CENTER" />
         </top>
 	 	<center>
-			<GridPane vgap="5" hgap="5">
-				<padding><Insets top="25" right="25" bottom="10" left="25"/></padding>   
-				<Label text="%Configuracion.panel.field.idconfiguracion" GridPane.columnIndex="0" GridPane.rowIndex="1"/>   
-				<NumberField fx:id="txtidconfiguracion" maxWidth="100" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-				<Label text="%Configuracion.panel.field.nrocaja" GridPane.columnIndex="0" GridPane.rowIndex="2"/>   
-				<NumberField fx:id="txtnrocaja" maxWidth="100" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-				<Label text="%Configuracion.panel.field.fecha" GridPane.columnIndex="0" GridPane.rowIndex="3"/>   
- 				<DatePicker fx:id="dprfecha" GridPane.columnIndex="1" GridPane.rowIndex="3"/>       
+			<GridPane hgap="5" vgap="5">
+				<padding><Insets bottom="10" left="25" right="25" top="25" /></padding>
+  				 <children>   
+	   				<Label text="%Configuracion.panel.field.idconfiguracion" GridPane.columnIndex="0" GridPane.rowIndex="1" />   
+	   				<NumberField fx:id="txtidconfiguracion" disable="true" maxWidth="100" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+	   				<Label text="%Configuracion.panel.field.nrocaja" GridPane.rowIndex="4" />   
+	   				<NumberField fx:id="txtnrocaja" maxValue="1" maxWidth="100" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+	   				<Label text="%Configuracion.panel.field.fecha" GridPane.rowIndex="2" />   
+	    			<DatePicker fx:id="dprfecha" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+	                <Label text="%Configuracion.panel.field.letracaja" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+	                <StringField fx:id="txtTipoCaja" maxValue="1" GridPane.columnIndex="3" GridPane.rowIndex="4" />          				
+   				</children>                     
 			</GridPane>
        </center>
 	 </BorderPane>	
 	</center>
-</fx:root> 
+</fx:root>

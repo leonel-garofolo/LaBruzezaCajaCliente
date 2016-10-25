@@ -49,7 +49,7 @@ public class Ticket extends DynamicReports {
 			hFrame = cmp.horizontalList();
 			hFrame.setStyle(stl.style().setBottomBorder(stl.penDotted()));
 			
-			hFrame.add(cmp.text(linea.getProducto().getNombre()).setFixedWidth(cm(4.497)));
+			hFrame.add(cmp.text(linea.getProducto().getNombre() + ":").setFixedWidth(cm(4.497)).setHorizontalAlignment(HorizontalAlignment.RIGHT));
 			hFrame.add(cmp.text(linea.getCantidad()).setStyle(totales).setFixedWidth(cm(1.614)));
 			hFrame.add(cmp.text(linea.getPrecio()).setStyle(totales).setFixedWidth(cm(1.614)));
 			total =total.add(calculateCost(linea.getCantidad(), linea.getPrecio()));

@@ -5,9 +5,11 @@ import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Screen;
 
 public class PanelConfiguracionGeneral extends AnchorPane {	
 	@FXML
@@ -25,6 +27,11 @@ public class PanelConfiguracionGeneral extends AnchorPane {
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
+        
+        Screen screen = Screen.getPrimary();
+		Rectangle2D bounds = screen.getVisualBounds();
+		this.setWidth(bounds.getWidth());
+		this.setHeight(bounds.getHeight());
         
         PanelConfiguracion pnlConf = new PanelConfiguracion();        
         Tab tabConf= new Tab("Configuración");
