@@ -1,7 +1,6 @@
 package org.labruzeza.colectividades.view;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ResourceBundle;
 import java.util.Set;
 
@@ -19,7 +18,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -36,10 +34,7 @@ public class PanelConfiguracion extends BorderPane implements EventHandler<Actio
 	private NumberField txtidconfiguracion;
 
 	@FXML
-	private NumberField txtnrocaja;
-
-	@FXML
-	private DatePicker dprfecha;
+	private NumberField txtnrocaja;	
 	
 	@FXML
 	private StringField txtTipoCaja;
@@ -85,10 +80,7 @@ public class PanelConfiguracion extends BorderPane implements EventHandler<Actio
         this.setLeft(null);
         this.setRight(null);
         panelControles.btnGuardar.setOnAction(this);        
-        panelControles.btnCancelar.setOnAction(this);
-        
-		dprfecha.setValue(LocalDate.now());			
-		
+        panelControles.btnCancelar.setOnAction(this);        		
 		configuracionDao =  new ConfiguracionDAOImpl();				
 	}
 
@@ -102,10 +94,7 @@ public class PanelConfiguracion extends BorderPane implements EventHandler<Actio
 			}
 			if(configuracion.getTipocaja() != null){
 				txtTipoCaja.setValue(configuracion.getTipocaja());
-			}
-			if(configuracion.getFecha() != null){
-				dprfecha.setValue(new java.sql.Date(configuracion.getFecha().getTime()).toLocalDate());		
-			}			
+			}					
 		}
 	}
 
@@ -120,8 +109,7 @@ public class PanelConfiguracion extends BorderPane implements EventHandler<Actio
 			unConfiguracion.setNrocaja(txtnrocaja.getValue());
 		}catch (NumberFormatException e) {
 			unConfiguracion.setNrocaja(null);
-		}
-		unConfiguracion.setFecha(java.sql.Date.valueOf(dprfecha.getValue()));	
+		}		
 		unConfiguracion.setTipocaja(txtTipoCaja.getText());
 		
 		Label label = null;	

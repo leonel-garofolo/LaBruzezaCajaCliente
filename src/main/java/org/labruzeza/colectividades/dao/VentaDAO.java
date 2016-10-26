@@ -4,6 +4,8 @@
  */
 package org.labruzeza.colectividades.dao;
 
+import java.util.Date;
+
 import org.labruzeza.colectividades.modelo.Venta;
 
 /**
@@ -85,5 +87,9 @@ public interface VentaDAO {
 	 * @return
 	 */
 	public long count() ;
+	
+	public long doCountAll( Date date);
+	
+	public int getUltimo();
 
 }

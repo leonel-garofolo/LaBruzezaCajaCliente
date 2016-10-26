@@ -1,0 +1,17 @@
+Update date : Wed Oct 26 00:55:20 ART 2016
+ 
+ Table 'configuracion' found in repository
+ (=) table 'configuracion' unchanged
+ 
+ Table 'lineadeventa' found in repository
+ (=) table 'lineadeventa' unchanged
+ 
+ Table 'producto' found in repository
+ (=) table 'producto' unchanged
+ 
+ Table 'venta' found in repository
+ . Column 'fecha' : Database type changed to DATETIME
+ . Column 'fecha' : JDBC type code changed to 93
+ . Column 'fecha' : Size changed to 19
+ . Column 'fecha' updated
+ (*) table 'venta' updated : 1 change(s)

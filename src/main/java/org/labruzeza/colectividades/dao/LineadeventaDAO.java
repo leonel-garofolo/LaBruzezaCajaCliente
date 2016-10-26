@@ -4,6 +4,8 @@
  */
 package org.labruzeza.colectividades.dao;
 
+import java.util.List;
+
 import org.labruzeza.colectividades.modelo.Lineadeventa;
 
 /**
@@ -85,5 +87,7 @@ public interface LineadeventaDAO {
 	 * @return
 	 */
 	public long count() ;
+	
+	public List<Lineadeventa> getAll(int idVenta);
 
 }

@@ -2,11 +2,14 @@ package org.labruzeza.colectividades.view;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.javafx.controls.customs.DecimalField;
 import org.javafx.controls.customs.NumberField;
 import org.labruzeza.colectividades.dao.ConfiguracionDAO;
@@ -30,11 +33,13 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -42,12 +47,13 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import net.sf.jasperreports.engine.JasperPrint;
 
 public class Principal extends AnchorPane implements EventHandler<ActionEvent>{
+	private static final Logger logger = LogManager.getLogger(PrinterJob.class);
+	 
 	private ProductoDAO productoDAO;
 	private VentaDAO ventaDAO;
 	private LineadeventaDAO lineadeventaDAO;
@@ -92,6 +98,12 @@ public class Principal extends AnchorPane implements EventHandler<ActionEvent>{
 	@FXML
 	private Label lblCaja;
 	
+	@FXML
+	private Label lblNroFactura;
+	
+	@FXML
+	private TextField txtNroFactura;		
+	
  	public Principal(){
  		initComponentes();
  	}
@@ -105,12 +117,7 @@ public class Principal extends AnchorPane implements EventHandler<ActionEvent>{
             fxmlLoader.load();
         } catch (IOException exception) {
             throw new RuntimeException(exception);
-        }
-        
-        Screen screen = Screen.getPrimary();
-		Rectangle2D bounds = screen.getVisualBounds();
-		this.setWidth(bounds.getWidth());
-		this.setHeight(bounds.getHeight());		
+        }       
         
         Image imageDecline = new Image(getClass().getResourceAsStream("/image/settings.png"));
 		btnConfig.setGraphic(new ImageView(imageDecline));
@@ -137,21 +144,31 @@ public class Principal extends AnchorPane implements EventHandler<ActionEvent>{
 			openConfiguracion(event);
 		}
 		if(event.getSource().equals(btnSiguiente)){
-					
+			loadUltimo();
 		}
 		if(event.getSource().equals(btnNuevo)){
-			
+			loadPage();
 		}
 		if(event.getSource().equals(btnVolverPrimero)){
-			
+			loadAnterior();
 		}
 		if(event.getSource().equals(btnTicket)){
 			SimpleDateFormat format = new SimpleDateFormat("dd");
-			Venta venta = new Venta();
-			venta.setFecha(new Date());
+			Venta venta = new Venta();			
 			venta.setCodigo(format.format(new Date()) + "1A");
+			int codfactura = 0;
+			try{
+				codfactura =Integer.valueOf(txtNroFactura.getText());
+			}catch (NumberFormatException e) {
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle("Información");
+				alert.setHeaderText("Debe ingresar al menos una cantidad para imprimir el ticket.");				
+				alert.showAndWait();
+				return;
+			}				
+			venta.setCodfactura(codfactura);
 			int id= ventaDAO.insert(venta);
-			venta.setIdventa(id);
+			venta.setIdventa(id);			
 			
 			Lineadeventa linea = new Lineadeventa();	
 			linea.setIdventa(id);
@@ -182,8 +199,18 @@ public class Principal extends AnchorPane implements EventHandler<ActionEvent>{
 			}						
 			venta.setListOfLineadeventa(listOfLineadeventa);
 			Ticket ticket = new Ticket();
+			logger.info("imprimiendo Ticket: " + id);
 			JasperPrint print = ticket.generar(venta);
-			PrinterJob.sendPDF(print);
+			if(print != null){
+				logger.info("send PDF: " + id);
+				PrinterJob.sendPDF(print);	
+				loadPage();
+			}else{
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Error Ticket");
+				alert.setHeaderText("No se ha podido imprimir el ticket, reintente mas tarde.");				
+				alert.showAndWait();
+			}			
 		}		
 	}
 	
@@ -196,14 +223,20 @@ public class Principal extends AnchorPane implements EventHandler<ActionEvent>{
 		        + "-fx-font-size: 18px;"
 		        + "-fx-font-weight: bold;"			        
 		        + "-fx-text-fill: red;");
-		
+		txtTotal.setValue(new BigDecimal(0));
+		txtNroFactura.setStyle(""	  
+				 + "-fx-font-size: 12px;"
+		        + "-fx-font-weight: bold;"
+		        + "-fx-text-fill: red;");
+		txtNroFactura.setText("(NUEVO)");
+	
 		if(configuracionDAO.load(configuracion)){
 			lblCaja.setFont(new Font("MS Sans Serif", 18));		
 			lblCaja.setStyle(""	       			       
 			        + "-fx-font-weight: bold;"
 			        + "-fx-text-fill: red;");
 			SimpleDateFormat format = new SimpleDateFormat("dd");			
-			lblCaja.setText("Cod. Caja: " + format.format(configuracion.getFecha()) + configuracion.getNrocaja() + configuracion.getTipocaja());
+			lblCaja.setText("Cod. Caja: " + format.format(new Date()) + configuracion.getNrocaja() + configuracion.getTipocaja());
 			
 			ObservableList<Producto> data = FXCollections.observableArrayList(productoDAO.loadAll());
 			int i= 1;
@@ -214,13 +247,14 @@ public class Principal extends AnchorPane implements EventHandler<ActionEvent>{
 				txtCant.setId("txtCant" + i);
 				txtCant.setPrefWidth(47);
 				txtCant.setMaxValue(2);
-				txtCant.setValue(0);
+				txtCant.setValue(0);			
 				txtCant.setStyle("-fx-font-size: 14px;");
 				
 				DecimalField txtPrecio = new DecimalField();
 				txtPrecio.setId("txtPrecio" + i);
 				txtPrecio.setPrefWidth(47);			
 				txtPrecio.setEditable(false);
+				txtPrecio.setFocusTraversable(false);
 				txtPrecio.setValue(new BigDecimal(0));
 				txtPrecio.setStyle(""
 				        + "-fx-font-size: 14px;"
@@ -239,7 +273,7 @@ public class Principal extends AnchorPane implements EventHandler<ActionEvent>{
 				txtPrecioInvisible.setPrefWidth(47);
 				txtPrecioInvisible.setEditable(false);
 				txtPrecioInvisible.setVisible(false);
-				txtPrecioInvisible.setValue(unProd.getPrecio());
+				txtPrecioInvisible.setValue(unProd.getPrecio());			
 							
 				txtCant.setOnAction((ActionEvent e) -> {				
 					double subTotal = txtCant.getValue() * txtPrecioInvisible.getValue().doubleValue();
@@ -251,7 +285,9 @@ public class Principal extends AnchorPane implements EventHandler<ActionEvent>{
 							total += ((DecimalField)child).getValue().doubleValue();
 						}
 					}
-					txtTotal.setValue(new BigDecimal(total));
+					txtTotal.setText(new DecimalFormat("#,###.00").format(total));					
+					txtNroFactura.setText(String.valueOf(ventaDAO.doCountAll(new Date()))); 
+					
 				    boolean isThisField = false;
 				    for (Node child : this.gridPane.getChildrenUnmodifiable()) {			    	
 				    	if (isThisField) {
@@ -292,7 +328,83 @@ public class Principal extends AnchorPane implements EventHandler<ActionEvent>{
 				gridPane.add(txtIdProducto, 4, i);									
 				i++;
 			}
+			if(gridPane.getChildren().get(1) != null){
+				gridPane.getChildren().get(1).requestFocus();		
+				((NumberField)gridPane.getChildren().get(1)).selectAll();		
+			}
 		}		
+	}
+	
+	private void loadUltimo(){
+		int ultimaVenta = ventaDAO.getUltimo();
+		if(ultimaVenta > 0){
+			Venta venta = new Venta();
+			venta.setIdventa(ultimaVenta);			
+			if(ventaDAO.load(venta)){
+				txtNroFactura.setText(String.valueOf(venta.getCodfactura())); 
+				List<Lineadeventa> lineas = lineadeventaDAO.getAll(ultimaVenta);
+				int total =1;
+				double dTotal = 0;				
+				for(Lineadeventa linea: lineas){
+					for (Node child : this.gridPane.getChildrenUnmodifiable()) {	
+						
+						if(child.getId() != null && child.getId().contains("txtIdProducto"+total)){
+							((NumberField)child).setValue(linea.getIdproducto());
+							((NumberField)child).setEditable(false);
+						}
+						if(child.getId() != null && child.getId().contains("txtCant"+total)){
+							((NumberField)child).setValue(linea.getCantidad());
+							((NumberField)child).setEditable(false);
+						}
+						if(child.getId() != null && child.getId().contains("txtPrecio"+total)){
+							((DecimalField)child).setValue(linea.getPrecio());
+							((DecimalField)child).setEditable(false);
+						}								
+					}	
+					total++;
+					dTotal += linea.getCantidad() * linea.getPrecio().doubleValue();
+				}
+				txtTotal.setText(new DecimalFormat("#,###.00").format(dTotal));	
+				
+			}
+		}
+	}
+	
+	//TODO tengo que bucar el codigo de factura actual para la fecha actual y de ahi partir al anterior.
+	//En caso de que el codigo de factura sea (nuevo), ejecuto loadUltimo 
+	private void loadAnterior(){
+		int ultimaVenta = ventaDAO.getUltimo();
+		if(ultimaVenta > 0){
+			Venta venta = new Venta();
+			venta.setIdventa(ultimaVenta);			
+			if(ventaDAO.load(venta)){
+				txtNroFactura.setText(String.valueOf(venta.getCodfactura())); 
+				List<Lineadeventa> lineas = lineadeventaDAO.getAll(ultimaVenta);
+				int total =1;
+				double dTotal = 0;				
+				for(Lineadeventa linea: lineas){
+					for (Node child : this.gridPane.getChildrenUnmodifiable()) {	
+						
+						if(child.getId() != null && child.getId().contains("txtIdProducto"+total)){
+							((NumberField)child).setValue(linea.getIdproducto());
+							((NumberField)child).setEditable(false);
+						}
+						if(child.getId() != null && child.getId().contains("txtCant"+total)){
+							((NumberField)child).setValue(linea.getCantidad());
+							((NumberField)child).setEditable(false);
+						}
+						if(child.getId() != null && child.getId().contains("txtPrecio"+total)){
+							((DecimalField)child).setValue(linea.getPrecio());
+							((DecimalField)child).setEditable(false);
+						}								
+					}	
+					total++;
+					dTotal += linea.getCantidad() * linea.getPrecio().doubleValue();
+				}
+				txtTotal.setText(new DecimalFormat("#,###.00").format(dTotal));	
+				
+			}
+		}
 	}
 	
 	private void openConfiguracion(ActionEvent event){

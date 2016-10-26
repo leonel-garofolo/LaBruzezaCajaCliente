@@ -23,7 +23,7 @@ import javax.sql.DataSource;
  */
 public abstract class GenericDAO<T> {
 	
-	private final static int INITIAL_POSITION = 1 ;
+	protected final static int INITIAL_POSITION = 1 ;
 	
 	/**
 	 * The DataSource providing the connections
@@ -113,11 +113,11 @@ public abstract class GenericDAO<T> {
 	protected abstract T       populateBean(ResultSet rs, T bean) throws SQLException ;
 	
     //-----------------------------------------------------------------------------------------
-	private Connection getConnection() throws SQLException {
+	protected Connection getConnection() throws SQLException {
 		return dataSource.getConnection();
 	}
     //-----------------------------------------------------------------------------------------
-	private void closeConnection(Connection conn) {
+	protected void closeConnection(Connection conn) {
 		if (conn != null) {
 			try {
 				conn.close();

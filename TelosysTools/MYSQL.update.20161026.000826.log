@@ -1,0 +1,14 @@
+Update date : Wed Oct 26 00:08:27 ART 2016
+ 
+ Table 'configuracion' found in repository
+ (=) table 'configuracion' unchanged
+ 
+ Table 'lineadeventa' found in repository
+ (=) table 'lineadeventa' unchanged
+ 
+ Table 'producto' found in repository
+ (=) table 'producto' unchanged
+ 
+ Table 'venta' found in repository
+ . Column 'codFactura' added
+ (*) table 'venta' updated : 1 change(s)

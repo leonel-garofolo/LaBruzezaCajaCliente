@@ -4,13 +4,16 @@
  */
 package org.labruzeza.colectividades.dao.impl.jdbc;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.labruzeza.colectividades.modelo.Lineadeventa;
 import org.labruzeza.colectividades.dao.LineadeventaDAO;
 import org.labruzeza.colectividades.dao.impl.jdbc.commons.GenericDAO;
+import org.labruzeza.colectividades.modelo.Lineadeventa;
 
 /**
  * Lineadeventa DAO implementation 
@@ -254,6 +257,31 @@ public class LineadeventaDAOImpl extends GenericDAO<Lineadeventa> implements Lin
 	protected Lineadeventa populateBeanAll(ResultSet rs) throws SQLException {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	public List<Lineadeventa> getAll(int idVenta) {
+		 
+		List<Lineadeventa> result = new ArrayList<Lineadeventa>() ;
+		Connection conn = null;
+ 
+		try {
+			conn = getConnection();
+			PreparedStatement ps = conn.prepareStatement("select idLineaDeVenta, idVenta, idProducto, precio, cantidad from lineadeventa where idventa=?");
+			ps.setInt(1, idVenta);
+			//--- Execute SQL SELECT 
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				result.add(populateBean(rs, new Lineadeventa()));			
+			}
+			
+			rs.close();
+			ps.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			closeConnection(conn);
+		}
+		return result ;
 	}
 
 }

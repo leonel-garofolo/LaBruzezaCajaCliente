@@ -19,9 +19,13 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperPrint;
 
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+
 public class PrinterJob {
-	
+	 private static final Logger logger = LogManager.getLogger(PrinterJob.class);
 	public static void sendPDF(JasperPrint print){
+		logger.info("imprimio");
 		File baseDir = new File(System.getProperty("java.io.tmpdir"));		
 		String file = "ticket";
 		Date date = new Date(System.currentTimeMillis());
@@ -38,7 +42,7 @@ public class PrinterJob {
 			printJob.print(pdfDoc, new HashPrintRequestAttributeSet());
 			fis.close();
 		} catch (PrintException|IOException|JRException e) {
-			// TODO Auto-generated catch block
+			logger.error("Ops!", e);
 			e.printStackTrace();
 		}
 	}

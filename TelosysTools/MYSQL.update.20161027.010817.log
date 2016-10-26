@@ -1,0 +1,14 @@
+Update date : Thu Oct 27 01:08:17 ART 2016
+ 
+ Table 'configuracion' found in repository
+ . Column 'fecha' deleted
+ (*) table 'configuracion' updated : 1 change(s)
+ 
+ Table 'lineadeventa' found in repository
+ (=) table 'lineadeventa' unchanged
+ 
+ Table 'producto' found in repository
+ (=) table 'producto' unchanged
+ 
+ Table 'venta' found in repository
+ (=) table 'venta' unchanged

@@ -31,6 +31,7 @@ public class AppClient extends Application {
 		
 		primaryStage.setScene(scene);
 		primaryStage.resizableProperty().set(false);
+		primaryStage.setMaximized(true);
 		primaryStage.show();
 		
 		primaryStage.setOnHiding(new EventHandler<WindowEvent>() {
