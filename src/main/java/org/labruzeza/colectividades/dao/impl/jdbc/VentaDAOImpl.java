@@ -5,7 +5,6 @@
 package org.labruzeza.colectividades.dao.impl.jdbc;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -241,17 +240,17 @@ public class VentaDAOImpl extends GenericDAO<Venta> implements VentaDAO {
 	}
 
 	
-	public long doCountAll(java.util.Date fecha) {
+	public long doCountAll(String codigo) {
 
-		long result = 0 ;
+		long result = 1 ;
 		Connection conn = null;
 		try {
 			conn = getConnection();
-			PreparedStatement ps = conn.prepareStatement("select codFactura from venta where DATE(fecha) = current_date() order by fecha desc");
-			//--- Execute SQL COUNT (without where clause)						
+			PreparedStatement ps = conn.prepareStatement("select codFactura from venta where codigo = ? and DATE(fecha) = current_date() order by fecha desc");
+			ps.setString(1, codigo);				
 			ResultSet rs = ps.executeQuery();
-			if (rs.next()) {
-				result = rs.getLong(1) + 1;
+			if (rs.next()) {				
+				result = (rs.getLong(1) + 1);
 			}
 			rs.close();
 			ps.close();
@@ -263,17 +262,64 @@ public class VentaDAOImpl extends GenericDAO<Venta> implements VentaDAO {
 		return result ;
 	}
 	
-	public int getUltimo() {
+	public int getUltimo(String codigo) {
 
 		int result = 0 ;
 		Connection conn = null;
 		try {
 			conn = getConnection();
-			PreparedStatement ps = conn.prepareStatement("select idVenta from venta where DATE(fecha) = current_date() order by fecha desc");
+			PreparedStatement ps = conn.prepareStatement("select idVenta from venta where codigo= ? and DATE(fecha) = current_date() order by fecha desc");
 			//--- Execute SQL COUNT (without where clause)						
+			ps.setString(1, codigo);
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
 				result = rs.getInt(1);
+			}
+			rs.close();
+			ps.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			closeConnection(conn);
+		}	
+		return result ;
+	}
+	
+	public int countVenta(String codigo) {
+
+		int result = 0 ;
+		Connection conn = null;
+		try {
+			conn = getConnection();
+			PreparedStatement ps = conn.prepareStatement("select count(idVenta) from venta where codigo= ? and DATE(fecha) = current_date() order by fecha desc");
+			//--- Execute SQL COUNT (without where clause)						
+			ps.setString(1, codigo);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				result = rs.getInt(1);
+			}
+			rs.close();
+			ps.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			closeConnection(conn);
+		}	
+		return result ;
+	}
+	
+	public Venta getPrevio(String codigo, int nroFactura) {
+		Venta result = null;
+		Connection conn = null;
+		try {
+			conn = getConnection();
+			PreparedStatement ps = conn.prepareStatement("select * from venta where DATE(fecha) = current_date() and codigo = ? and codFactura < ? order by fecha desc");
+			ps.setString(1, codigo);	
+			ps.setInt(2, nroFactura);					
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				result = new Venta();
+				result = populateBean(rs, result);
 			}
 			rs.close();
 			ps.close();

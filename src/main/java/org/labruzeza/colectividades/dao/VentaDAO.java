@@ -88,8 +88,11 @@ public interface VentaDAO {
 	 */
 	public long count() ;
 	
-	public long doCountAll( Date date);
+	public long doCountAll( String codigoCaja);
 	
-	public int getUltimo();
+	public int getUltimo(String codigoCaja);
 
+	public Venta getPrevio(String codigo, int nroFactura);
+	
+	public int countVenta(String codigo);
 }

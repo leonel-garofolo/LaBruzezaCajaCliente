@@ -35,6 +35,13 @@
 <column dbComment="" dbDefaultValue="" dbName="precio" dbNotNull="false" dbPosition="3" dbSize="9" dbTypeName="DECIMAL" inputType="number" javaName="precio" javaType="java.math.BigDecimal" jdbcTypeCode="3" label="Precio" notNull="false" selected="true"/>
 <link cardinality="OneToMany" cascade="" fetch="DEFAULT" foreignKeyName="fk_lineaDeVenta_producto" id="LINK_FK_fk_lineaDeVenta_producto_I" inverseSideOf="LINK_FK_fk_lineaDeVenta_producto_O" javaName="listOfLineadeventa" javaType="java.util.List" joinTableName="" mappedBy="producto" optional="UNDEFINED" owningSide="false" sourceTableName="producto" targetEntity="Lineadeventa" targetTableName="lineadeventa" used="true"/>
 </table>
+<table catalog="LabruzezaDB" databaseType="VIEW" javaBean="Vcaja" name="vcaja" schema="">
+<column dbComment="" dbDefaultValue="0" dbName="idProducto" dbNotNull="true" dbPosition="1" dbSize="10" dbTypeName="INT" inputType="number" javaName="idproducto" javaType="java.lang.Integer" jdbcTypeCode="4" label="Idproducto" notNull="true" selected="true"/>
+<column dbComment="" dbDefaultValue="" dbName="codigo" dbNotNull="false" dbPosition="1" dbSize="45" dbTypeName="VARCHAR" inputType="text" javaName="codigo" javaType="java.lang.String" jdbcTypeCode="12" label="Codigo" maxLength="45" notNull="false" selected="true"/>
+<column dbComment="" dbDefaultValue="" dbName="nombre" dbNotNull="false" dbPosition="2" dbSize="90" dbTypeName="VARCHAR" inputType="text" javaName="nombre" javaType="java.lang.String" jdbcTypeCode="12" label="Nombre" maxLength="90" notNull="false" selected="true"/>
+<column dbComment="" dbDefaultValue="" dbName="cantidad" dbNotNull="false" dbPosition="3" dbSize="32" dbTypeName="DECIMAL" inputType="number" javaName="cantidad" javaType="java.math.BigDecimal" jdbcTypeCode="3" label="Cantidad" notNull="false" selected="true"/>
+<column dbComment="" dbDefaultValue="" dbName="subtotal" dbNotNull="false" dbPosition="4" dbSize="31" dbTypeName="DECIMAL" inputType="number" javaName="subtotal" javaType="java.math.BigDecimal" jdbcTypeCode="3" label="Subtotal" notNull="false" selected="true"/>
+</table>
 <table catalog="LabruzezaDB" databaseType="TABLE" javaBean="Venta" name="venta" schema="">
 <column dbAutoIncremented="true" dbComment="" dbDefaultValue="" dbName="idventa" dbNotNull="true" dbPosition="1" dbPrimaryKey="true" dbSize="10" dbTypeName="INT" inputType="number" javaName="idventa" javaType="java.lang.Integer" jdbcTypeCode="4" label="Idventa" notNull="true" selected="true"/>
 <column dbComment="" dbDefaultValue="" dbName="codigo" dbNotNull="false" dbPosition="2" dbSize="45" dbTypeName="VARCHAR" inputType="text" javaName="codigo" javaType="java.lang.String" jdbcTypeCode="12" label="Codigo" maxLength="45" notNull="false" selected="true"/>

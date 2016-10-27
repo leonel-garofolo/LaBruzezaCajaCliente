@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,15 +16,19 @@ import org.javafx.controls.customs.NumberField;
 import org.labruzeza.colectividades.dao.ConfiguracionDAO;
 import org.labruzeza.colectividades.dao.LineadeventaDAO;
 import org.labruzeza.colectividades.dao.ProductoDAO;
+import org.labruzeza.colectividades.dao.VcajaDAO;
 import org.labruzeza.colectividades.dao.VentaDAO;
 import org.labruzeza.colectividades.dao.impl.jdbc.ConfiguracionDAOImpl;
 import org.labruzeza.colectividades.dao.impl.jdbc.LineadeventaDAOImpl;
 import org.labruzeza.colectividades.dao.impl.jdbc.ProductoDAOImpl;
+import org.labruzeza.colectividades.dao.impl.jdbc.VcajaDAOImpl;
 import org.labruzeza.colectividades.dao.impl.jdbc.VentaDAOImpl;
+import org.labruzeza.colectividades.informes.CajaDiaria;
 import org.labruzeza.colectividades.informes.Ticket;
 import org.labruzeza.colectividades.modelo.Configuracion;
 import org.labruzeza.colectividades.modelo.Lineadeventa;
 import org.labruzeza.colectividades.modelo.Producto;
+import org.labruzeza.colectividades.modelo.Vcaja;
 import org.labruzeza.colectividades.modelo.Venta;
 import org.labruzeza.colectividades.utils.PrinterJob;
 
@@ -58,6 +63,7 @@ public class Principal extends AnchorPane implements EventHandler<ActionEvent>{
 	private VentaDAO ventaDAO;
 	private LineadeventaDAO lineadeventaDAO;
 	private ConfiguracionDAO configuracionDAO;
+	private VcajaDAO vcajaDAO;
 	
 	private Configuracion configuracion;
 	
@@ -102,7 +108,9 @@ public class Principal extends AnchorPane implements EventHandler<ActionEvent>{
 	private Label lblNroFactura;
 	
 	@FXML
-	private TextField txtNroFactura;		
+	private TextField txtNroFactura;
+	
+	private static String codigoCaja = "";
 	
  	public Principal(){
  		initComponentes();
@@ -127,6 +135,7 @@ public class Principal extends AnchorPane implements EventHandler<ActionEvent>{
 		btnNuevo.setOnAction(this);
 		btnVolverPrimero.setOnAction(this);
 		btnTicket.setOnAction(this);
+		btnCajaDiaria.setOnAction(this);
 		txtTotal.setValue(new BigDecimal(0));
 		lblTotal.setStyle(""
 		        + "-fx-font-size: 14px;"		       			       
@@ -134,7 +143,8 @@ public class Principal extends AnchorPane implements EventHandler<ActionEvent>{
 				
 		productoDAO = new ProductoDAOImpl();
 		ventaDAO = new VentaDAOImpl();
-		lineadeventaDAO = new LineadeventaDAOImpl();		
+		lineadeventaDAO = new LineadeventaDAOImpl();
+		vcajaDAO = new VcajaDAOImpl();
 		loadPage();
  	}
 
@@ -152,66 +162,92 @@ public class Principal extends AnchorPane implements EventHandler<ActionEvent>{
 		if(event.getSource().equals(btnVolverPrimero)){
 			loadAnterior();
 		}
+		
+		
 		if(event.getSource().equals(btnTicket)){
-			SimpleDateFormat format = new SimpleDateFormat("dd");
-			Venta venta = new Venta();			
-			venta.setCodigo(format.format(new Date()) + "1A");
-			int codfactura = 0;
-			try{
-				codfactura =Integer.valueOf(txtNroFactura.getText());
-			}catch (NumberFormatException e) {
-				Alert alert = new Alert(AlertType.INFORMATION);
-				alert.setTitle("Información");
-				alert.setHeaderText("Debe ingresar al menos una cantidad para imprimir el ticket.");				
-				alert.showAndWait();
-				return;
-			}				
-			venta.setCodfactura(codfactura);
-			int id= ventaDAO.insert(venta);
-			venta.setIdventa(id);			
+			generarTicket();	
+		}
+		
+		if(event.getSource().equals(btnCajaDiaria)){
+			generarCajaDiaria();	
+		}
+	}
+	
+	private void generarTicket(){
+		Venta venta = new Venta();			
+		venta.setCodigo(codigoCaja);
+		int codfactura = 0;
+		try{
+			codfactura =Integer.valueOf(txtNroFactura.getText());
+		}catch (NumberFormatException e) {
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Información");
+			alert.setHeaderText("Debe ingresar al menos una cantidad para imprimir el ticket.");				
+			alert.showAndWait();
+			return;
+		}				
+		venta.setCodfactura(codfactura);
+		int id= ventaDAO.insert(venta);
+		venta.setIdventa(id);			
+		
+		Lineadeventa linea = new Lineadeventa();	
+		linea.setIdventa(id);
+		List<Lineadeventa> listOfLineadeventa = new ArrayList<Lineadeventa>();
+		for (Node child : this.gridPane.getChildrenUnmodifiable()) {	
 			
-			Lineadeventa linea = new Lineadeventa();	
-			linea.setIdventa(id);
-			List<Lineadeventa> listOfLineadeventa = new ArrayList<Lineadeventa>();
-			for (Node child : this.gridPane.getChildrenUnmodifiable()) {	
+			if(child.getId() != null && child.getId().contains("txtIdProducto")){
+				linea.setIdproducto(((NumberField)child).getValue());
+			}
+			if(child.getId() != null && child.getId().contains("txtCant")){
+				linea.setCantidad(((NumberField)child).getValue());
+			}
+			if(child.getId() != null && child.getId().contains("txtPrecio")){
+				linea.setPrecio(((DecimalField)child).getValue());					
+			}
+			if(linea.getIdproducto() != null && linea.getCantidad() != null && linea.getPrecio() != null){
+				lineadeventaDAO.insert(linea);
+				Producto prod = new Producto();
+				prod.setIdproducto(linea.getIdproducto());
+				if(productoDAO.load(prod)){
+					linea.setProducto(prod);
+				}
 				
-				if(child.getId() != null && child.getId().contains("txtIdProducto")){
-					linea.setIdproducto(((NumberField)child).getValue());
-				}
-				if(child.getId() != null && child.getId().contains("txtCant")){
-					linea.setCantidad(((NumberField)child).getValue());
-				}
-				if(child.getId() != null && child.getId().contains("txtPrecio")){
-					linea.setPrecio(((DecimalField)child).getValue());					
-				}
-				if(linea.getIdproducto() != null && linea.getCantidad() != null && linea.getPrecio() != null){
-					lineadeventaDAO.insert(linea);
-					Producto prod = new Producto();
-					prod.setIdproducto(linea.getIdproducto());
-					if(productoDAO.load(prod)){
-						linea.setProducto(prod);
-					}
-					
-					listOfLineadeventa.add(linea);
-					linea = new Lineadeventa();	
-					linea.setIdventa(id);
-				}				
-			}						
-			venta.setListOfLineadeventa(listOfLineadeventa);
-			Ticket ticket = new Ticket();
-			logger.info("imprimiendo Ticket: " + id);
-			JasperPrint print = ticket.generar(venta);
-			if(print != null){
-				logger.info("send PDF: " + id);
-				PrinterJob.sendPDF(print);	
-				loadPage();
-			}else{
-				Alert alert = new Alert(AlertType.ERROR);
-				alert.setTitle("Error Ticket");
-				alert.setHeaderText("No se ha podido imprimir el ticket, reintente mas tarde.");				
-				alert.showAndWait();
-			}			
+				listOfLineadeventa.add(linea);
+				linea = new Lineadeventa();	
+				linea.setIdventa(id);
+			}				
+		}						
+		venta.setListOfLineadeventa(listOfLineadeventa);
+		Ticket ticket = new Ticket();
+		logger.info("imprimiendo Ticket: " + id);
+		JasperPrint print = ticket.generar(venta);
+		if(print != null){
+			logger.info("send PDF: " + id);
+			PrinterJob.sendPDF(print);	
+			loadPage();
+		}else{
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Error Ticket");
+			alert.setHeaderText("No se ha podido imprimir el ticket, reintente mas tarde.");				
+			alert.showAndWait();
 		}		
+	}
+	
+	private void generarCajaDiaria(){		
+		List<Vcaja> caja =vcajaDAO.load(codigoCaja);
+		CajaDiaria iCaja = new CajaDiaria();
+		int cantVentas = ventaDAO.countVenta(codigoCaja);
+		JasperPrint print = iCaja.generar(caja, cantVentas);		
+		if(print != null){
+			logger.info("send PDF: " + "");
+			PrinterJob.sendPDF(print);	
+			loadPage();
+		}else{
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Error Ticket");
+			alert.setHeaderText("No se ha podido imprimir el ticket, reintente mas tarde.");				
+			alert.showAndWait();
+		}	
 	}
 	
 	private void loadPage(){
@@ -231,12 +267,14 @@ public class Principal extends AnchorPane implements EventHandler<ActionEvent>{
 		txtNroFactura.setText("(NUEVO)");
 	
 		if(configuracionDAO.load(configuracion)){
+			SimpleDateFormat format = new SimpleDateFormat("dd");
+			codigoCaja = format.format(new Date()) + configuracion.getNrocaja() + configuracion.getTipocaja();
 			lblCaja.setFont(new Font("MS Sans Serif", 18));		
 			lblCaja.setStyle(""	       			       
 			        + "-fx-font-weight: bold;"
 			        + "-fx-text-fill: red;");
-			SimpleDateFormat format = new SimpleDateFormat("dd");			
-			lblCaja.setText("Cod. Caja: " + format.format(new Date()) + configuracion.getNrocaja() + configuracion.getTipocaja());
+						
+			lblCaja.setText("Cod. Caja: " + codigoCaja);
 			
 			ObservableList<Producto> data = FXCollections.observableArrayList(productoDAO.loadAll());
 			int i= 1;
@@ -286,7 +324,7 @@ public class Principal extends AnchorPane implements EventHandler<ActionEvent>{
 						}
 					}
 					txtTotal.setText(new DecimalFormat("#,###.00").format(total));					
-					txtNroFactura.setText(String.valueOf(ventaDAO.doCountAll(new Date()))); 
+					txtNroFactura.setText(String.valueOf(ventaDAO.doCountAll(codigoCaja))); 
 					
 				    boolean isThisField = false;
 				    for (Node child : this.gridPane.getChildrenUnmodifiable()) {			    	
@@ -336,78 +374,60 @@ public class Principal extends AnchorPane implements EventHandler<ActionEvent>{
 	}
 	
 	private void loadUltimo(){
-		int ultimaVenta = ventaDAO.getUltimo();
+		int ultimaVenta = ventaDAO.getUltimo(codigoCaja);
 		if(ultimaVenta > 0){
 			Venta venta = new Venta();
 			venta.setIdventa(ultimaVenta);			
 			if(ventaDAO.load(venta)){
 				txtNroFactura.setText(String.valueOf(venta.getCodfactura())); 
-				List<Lineadeventa> lineas = lineadeventaDAO.getAll(ultimaVenta);
-				int total =1;
-				double dTotal = 0;				
-				for(Lineadeventa linea: lineas){
-					for (Node child : this.gridPane.getChildrenUnmodifiable()) {	
-						
-						if(child.getId() != null && child.getId().contains("txtIdProducto"+total)){
-							((NumberField)child).setValue(linea.getIdproducto());
-							((NumberField)child).setEditable(false);
-						}
-						if(child.getId() != null && child.getId().contains("txtCant"+total)){
-							((NumberField)child).setValue(linea.getCantidad());
-							((NumberField)child).setEditable(false);
-						}
-						if(child.getId() != null && child.getId().contains("txtPrecio"+total)){
-							((DecimalField)child).setValue(linea.getPrecio());
-							((DecimalField)child).setEditable(false);
-						}								
-					}	
-					total++;
-					dTotal += linea.getCantidad() * linea.getPrecio().doubleValue();
-				}
-				txtTotal.setText(new DecimalFormat("#,###.00").format(dTotal));	
-				
+				loadItems(ultimaVenta);				
 			}
 		}
 	}
 	
-	//TODO tengo que bucar el codigo de factura actual para la fecha actual y de ahi partir al anterior.
-	//En caso de que el codigo de factura sea (nuevo), ejecuto loadUltimo 
 	private void loadAnterior(){
-		int ultimaVenta = ventaDAO.getUltimo();
-		if(ultimaVenta > 0){
-			Venta venta = new Venta();
-			venta.setIdventa(ultimaVenta);			
-			if(ventaDAO.load(venta)){
-				txtNroFactura.setText(String.valueOf(venta.getCodfactura())); 
-				List<Lineadeventa> lineas = lineadeventaDAO.getAll(ultimaVenta);
-				int total =1;
-				double dTotal = 0;				
-				for(Lineadeventa linea: lineas){
-					for (Node child : this.gridPane.getChildrenUnmodifiable()) {	
-						
-						if(child.getId() != null && child.getId().contains("txtIdProducto"+total)){
-							((NumberField)child).setValue(linea.getIdproducto());
-							((NumberField)child).setEditable(false);
-						}
-						if(child.getId() != null && child.getId().contains("txtCant"+total)){
-							((NumberField)child).setValue(linea.getCantidad());
-							((NumberField)child).setEditable(false);
-						}
-						if(child.getId() != null && child.getId().contains("txtPrecio"+total)){
-							((DecimalField)child).setValue(linea.getPrecio());
-							((DecimalField)child).setEditable(false);
-						}								
-					}	
-					total++;
-					dTotal += linea.getCantidad() * linea.getPrecio().doubleValue();
-				}
-				txtTotal.setText(new DecimalFormat("#,###.00").format(dTotal));	
-				
+		if(txtNroFactura.getText().contains("NUEVO")){
+			loadUltimo();
+		}else{			
+			Venta ventaPrevia =ventaDAO.getPrevio(codigoCaja, Integer.valueOf(txtNroFactura.getText()));							
+			if(ventaPrevia != null){
+				txtNroFactura.setText(String.valueOf(ventaPrevia.getCodfactura()));	
+				loadItems(ventaPrevia.getIdventa());
 			}
+		}		
+	}
+	
+	private void loadItems(int idVenta){			
+		List<Lineadeventa> lineas = lineadeventaDAO.getAll(idVenta);
+		int total =1;
+		double dTotal = 0;				
+		for(Lineadeventa linea: lineas){
+			for (Node child : this.gridPane.getChildrenUnmodifiable()) {	
+				
+				if(child.getId() != null && child.getId().contains("txtIdProducto"+total)){
+					((NumberField)child).setValue(linea.getIdproducto());
+					((NumberField)child).setEditable(false);
+				}
+				if(child.getId() != null && child.getId().contains("txtCant"+total)){
+					((NumberField)child).setValue(linea.getCantidad());
+					((NumberField)child).setEditable(false);
+				}
+				if(child.getId() != null && child.getId().contains("txtPrecio"+total)){
+					((DecimalField)child).setValue(linea.getPrecio());
+					((DecimalField)child).setEditable(false);
+				}								
+			}	
+			total++;
+			dTotal += linea.getCantidad() * linea.getPrecio().doubleValue();
 		}
+		txtTotal.setText(new DecimalFormat("#,###.00").format(dTotal));
 	}
 	
 	private void openConfiguracion(ActionEvent event){
+		if(!openDialogPass()){
+			return;
+		}
+		
 		PanelConfiguracionGeneral pnlConf = new PanelConfiguracionGeneral();	
         Scene scene = new Scene(pnlConf);
         Stage stage = new Stage();
@@ -422,5 +442,14 @@ public class Principal extends AnchorPane implements EventHandler<ActionEvent>{
             	loadPage();
             }
         });	
+	}
+	
+	private boolean openDialogPass(){
+		PasswordDialog pd = new PasswordDialog();
+	    Optional<String> result = pd.showAndWait();	   	    
+	    if(result.isPresent() && result.get().equals("1334")){
+	    	return true;
+	    }
+	    return false;
 	}
 }

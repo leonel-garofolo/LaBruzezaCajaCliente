@@ -1,0 +1,7 @@
+org\labruzeza\colectividades\test\general\TestGarbageColector.class
+org\labruzeza\colectividades\dao\ProductoDAOTest.class
+org\labruzeza\colectividades\dao\commons\DAOTestUtil.class
+org\labruzeza\colectividades\dao\ConfiguracionDAOTest.class
+org\labruzeza\colectividades\dao\commons\DAOProviderTest.class
+org\labruzeza\colectividades\dao\commons\DataSourceProviderTest.class
+org\labruzeza\colectividades\dao\LineadeventaDAOTest.class

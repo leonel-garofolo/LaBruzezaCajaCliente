@@ -49,7 +49,7 @@ public class Ticket {
 	public JasperPrint generar(Venta ventas) {
 		VerticalListBuilder vHeader = cmp.verticalList();
 		vHeader.add(cmp.text("SEI ITALIA").setStyle(stl.style().setFont(stl.font().setFontName("Arial")).setFontSize(16).bold()));
-		HorizontalListBuilder hTicket = buildTicket();		
+		HorizontalListBuilder hTicket = buildTicket(ventas);		
 		vHeader.add(hTicket);		
 		vHeader.setStyle(stl.style().setLeftPadding(150));
 			
@@ -91,7 +91,7 @@ public class Ticket {
 		report.setPageFormat(PageType.A4)
 		.pageHeader(vHeader)
 		.addDetail(vDetailPanel,
-				buildFooter())
+				buildFooter(ventas))
 		.setDataSource(new JREmptyDataSource());
 		try {
 	    	JasperPrint print = report.toJasperPrint();
@@ -103,14 +103,14 @@ public class Ticket {
 		}
 	}		
 	
-	private VerticalListBuilder buildFooter(){		
+	private VerticalListBuilder buildFooter(Venta venta){		
 		
 		VerticalListBuilder vFooter = cmp.verticalList();
 		vFooter.setFixedWidth(cm(9.192));
 		vFooter.add(cmp.line().setPen(stl.penDashed()));
 		vFooter.add(cmp.text("BENVENUTI !!!!!!!!!                            RETIRA").setHorizontalAlignment(HorizontalAlignment.CENTER).setStyle(stl.style().setFont(stl.font().setFontName("Arial").setFontSize(12)).setTopPadding(10).setBold(true)));
 		
-		HorizontalListBuilder hTicket = buildTicket();		
+		HorizontalListBuilder hTicket = buildTicket(venta);		
 		vFooter.add(hTicket);
 		
 		String sFila1 = "SEI ITALIA agradece su presencia en nuestro predio.\nEste Stand está formado por las siguientes Asoc.\namigas:";
@@ -166,15 +166,15 @@ public class Ticket {
 		  }
 		}
 	
-	private HorizontalListBuilder buildTicket(){
+	private HorizontalListBuilder buildTicket(Venta venta){
 		HorizontalListBuilder hTicket = cmp.horizontalList();
 		hTicket.setFixedWidth(cm(9.192));	
 		HorizontalListBuilder hCabecera = cmp.horizontalList();
 		hCabecera.setFixedWidth(cm(4.917));
 		hCabecera.setStyle(stl.style().setBorder(stl.pen1Point()));
 		hCabecera.add(cmp.text("Serie:").setStyle(stl.style().setLeftPadding(3).setFont(stl.font().setFontName("Arial").setFontSize(12))));
-		hCabecera.add(cmp.text("061A-").setStyle(stl.style().setFont(stl.font().setFontName("Arial").setFontSize(11).bold())));
-		hCabecera.add(cmp.text("2").setStyle(stl.style().setFont(stl.font().setFontName("Arial").setFontSize(16).bold())));
+		hCabecera.add(cmp.text(venta.getCodigo() + "-").setStyle(stl.style().setFont(stl.font().setFontName("Arial").setFontSize(11).bold())));
+		hCabecera.add(cmp.text(venta.getCodfactura()).setStyle(stl.style().setFont(stl.font().setFontName("Arial").setFontSize(16).bold())));
 		
 		SimpleDateFormat format = new SimpleDateFormat("dd-MM");				
 		hTicket.setStyle(stl.style().setTopPadding(10));

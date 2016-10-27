@@ -1,0 +1,16 @@
+Update date : Wed Oct 26 15:51:07 ART 2016
+ 
+ Table 'configuracion' found in repository
+ (=) table 'configuracion' unchanged
+ 
+ Table 'lineadeventa' found in repository
+ (=) table 'lineadeventa' unchanged
+ 
+ Table 'producto' found in repository
+ (=) table 'producto' unchanged
+ 
+ Table 'venta' found in repository
+ (=) table 'venta' unchanged
+ 
+ Table 'vcaja' not found in repository
+ (+) table 'vcaja' added
