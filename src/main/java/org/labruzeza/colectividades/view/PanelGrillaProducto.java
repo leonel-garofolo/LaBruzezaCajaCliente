@@ -18,10 +18,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -159,8 +161,11 @@ public class PanelGrillaProducto extends PanelControlesABM implements Initializa
 				try {
 					productoServicio.delete(itemSelected);
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					Alert alert = new Alert(AlertType.INFORMATION);
+					alert.setTitle("Información");
+					alert.setHeaderText("No se puede eliminar el producto ya que fue utilizado como parte de una venta.");				
+					alert.showAndWait();
+					return;
 				}
 			}
 			loadGrilla();

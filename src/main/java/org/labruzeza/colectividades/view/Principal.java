@@ -280,13 +280,13 @@ public class Principal extends AnchorPane implements EventHandler<ActionEvent>{
 			int i= 1;
 			for(Producto unProd: data){
 				Label lblProd = new Label(unProd.getNombre() + ":");
-				lblProd.setFont(new Font("MS Sans Serif", 14));			
+				lblProd.setFont(new Font("MS Sans Serif", 12));			
 				NumberField txtCant = new NumberField();
 				txtCant.setId("txtCant" + i);
 				txtCant.setPrefWidth(47);
 				txtCant.setMaxValue(2);
 				txtCant.setValue(0);			
-				txtCant.setStyle("-fx-font-size: 14px;");
+				txtCant.setStyle("-fx-font-size: 12px;");
 				
 				DecimalField txtPrecio = new DecimalField();
 				txtPrecio.setId("txtPrecio" + i);
@@ -295,7 +295,7 @@ public class Principal extends AnchorPane implements EventHandler<ActionEvent>{
 				txtPrecio.setFocusTraversable(false);
 				txtPrecio.setValue(new BigDecimal(0));
 				txtPrecio.setStyle(""
-				        + "-fx-font-size: 14px;"
+				        + "-fx-font-size: 12px;"
 				        + "-fx-font-weight: bold;"			        
 				        + "-fx-text-fill: red;");
 				
@@ -366,7 +366,7 @@ public class Principal extends AnchorPane implements EventHandler<ActionEvent>{
 				gridPane.add(txtIdProducto, 4, i);									
 				i++;
 			}
-			if(gridPane.getChildren().get(1) != null){
+			if(gridPane.getChildren().size() > 0 && gridPane.getChildren().get(1) != null){
 				gridPane.getChildren().get(1).requestFocus();		
 				((NumberField)gridPane.getChildren().get(1)).selectAll();		
 			}
