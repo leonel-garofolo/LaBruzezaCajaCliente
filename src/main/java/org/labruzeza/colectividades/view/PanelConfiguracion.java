@@ -134,8 +134,10 @@ public class PanelConfiguracion extends BorderPane implements EventHandler<Actio
 			if(unConfiguracion != null){
 				try {
 					if(unConfiguracion.getIdconfiguracion() != null){
+						unConfiguracion.setIdconfiguracion(1);
 						configuracionDao.update(unConfiguracion);
 					}else{
+						unConfiguracion.setIdconfiguracion(1);
 						configuracionDao.insert(unConfiguracion);
 					}
 										

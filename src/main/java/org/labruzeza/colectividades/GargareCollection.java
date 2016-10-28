@@ -11,6 +11,13 @@ public class GargareCollection extends Thread {
 	@SuppressWarnings("static-access")
 	@Override
 	public void run() {
+		try{
+			AppClient.iniciar();
+		}catch (Exception e) {
+			logger.error(e);
+			e.printStackTrace();		
+		}
+		
 		do{
 			try {
 				this.sleep(100000);
@@ -27,5 +34,6 @@ public class GargareCollection extends Thread {
 			logger.info("MEMORIA [FREE] 'JVM' [DESPUES]: " + basurero.freeMemory());
 			logger.info("********** FIN: 'LIMPIEZA GARBAGE COLECTOR' **********");
 		}while(true);
+		
 	}
 }
