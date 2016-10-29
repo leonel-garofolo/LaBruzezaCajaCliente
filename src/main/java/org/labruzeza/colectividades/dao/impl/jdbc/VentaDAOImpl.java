@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 
 import org.labruzeza.colectividades.dao.VentaDAO;
 import org.labruzeza.colectividades.dao.impl.jdbc.commons.GenericDAO;
@@ -25,10 +26,10 @@ public class VentaDAOImpl extends GenericDAO<Venta> implements VentaDAO {
 		"select idventa, codigo, fecha, codFactura from venta where idventa = ?";
 
 	private final static String SQL_INSERT = 
-		"insert into venta ( codigo, fecha, codFactura ) values ( ?, current_timestamp(), ? )";
+		"insert into venta ( codigo, fecha, codFactura ) values ( ?, ?, ? )";
 
 	private final static String SQL_UPDATE = 
-		"update venta set codigo = ?, fecha = current_timestamp(), codFactura = ? where idventa = ?";
+		"update venta set codigo = ?, fecha = ?, codFactura = ? where idventa = ?";
 
 	private final static String SQL_DELETE = 
 		"delete from venta where idventa = ?";
@@ -223,7 +224,8 @@ public class VentaDAOImpl extends GenericDAO<Venta> implements VentaDAO {
 		//--- Set PRIMARY KEY and DATA from bean to PreparedStatement ( SQL "SET x=?, y=?, ..." )
 		// "idventa" is auto-incremented => no set in insert		
 		setValue(ps, i++, venta.getCodigo() ) ; // "codigo" : java.lang.String
-		//setValue(ps, i++, venta.getFecha() ) ; // "fecha" : java.util.Date
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		setValue(ps, i++, format.format(venta.getFecha()) ) ; // "fecha" : java.util.Date
 		setValue(ps, i++, venta.getCodfactura() ) ; // "codFactura" : java.lang.Integer
 	}
 
@@ -246,7 +248,7 @@ public class VentaDAOImpl extends GenericDAO<Venta> implements VentaDAO {
 		Connection conn = null;
 		try {
 			conn = getConnection();
-			PreparedStatement ps = conn.prepareStatement("select codFactura from venta where codigo = ? and DATE(fecha) = current_date() order by fecha desc");
+			PreparedStatement ps = conn.prepareStatement("select codFactura from venta where codigo = ?  order by fecha desc");
 			ps.setString(1, codigo);				
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {				
@@ -268,7 +270,7 @@ public class VentaDAOImpl extends GenericDAO<Venta> implements VentaDAO {
 		Connection conn = null;
 		try {
 			conn = getConnection();
-			PreparedStatement ps = conn.prepareStatement("select idVenta from venta where codigo= ? and DATE(fecha) = current_date() order by fecha desc");
+			PreparedStatement ps = conn.prepareStatement("select idVenta from venta where codigo= ? order by fecha desc");
 			//--- Execute SQL COUNT (without where clause)						
 			ps.setString(1, codigo);
 			ResultSet rs = ps.executeQuery();
@@ -291,7 +293,7 @@ public class VentaDAOImpl extends GenericDAO<Venta> implements VentaDAO {
 		Connection conn = null;
 		try {
 			conn = getConnection();
-			PreparedStatement ps = conn.prepareStatement("select count(idVenta) from venta where codigo= ? and DATE(fecha) = current_date() order by fecha desc");
+			PreparedStatement ps = conn.prepareStatement("select count(idVenta) from venta where codigo= ? order by fecha desc");
 			//--- Execute SQL COUNT (without where clause)						
 			ps.setString(1, codigo);
 			ResultSet rs = ps.executeQuery();
@@ -313,7 +315,7 @@ public class VentaDAOImpl extends GenericDAO<Venta> implements VentaDAO {
 		Connection conn = null;
 		try {
 			conn = getConnection();
-			PreparedStatement ps = conn.prepareStatement("select * from venta where DATE(fecha) = current_date() and codigo = ? and codFactura < ? order by fecha desc");
+			PreparedStatement ps = conn.prepareStatement("select * from venta where codigo = ? and codFactura < ? order by fecha desc");
 			ps.setString(1, codigo);	
 			ps.setInt(2, nroFactura);					
 			ResultSet rs = ps.executeQuery();
@@ -331,14 +333,14 @@ public class VentaDAOImpl extends GenericDAO<Venta> implements VentaDAO {
 		return result ;
 	}
 	
-	public long nextId(int id) {
+	public long nextId(String codigo) {
 
 		long result = 0 ;
 		Connection conn = null;
 		try {
 			conn = getConnection();
-			PreparedStatement ps = conn.prepareStatement("select codFactura from venta where DATE(fecha) = current_date() order by fecha desc");
-			//--- Execute SQL COUNT (without where clause)						
+			PreparedStatement ps = conn.prepareStatement("select codFactura from venta where codigo = ? order by fecha desc");
+			ps.setString(1, codigo);				
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
 				result = rs.getLong(1) + 1;

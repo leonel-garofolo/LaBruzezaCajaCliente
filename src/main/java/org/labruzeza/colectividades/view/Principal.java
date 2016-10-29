@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -186,7 +187,21 @@ public class Principal extends AnchorPane implements EventHandler<ActionEvent>{
 			alert.showAndWait();
 			return;
 		}				
-		venta.setCodfactura(codfactura);
+		venta.setCodfactura(codfactura);		
+		
+		Calendar calendarA = Calendar.getInstance();
+		calendarA.setTime(configuracion.getFecha());
+
+		Calendar calendarB = Calendar.getInstance();
+		calendarB.setTime(new Date());
+
+		calendarA.set(Calendar.HOUR_OF_DAY, calendarB.get(Calendar.HOUR_OF_DAY));
+		calendarA.set(Calendar.MINUTE, calendarB.get(Calendar.MINUTE));
+		calendarA.set(Calendar.SECOND, calendarB.get(Calendar.SECOND));
+		calendarA.set(Calendar.MILLISECOND, calendarB.get(Calendar.MILLISECOND));
+
+		Date result = calendarA.getTime();
+		venta.setFecha(result);
 		int id= ventaDAO.insert(venta);
 		venta.setIdventa(id);			
 		
@@ -220,7 +235,7 @@ public class Principal extends AnchorPane implements EventHandler<ActionEvent>{
 		venta.setListOfLineadeventa(listOfLineadeventa);
 		Ticket ticket = new Ticket();
 		logger.info("imprimiendo Ticket: " + id);
-		JasperPrint print = ticket.generar(venta);
+		JasperPrint print = ticket.generar(configuracion, venta);
 		if(print != null){
 			logger.info("send PDF: " + id);
 			MiPrinterJob.sendPDF(print);	
@@ -237,7 +252,7 @@ public class Principal extends AnchorPane implements EventHandler<ActionEvent>{
 		List<Vcaja> caja =vcajaDAO.load(codigoCaja);
 		CajaDiaria iCaja = new CajaDiaria();
 		int cantVentas = ventaDAO.countVenta(codigoCaja);
-		JasperPrint print = iCaja.generar(caja, cantVentas);		
+		JasperPrint print = iCaja.generar(configuracion, caja, cantVentas);		
 		if(print != null){
 			logger.info("send PDF: " + "");
 			MiPrinterJob.sendPDF(print);	
@@ -268,7 +283,7 @@ public class Principal extends AnchorPane implements EventHandler<ActionEvent>{
 	
 		if(configuracionDAO.load(configuracion)){
 			SimpleDateFormat format = new SimpleDateFormat("dd");
-			codigoCaja = format.format(new Date()) + configuracion.getNrocaja() + configuracion.getTipocaja();
+			codigoCaja = format.format(configuracion.getFecha()) + configuracion.getNrocaja() + configuracion.getTipocaja();
 			lblCaja.setFont(new Font("MS Sans Serif", 18));		
 			lblCaja.setStyle(""	       			       
 			        + "-fx-font-weight: bold;"

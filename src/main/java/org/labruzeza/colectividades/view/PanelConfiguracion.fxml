@@ -23,8 +23,22 @@
 	   				<Label text="%Configuracion.panel.field.nrocaja" GridPane.rowIndex="4" />   
 	   				<NumberField fx:id="txtnrocaja" maxValue="1" maxWidth="100" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 	   				<Label text="%Configuracion.panel.field.letracaja" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-	                <StringField fx:id="txtTipoCaja" maxValue="1" GridPane.columnIndex="3" GridPane.rowIndex="4" />          				
-   				</children>                     
+	                <StringField fx:id="txtTipoCaja" maxValue="1" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                  <Label prefHeight="17.0" prefWidth="39.0" text="%Configuracion.panel.field.fecha" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                  <DatePicker fx:id= "txtFecha" GridPane.columnIndex="3" GridPane.rowIndex="1" />          				
+   				</children>
+               <columnConstraints>
+                  <ColumnConstraints />
+                  <ColumnConstraints />
+                  <ColumnConstraints />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+               </rowConstraints>                     
 			</GridPane>
        </center>
 	 </BorderPane>	

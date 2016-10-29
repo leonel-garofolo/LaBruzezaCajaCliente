@@ -21,13 +21,13 @@ import org.labruzeza.colectividades.dao.impl.jdbc.commons.GenericDAO;
 public class ConfiguracionDAOImpl extends GenericDAO<Configuracion> implements ConfiguracionDAO {
 
 	private final static String SQL_SELECT = 
-		"select idConfiguracion, nroCaja, tipoCaja from configuracion where idConfiguracion = ?";
+		"select idConfiguracion, fecha, nroCaja, tipoCaja from configuracion where idConfiguracion = ?";
 
 	private final static String SQL_INSERT = 
-		"insert into configuracion ( nroCaja, tipoCaja ) values ( ?, ? )";
+		"insert into configuracion ( nroCaja, fecha, tipoCaja ) values ( ?, ?, ? )";
 
 	private final static String SQL_UPDATE = 
-		"update configuracion set nroCaja = ?, tipoCaja = ? where idConfiguracion = ?";
+		"update configuracion set nroCaja = ?, tipoCaja = ?, fecha = ? where idConfiguracion = ?";
 
 	private final static String SQL_DELETE = 
 		"delete from configuracion where idConfiguracion = ?";
@@ -210,7 +210,9 @@ public class ConfiguracionDAOImpl extends GenericDAO<Configuracion> implements C
 		if ( rs.wasNull() ) { configuracion.setIdconfiguracion(null); }; // not primitive number => keep null value if any
 		configuracion.setNrocaja(rs.getInt("nroCaja")); // java.lang.Integer
 		if ( rs.wasNull() ) { configuracion.setNrocaja(null); }; // not primitive number => keep null value if any
-		configuracion.setTipocaja(rs.getString("tipoCaja")); // java.lang.String
+		configuracion.setTipocaja(rs.getString("tipoCaja")); // java.lang.String		
+		if ( rs.wasNull() ) { configuracion.setFecha(null); }; // not primitive number => keep null value if any
+		configuracion.setFecha(rs.getDate("fecha")); // java.lang.String
 		return configuracion ;
 	}
 
@@ -232,7 +234,9 @@ public class ConfiguracionDAOImpl extends GenericDAO<Configuracion> implements C
 		setValue(ps, i++, configuracion.getNrocaja() ) ; // "nroCaja" : java.lang.Integer
 		setValue(ps, i++, configuracion.getTipocaja() ) ; // "tipoCaja" : java.lang.String
 		//--- Set PRIMARY KEY from bean to PreparedStatement ( SQL "WHERE key=?, ..." )
+		setValue(ps, i++, configuracion.getFecha()) ; // "fecha" : java.lang.Date
 		setValue(ps, i++, configuracion.getIdconfiguracion() ) ; // "idConfiguracion" : java.lang.Integer
+		
 	}
 
 	@Override

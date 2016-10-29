@@ -39,6 +39,7 @@ public class MiPrinterJob {
 	        job.setPageable(new PDFPageable(document));
 	        job.setPrintService(service);
 	        job.print();
+	        document.close();
 		} catch (IOException|JRException | PrinterException e) {
 			logger.error("Ops!", e);
 			e.printStackTrace();

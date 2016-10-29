@@ -11,12 +11,12 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.labruzeza.colectividades.modelo.Configuracion;
 import org.labruzeza.colectividades.modelo.Vcaja;
 
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
@@ -41,10 +41,10 @@ public class CajaDiaria {
 		super();
 	}
 	 
-	public JasperPrint generar(List<Vcaja> caja, int cantVentas) {
+	public JasperPrint generar(Configuracion conf, List<Vcaja> caja, int cantVentas) {
 		SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yy");
 		VerticalListBuilder vHeader = cmp.verticalList();
-		vHeader.add(cmp.text("Totales Diarios - Caja \"" + caja.get(1).getCodigo() + "\" " + formatDate.format(new Date())).setStyle(stl.style().setHorizontalAlignment(HorizontalAlignment.CENTER).setFont(stl.font().setFontName("Arial")).setFontSize(16).bold()));
+		vHeader.add(cmp.text("Totales Diarios - Caja \"" + caja.get(1).getCodigo() + "\" " + formatDate.format(conf.getFecha())).setStyle(stl.style().setHorizontalAlignment(HorizontalAlignment.CENTER).setFont(stl.font().setFontName("Arial")).setFontSize(16).bold()));
 			
 		VerticalListBuilder vDetail = cmp.verticalList();
 		vDetail.setFixedWidth(cm(9.192));	
@@ -58,7 +58,7 @@ public class CajaDiaria {
 		for(Vcaja lineaCaja:caja){
 		
 				hFrame = cmp.horizontalList();
-				hFrame.setStyle(stl.style().setBorder(stl.pen()).setTopPadding(20));
+				hFrame.setStyle(stl.style().setBorder(stl.pen()).setTopPadding(5));
 				
 				hFrame.add(cmp.text(lineaCaja.getNombre() + ":").setStyle(stl.style().setFont(stl.font().setFontName("Arial")).setFontSize(10)).setHorizontalAlignment(HorizontalAlignment.RIGHT));
 				hFrame.add(cmp.text(lineaCaja.getCantidad()).setPattern("#,###").setStyle(totales).setStyle(stl.style().setLeftPadding(20).setFont(stl.font().setFontName("Arial")).setFontSize(10).bold()).setFixedWidth(cm(1.614)));

@@ -1,6 +1,9 @@
 package org.labruzeza.colectividades.view;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.Set;
 
@@ -18,12 +21,12 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
-public class PanelConfiguracion extends BorderPane implements EventHandler<ActionEvent>{
-	private boolean modoEdit = false;
+public class PanelConfiguracion extends BorderPane implements EventHandler<ActionEvent>{	
 	private ConfiguracionDAO configuracionDao;
 	
 	@FXML
@@ -41,8 +44,10 @@ public class PanelConfiguracion extends BorderPane implements EventHandler<Actio
 	
 	private PanelControlesABM panelControles;
 	
-	public PanelConfiguracion() {
-		this.modoEdit = false;		
+	@FXML
+	private DatePicker txtFecha;
+	
+	public PanelConfiguracion() {	
 		initComponentes();
 		loadEntity(1);		
     }
@@ -94,7 +99,11 @@ public class PanelConfiguracion extends BorderPane implements EventHandler<Actio
 			}
 			if(configuracion.getTipocaja() != null){
 				txtTipoCaja.setValue(configuracion.getTipocaja());
-			}					
+			}
+			if(configuracion.getFecha() != null){								
+				LocalDate date = new java.sql.Date(configuracion.getFecha().getTime()).toLocalDate();
+				txtFecha.setValue(date);
+			}	
 		}
 	}
 
@@ -111,6 +120,11 @@ public class PanelConfiguracion extends BorderPane implements EventHandler<Actio
 			unConfiguracion.setNrocaja(null);
 		}		
 		unConfiguracion.setTipocaja(txtTipoCaja.getText());
+		
+		if(txtFecha.getValue() != null){
+			unConfiguracion.setFecha(Date.from(txtFecha.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+		}
+		
 		
 		Label label = null;	
 		vBoxMsg.getChildren().clear();

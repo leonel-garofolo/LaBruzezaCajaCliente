@@ -5,6 +5,7 @@
 package org.labruzeza.colectividades.modelo;
 
 import java.io.Serializable;
+import java.util.Date;
 
 
 /**
@@ -31,6 +32,9 @@ public class Configuracion implements Serializable {
 
     // DB : tipoCaja VARCHAR 
     private String tipocaja;
+    
+    // DB : tipoCaja DATE 
+    private Date fecha;
 
 
 
@@ -62,9 +66,16 @@ public class Configuracion implements Serializable {
     public String getTipocaja() {
         return this.tipocaja;
     }
+        
+    public Date getFecha() {
+		return fecha;
+	}
 
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
+	}
 
-    //----------------------------------------------------------------------
+	//----------------------------------------------------------------------
     // toString METHOD
     //----------------------------------------------------------------------
     public String toString() { 
