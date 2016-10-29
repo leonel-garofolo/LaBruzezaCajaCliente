@@ -2,10 +2,9 @@ package org.labruzeza.colectividades;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.labruzeza.colectividades.utils.PrinterJob;
 
 public class GargareCollection extends Thread {
-	private static final Logger logger = LogManager.getLogger(PrinterJob.class);
+	private static final Logger logger = LogManager.getLogger(GargareCollection.class);
 	
 	
 	@SuppressWarnings("static-access")

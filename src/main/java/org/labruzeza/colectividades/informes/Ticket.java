@@ -21,7 +21,7 @@ import org.apache.logging.log4j.Logger;
 import org.labruzeza.colectividades.modelo.Lineadeventa;
 import org.labruzeza.colectividades.modelo.Producto;
 import org.labruzeza.colectividades.modelo.Venta;
-import org.labruzeza.colectividades.utils.PrinterJob;
+import org.labruzeza.colectividades.utils.MiPrinterJob;
 
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.builder.DynamicReports;
@@ -33,13 +33,12 @@ import net.sf.dynamicreports.report.constant.PageType;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.util.DefaultFormatFactory;
-import net.sf.jasperreports.view.JasperViewer;
 
 /**
  * @author Ricardo Mariaca (dynamicreports@gmail.com)
  */
 public class Ticket {
-	private static final Logger logger = LogManager.getLogger(PrinterJob.class);
+	private static final Logger logger = LogManager.getLogger(Ticket.class);
 	BigDecimal itemCost=new BigDecimal(BigInteger.ZERO,  2);
      
 	public Ticket(){
@@ -231,7 +230,7 @@ public class Ticket {
 
 		unVenta.setListOfLineadeventa(lineas);
 		JasperPrint print = ticket.generar(unVenta);
-		JasperViewer.viewReport(print);
-		//PrinterJob.sendPDF(print);
+		//JasperViewer.viewReport(print);
+		MiPrinterJob.sendPDF(print);
 	}
 }

@@ -30,7 +30,7 @@ import org.labruzeza.colectividades.modelo.Lineadeventa;
 import org.labruzeza.colectividades.modelo.Producto;
 import org.labruzeza.colectividades.modelo.Vcaja;
 import org.labruzeza.colectividades.modelo.Venta;
-import org.labruzeza.colectividades.utils.PrinterJob;
+import org.labruzeza.colectividades.utils.MiPrinterJob;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -57,7 +57,7 @@ import javafx.stage.WindowEvent;
 import net.sf.jasperreports.engine.JasperPrint;
 
 public class Principal extends AnchorPane implements EventHandler<ActionEvent>{
-	private static final Logger logger = LogManager.getLogger(PrinterJob.class);
+	private static final Logger logger = LogManager.getLogger(MiPrinterJob.class);
 	 
 	private ProductoDAO productoDAO;
 	private VentaDAO ventaDAO;
@@ -223,7 +223,7 @@ public class Principal extends AnchorPane implements EventHandler<ActionEvent>{
 		JasperPrint print = ticket.generar(venta);
 		if(print != null){
 			logger.info("send PDF: " + id);
-			PrinterJob.sendPDF(print);	
+			MiPrinterJob.sendPDF(print);	
 			loadPage();
 		}else{
 			Alert alert = new Alert(AlertType.ERROR);
@@ -240,7 +240,7 @@ public class Principal extends AnchorPane implements EventHandler<ActionEvent>{
 		JasperPrint print = iCaja.generar(caja, cantVentas);		
 		if(print != null){
 			logger.info("send PDF: " + "");
-			PrinterJob.sendPDF(print);	
+			MiPrinterJob.sendPDF(print);	
 			loadPage();
 		}else{
 			Alert alert = new Alert(AlertType.ERROR);

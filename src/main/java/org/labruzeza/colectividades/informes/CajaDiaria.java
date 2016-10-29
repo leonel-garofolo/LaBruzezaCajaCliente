@@ -18,7 +18,6 @@ import java.util.Locale;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.labruzeza.colectividades.modelo.Vcaja;
-import org.labruzeza.colectividades.utils.PrinterJob;
 
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.builder.DynamicReports;
@@ -35,7 +34,7 @@ import net.sf.jasperreports.engine.util.DefaultFormatFactory;
  * @author Ricardo Mariaca (dynamicreports@gmail.com)
  */
 public class CajaDiaria {
-	private static final Logger logger = LogManager.getLogger(PrinterJob.class);
+	private static final Logger logger = LogManager.getLogger(CajaDiaria.class);
 	BigDecimal itemCost=new BigDecimal(BigInteger.ZERO,  2);
      
 	public CajaDiaria(){
