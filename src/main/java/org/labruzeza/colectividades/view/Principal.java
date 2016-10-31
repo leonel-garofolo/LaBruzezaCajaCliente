@@ -33,6 +33,8 @@ import org.labruzeza.colectividades.modelo.Vcaja;
 import org.labruzeza.colectividades.modelo.Venta;
 import org.labruzeza.colectividades.utils.MiPrinterJob;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -326,52 +328,63 @@ public class Principal extends AnchorPane implements EventHandler<ActionEvent>{
 				txtPrecioInvisible.setPrefWidth(47);
 				txtPrecioInvisible.setEditable(false);
 				txtPrecioInvisible.setVisible(false);
-				txtPrecioInvisible.setValue(unProd.getPrecio());			
+				txtPrecioInvisible.setValue(unProd.getPrecio());
+
+				txtCant.focusedProperty().addListener(new ChangeListener<Boolean>()
+				{
+				    @Override
+				    public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue)
+				    {
+				        if (!newPropertyValue)
+				        {
+				        	double subTotal = txtCant.getValue() * txtPrecioInvisible.getValue().doubleValue();
+							txtPrecio.setValue(new BigDecimal(subTotal));
+							
+							double total = 0;
+							for (Node child : gridPane.getChildrenUnmodifiable()) {					
+								if(child.getId() != null && child.getId().contains("txtPrecio")){
+									total += ((DecimalField)child).getValue().doubleValue();
+								}
+							}
+							txtTotal.setText(new DecimalFormat("#,###.00").format(total));					
+							txtNroFactura.setText(String.valueOf(ventaDAO.doCountAll(codigoCaja))); 													   
+				        }				       
+				    }
+				});
+				
 							
 				txtCant.setOnAction((ActionEvent e) -> {				
-					double subTotal = txtCant.getValue() * txtPrecioInvisible.getValue().doubleValue();
-					txtPrecio.setValue(new BigDecimal(subTotal));
-					
-					double total = 0;
-					for (Node child : this.gridPane.getChildrenUnmodifiable()) {					
-						if(child.getId() != null && child.getId().contains("txtPrecio")){
-							total += ((DecimalField)child).getValue().doubleValue();
-						}
-					}
-					txtTotal.setText(new DecimalFormat("#,###.00").format(total));					
-					txtNroFactura.setText(String.valueOf(ventaDAO.doCountAll(codigoCaja))); 
-					
-				    boolean isThisField = false;
-				    for (Node child : this.gridPane.getChildrenUnmodifiable()) {			    	
-				    	if (isThisField) {
+					 boolean isThisField = false;
+					    for (Node child : gridPane.getChildrenUnmodifiable()) {			    	
+					    	if (isThisField) {
 
-				            //This code will only execute after the current Node
-				            if (child.isFocusTraversable() && !child.isDisabled()) {
-				            	if(child.getClass().equals(NumberField.class) && ((NumberField)child).isEditable()){
-				            		 child.requestFocus();
+					            //This code will only execute after the current Node
+					            if (child.isFocusTraversable() && !child.isDisabled()) {
+					            	if(child.getClass().equals(NumberField.class) && ((NumberField)child).isEditable()){
+					            		 child.requestFocus();
 
-						             //Reset check to prevent later Node from pulling focus
-						             isThisField = false;
-				            	}
-				            }
-				        } else {
+							             //Reset check to prevent later Node from pulling focus
+							             isThisField = false;
+					            	}
+					            }
+					        } else {
 
-				            //Check if this is the current Node
-				            isThisField = child.equals(txtCant);
-				        }
-				    }
-				  //Check if current Node still has focus
-				    boolean focusChanged = !txtCant.isFocused();
-				    if (!focusChanged) {
-				        for (Node child : this.gridPane.getChildrenUnmodifiable()) {
-				            if (!focusChanged && child.isFocusTraversable() && !child.isDisabled()) {
-				                child.requestFocus();
+					            //Check if this is the current Node
+					            isThisField = child.equals(txtCant);
+					        }
+					    }
+					  //Check if current Node still has focus
+					    boolean focusChanged = !txtCant.isFocused();
+					    if (!focusChanged) {
+					        for (Node child : gridPane.getChildrenUnmodifiable()) {
+					            if (!focusChanged && child.isFocusTraversable() && !child.isDisabled()) {
+					                child.requestFocus();
 
-				                //Update to prevent later Node from pulling focus
-				                focusChanged = true;
-				            }
-				        }
-				    }
+					                //Update to prevent later Node from pulling focus
+					                focusChanged = true;
+					            }
+					        }
+					    }
 				});	
 				
 				gridPane.add(lblProd, 0, i);

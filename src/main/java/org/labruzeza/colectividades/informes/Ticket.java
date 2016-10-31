@@ -112,9 +112,10 @@ public class Ticket {
 		String sFila2 = "";
 		sFila2 += "ASOC. FAMILIA ABRUZZESA\n";
 		sFila2 += "ASOC FAMILIA BASILICATA\n";
-		sFila2 += "ASOC. FAMILIA MOLISANA\n";
-		sFila2 += "CENTRO LIGURE\n";
+		sFila2 += "ASOC. FAMILIA MOLISANA\n";		
 		sFila2 += "CIRCULO SARDO\n";
+		sFila2 += "ASOC FLIA  #####\n";
+		sFila2 += "CENTRO TOSCANO\n";
 
 		String sFila3 = "";
 		sFila3 += "Quienes,  rescatando los valores de solidaridad y de esfuerzo\n";

@@ -10,6 +10,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jersey.version>1.19</jersey.version>
 		<hibernate.version>4.2.0.Final</hibernate.version>
+		<skipTests>true</skipTests>
 	</properties>
 
 	<build>
@@ -79,6 +80,7 @@
 					<shadedArtifactAttached>true</shadedArtifactAttached>
 					<shadedClassifierName>shaded</shadedClassifierName>
 					<createDependencyReducedPom>true</createDependencyReducedPom>
+					<skipTests>${skipTests}</skipTests>
 					<excludes>
 						<exclude>classworlds:classworlds</exclude>
 						<exclude>junit:junit</exclude>

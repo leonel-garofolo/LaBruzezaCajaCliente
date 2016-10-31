@@ -10,9 +10,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.labruzeza.colectividades.dao.VentaDAO;
 import org.labruzeza.colectividades.dao.impl.jdbc.commons.GenericDAO;
 import org.labruzeza.colectividades.modelo.Venta;
+import org.labruzeza.colectividades.utils.MiPrinterJob;
 
 /**
  * Venta DAO implementation 
@@ -21,7 +24,8 @@ import org.labruzeza.colectividades.modelo.Venta;
  *
  */
 public class VentaDAOImpl extends GenericDAO<Venta> implements VentaDAO {
-
+	private static final Logger logger = LogManager.getLogger(VentaDAOImpl.class);
+	
 	private final static String SQL_SELECT = 
 		"select idventa, codigo, fecha, codFactura from venta where idventa = ?";
 
@@ -224,7 +228,7 @@ public class VentaDAOImpl extends GenericDAO<Venta> implements VentaDAO {
 		//--- Set PRIMARY KEY and DATA from bean to PreparedStatement ( SQL "SET x=?, y=?, ..." )
 		// "idventa" is auto-incremented => no set in insert		
 		setValue(ps, i++, venta.getCodigo() ) ; // "codigo" : java.lang.String
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		setValue(ps, i++, format.format(venta.getFecha()) ) ; // "fecha" : java.util.Date
 		setValue(ps, i++, venta.getCodfactura() ) ; // "codFactura" : java.lang.Integer
 	}
@@ -249,7 +253,8 @@ public class VentaDAOImpl extends GenericDAO<Venta> implements VentaDAO {
 		try {
 			conn = getConnection();
 			PreparedStatement ps = conn.prepareStatement("select codFactura from venta where codigo = ?  order by fecha desc");
-			ps.setString(1, codigo);				
+			ps.setString(1, codigo);		
+			logger.info(ps);
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {				
 				result = (rs.getLong(1) + 1);
