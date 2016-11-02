@@ -252,7 +252,7 @@ public class VentaDAOImpl extends GenericDAO<Venta> implements VentaDAO {
 		Connection conn = null;
 		try {
 			conn = getConnection();
-			PreparedStatement ps = conn.prepareStatement("select codFactura from venta where codigo = ?  order by fecha desc");
+			PreparedStatement ps = conn.prepareStatement("select max(codFactura) as codFactura from venta where codigo = ?  order by idVenta desc");
 			ps.setString(1, codigo);		
 			logger.info(ps);
 			ResultSet rs = ps.executeQuery();
@@ -275,7 +275,7 @@ public class VentaDAOImpl extends GenericDAO<Venta> implements VentaDAO {
 		Connection conn = null;
 		try {
 			conn = getConnection();
-			PreparedStatement ps = conn.prepareStatement("select idVenta from venta where codigo= ? order by fecha desc");
+			PreparedStatement ps = conn.prepareStatement("select idVenta from venta where codigo= ? order by idVenta desc");
 			//--- Execute SQL COUNT (without where clause)						
 			ps.setString(1, codigo);
 			ResultSet rs = ps.executeQuery();
@@ -298,7 +298,7 @@ public class VentaDAOImpl extends GenericDAO<Venta> implements VentaDAO {
 		Connection conn = null;
 		try {
 			conn = getConnection();
-			PreparedStatement ps = conn.prepareStatement("select count(idVenta) from venta where codigo= ? order by fecha desc");
+			PreparedStatement ps = conn.prepareStatement("select count(idVenta) from venta where codigo= ? order by idVenta desc");
 			//--- Execute SQL COUNT (without where clause)						
 			ps.setString(1, codigo);
 			ResultSet rs = ps.executeQuery();
@@ -320,7 +320,7 @@ public class VentaDAOImpl extends GenericDAO<Venta> implements VentaDAO {
 		Connection conn = null;
 		try {
 			conn = getConnection();
-			PreparedStatement ps = conn.prepareStatement("select * from venta where codigo = ? and codFactura < ? order by fecha desc");
+			PreparedStatement ps = conn.prepareStatement("select * from venta where codigo = ? and codFactura < ? order by idVenta desc");
 			ps.setString(1, codigo);	
 			ps.setInt(2, nroFactura);					
 			ResultSet rs = ps.executeQuery();
@@ -344,7 +344,7 @@ public class VentaDAOImpl extends GenericDAO<Venta> implements VentaDAO {
 		Connection conn = null;
 		try {
 			conn = getConnection();
-			PreparedStatement ps = conn.prepareStatement("select codFactura from venta where codigo = ? order by fecha desc");
+			PreparedStatement ps = conn.prepareStatement("select codFactura from venta where codigo = ? order by idVenta desc");
 			ps.setString(1, codigo);				
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {

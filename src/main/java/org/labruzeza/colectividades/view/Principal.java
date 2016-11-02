@@ -33,8 +33,6 @@ import org.labruzeza.colectividades.modelo.Vcaja;
 import org.labruzeza.colectividades.modelo.Venta;
 import org.labruzeza.colectividades.utils.MiPrinterJob;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -176,7 +174,7 @@ public class Principal extends AnchorPane implements EventHandler<ActionEvent>{
 		}
 	}
 	
-	private void generarTicket(){
+	private void generarTicket(){		
 		Venta venta = new Venta();			
 		venta.setCodigo(codigoCaja);
 		int codfactura = 0;
@@ -207,6 +205,7 @@ public class Principal extends AnchorPane implements EventHandler<ActionEvent>{
 		int id= ventaDAO.insert(venta);
 		venta.setIdventa(id);			
 		
+		double precio = 0;
 		Lineadeventa linea = new Lineadeventa();	
 		linea.setIdventa(id);
 		List<Lineadeventa> listOfLineadeventa = new ArrayList<Lineadeventa>();
@@ -221,7 +220,12 @@ public class Principal extends AnchorPane implements EventHandler<ActionEvent>{
 			if(child.getId() != null && child.getId().contains("txtPrecio")){
 				linea.setPrecio(((DecimalField)child).getValue());					
 			}
-			if(linea.getIdproducto() != null && linea.getCantidad() != null && linea.getPrecio() != null){
+			if(child.getId() != null && child.getId().contains("txtInvisiblePrecio")){
+				precio = ((DecimalField)child).getValue().doubleValue();					
+			}
+			
+			if(linea.getIdproducto() != null && linea.getCantidad() != null && linea.getPrecio() != null && precio > 0){
+				linea.setPrecio(new BigDecimal(linea.getCantidad().intValue() * precio));
 				lineadeventaDAO.insert(linea);
 				Producto prod = new Producto();
 				prod.setIdproducto(linea.getIdproducto());
@@ -328,32 +332,21 @@ public class Principal extends AnchorPane implements EventHandler<ActionEvent>{
 				txtPrecioInvisible.setPrefWidth(47);
 				txtPrecioInvisible.setEditable(false);
 				txtPrecioInvisible.setVisible(false);
-				txtPrecioInvisible.setValue(unProd.getPrecio());
-
-				txtCant.focusedProperty().addListener(new ChangeListener<Boolean>()
-				{
-				    @Override
-				    public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue)
-				    {
-				        if (!newPropertyValue)
-				        {
-				        	double subTotal = txtCant.getValue() * txtPrecioInvisible.getValue().doubleValue();
-							txtPrecio.setValue(new BigDecimal(subTotal));
+				txtPrecioInvisible.setValue(unProd.getPrecio());								
 							
-							double total = 0;
-							for (Node child : gridPane.getChildrenUnmodifiable()) {					
-								if(child.getId() != null && child.getId().contains("txtPrecio")){
-									total += ((DecimalField)child).getValue().doubleValue();
-								}
-							}
-							txtTotal.setText(new DecimalFormat("#,###.00").format(total));					
-							txtNroFactura.setText(String.valueOf(ventaDAO.doCountAll(codigoCaja))); 													   
-				        }				       
-				    }
-				});
-				
-							
-				txtCant.setOnAction((ActionEvent e) -> {				
+				txtCant.setOnAction((ActionEvent e) -> {		
+					double subTotal = txtCant.getValue() * txtPrecioInvisible.getValue().doubleValue();
+					txtPrecio.setValue(new BigDecimal(subTotal));
+					
+					double total = 0;
+					for (Node child : gridPane.getChildrenUnmodifiable()) {					
+						if(child.getId() != null && child.getId().contains("txtPrecio")){
+							total += ((DecimalField)child).getValue().doubleValue();							
+						}
+					}
+					txtTotal.setText(new DecimalFormat("#,###.00").format(total));					
+					txtNroFactura.setText(String.valueOf(ventaDAO.doCountAll(codigoCaja))); 
+					
 					 boolean isThisField = false;
 					    for (Node child : gridPane.getChildrenUnmodifiable()) {			    	
 					    	if (isThisField) {
@@ -446,7 +439,7 @@ public class Principal extends AnchorPane implements EventHandler<ActionEvent>{
 				}								
 			}	
 			total++;
-			dTotal += linea.getCantidad() * linea.getPrecio().doubleValue();
+			dTotal += linea.getPrecio().doubleValue();
 		}
 		txtTotal.setText(new DecimalFormat("#,###.00").format(dTotal));
 	}

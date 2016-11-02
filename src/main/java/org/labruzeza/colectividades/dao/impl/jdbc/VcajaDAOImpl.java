@@ -254,7 +254,7 @@ public class VcajaDAOImpl extends GenericDAO<Vcaja> implements VcajaDAO {
 		 
 		try {
 			conn = getConnection();
-			PreparedStatement ps = conn.prepareStatement( "select * from vcaja where codigo = ?" );		
+			PreparedStatement ps = conn.prepareStatement( "select * from vcaja where codigo = ? order by idProducto asc" );		
 			List<Vcaja> array = new ArrayList<Vcaja>();
 			ps.setString(1, codigo);
 			ResultSet rs = ps.executeQuery();

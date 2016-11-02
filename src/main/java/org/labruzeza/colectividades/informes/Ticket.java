@@ -61,10 +61,19 @@ public class Ticket {
 			hFrame = cmp.horizontalList();
 			hFrame.setStyle(stl.style().setBottomBorder(stl.penDotted()));
 			
-			hFrame.add(cmp.text(linea.getProducto().getNombre() + ":").setStyle(stl.style().setFont(stl.font().setFontName("Arial")).setFontSize(10)).setHorizontalAlignment(HorizontalAlignment.RIGHT));
-			hFrame.add(cmp.text(linea.getCantidad()).setStyle(totales).setStyle(stl.style().setLeftPadding(20).setFont(stl.font().setFontName("Arial")).setFontSize(10).bold()).setFixedWidth(cm(1.614)));
-			hFrame.add(cmp.text(linea.getPrecio().doubleValue()).setPattern("#,###.00").setStyle(totales).setStyle(stl.style().setFont(stl.font().setFontName("Arial")).setHorizontalAlignment(HorizontalAlignment.RIGHT).setRightPadding(3).setFontSize(10).bold()).setFixedWidth(cm(1.614)));
-			total += linea.getCantidad() * linea.getPrecio().doubleValue();
+			hFrame.add(cmp.text(linea.getProducto().getNombre() + ":").setStyle(stl.style().setFont(stl.font().setFontName("Arial")).setFontSize(10).setLeftPadding(5)).setHorizontalAlignment(HorizontalAlignment.LEFT));
+			if(linea.getCantidad() > 0){
+				hFrame.add(cmp.text(linea.getCantidad()).setStyle(totales).setStyle(stl.style().setLeftPadding(20).setFont(stl.font().setFontName("Arial")).setFontSize(10).bold()).setFixedWidth(cm(1.614)));	
+			}else{
+				hFrame.add(cmp.text("").setStyle(stl.style().setLeftPadding(20).setFont(stl.font().setFontName("Arial")).setFontSize(10).bold()).setFixedWidth(cm(1.614)));
+			}
+			if(linea.getCantidad() > 0){
+				hFrame.add(cmp.text(linea.getPrecio().doubleValue()).setPattern("#,###.00").setStyle(totales).setStyle(stl.style().setFont(stl.font().setFontName("Arial")).setHorizontalAlignment(HorizontalAlignment.RIGHT).setRightPadding(3).setFontSize(10).bold()).setFixedWidth(cm(1.614)));	
+			}else{
+				hFrame.add(cmp.text("").setStyle(stl.style().setLeftPadding(20).setFont(stl.font().setFontName("Arial")).setFontSize(10).bold()).setFixedWidth(cm(1.614)));
+			}
+			
+			total += linea.getPrecio().doubleValue();
 			vDetail.add(hFrame);
 		}
 		HorizontalListBuilder hFrameTotal = cmp.horizontalList();		
@@ -114,19 +123,22 @@ public class Ticket {
 		sFila2 += "ASOC FAMILIA BASILICATA\n";
 		sFila2 += "ASOC. FAMILIA MOLISANA\n";		
 		sFila2 += "CIRCULO SARDO\n";
-		sFila2 += "ASOC FLIA  #####\n";
+		sFila2 += "ASOC FLIA  VENETA\n";
 		sFila2 += "CENTRO TOSCANO\n";
 
 		String sFila3 = "";
 		sFila3 += "Quienes,  rescatando los valores de solidaridad y de esfuerzo\n";
-		sFila3 += "común, se han unido para poder brindarles un poco de\n";
+		sFila3 += "común, se han unido para poder brindarles un muestra de\n";
 		sFila3 += "nuestras tradiciones ITALIANAS.\n";
-
+		
+		String sFila31 = "";
+		sFila31 += "VISITE NUESTRO STAND DE DULCES Y TORTAS \n**LA DOLCE VITA**\n";
+		
 		String sFila4 = "";
 		sFila4 += "PROMOS:\n\n";
-		sFila4 += "PROMO 1: 1/2 PIZZA MOZZARELLA + GASEOSA O AGUA\n\n";
-		sFila4 += "PROMO 2: PIZZA ENTERA MOZZARELLA + CERVEZA 1 LT\n\n";
-		sFila4 += "PROMO 3: PANINO PORCHETTA + GASEOSA O AGUA\n";
+		sFila4 += "PROMO 1: 1 PIZZA MOZZARELLA + 3 BEBIDAS\n\n";
+		sFila4 += "PROMO 2: 1/2 PIZZA ENTERA MOZZARELLA + 1 BEBIDA\n\n";
+		sFila4 += "PROMO 3: PANINO PORCHETTA + 1 BEBIDA\n";
 
 		String sFila5 = "";
 		sFila5 += "Ayudemos a mantener limpio nuestro Parque\n";
@@ -137,6 +149,7 @@ public class Ticket {
 		vFooter.add(cmp.text(sFila2).setHorizontalAlignment(HorizontalAlignment.CENTER)
 				.setStyle(stl.style().setTopPadding(15).setFont(stl.font().setFontName("Arial").setFontSize(8)).setItalic(true)));
 		vFooter.add(cmp.text(sFila3).setHorizontalAlignment(HorizontalAlignment.CENTER).setStyle(stl.style().setTopPadding(15).setFont(stl.font().setFontName("Arial").setFontSize(8))));
+		vFooter.add(cmp.text(sFila31).setHorizontalAlignment(HorizontalAlignment.CENTER).setStyle(stl.style().setTopPadding(15).setFont(stl.font().setFontName("Arial").setFontSize(9)).setBold(true)));		
 		vFooter.add(cmp.text(sFila4).setHorizontalAlignment(HorizontalAlignment.CENTER)
 				.setStyle(stl.style().setTopPadding(15).setFont(stl.font().setFontName("Arial").setFontSize(8)).setBold(true)));
 		vFooter.add(cmp.text(sFila5).setHorizontalAlignment(HorizontalAlignment.CENTER)
