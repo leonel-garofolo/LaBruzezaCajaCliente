@@ -7,12 +7,11 @@ package org.labruzeza.colectividades.dao;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 
-import org.labruzeza.colectividades.dao.commons.DAOProvider;
-import org.labruzeza.colectividades.dao.commons.DAOTestUtil;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
+import org.labruzeza.colectividades.dao.commons.DAOProvider;
+import org.labruzeza.colectividades.dao.commons.DAOTestUtil;
 import org.labruzeza.colectividades.modelo.Producto;
 
 /**

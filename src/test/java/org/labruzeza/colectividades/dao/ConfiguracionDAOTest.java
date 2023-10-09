@@ -4,15 +4,13 @@
  */
 package org.labruzeza.colectividades.dao;
 
-import java.util.Date;
 import java.sql.SQLException;
 
-import org.labruzeza.colectividades.dao.commons.DAOProvider;
-import org.labruzeza.colectividades.dao.commons.DAOTestUtil;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
+import org.labruzeza.colectividades.dao.commons.DAOProvider;
+import org.labruzeza.colectividades.dao.commons.DAOTestUtil;
 import org.labruzeza.colectividades.modelo.Configuracion;
 
 /**
@@ -36,11 +34,14 @@ public class ConfiguracionDAOTest {
 
 	@BeforeClass
 	public static void init() {
-		DAOTestUtil.initDatabase(CREATE_TABLE) ;
+		if(!DAOTestUtil.existTable("CONFIGURACION")){
+			DAOTestUtil.initDatabase(CREATE_TABLE) ;
+		}
 	}
 
 	@Test
 	public void testDAO() throws SQLException {
+			Assert.assertTrue(DAOTestUtil.existTable("CONFIGURACION"));
     	System.out.println("test ConfiguracionDAO ");
     	ConfiguracionDAO dao = DAOProvider.getDAO(ConfiguracionDAO.class);
 

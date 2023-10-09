@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import org.javafx.controls.customs.*?>
+
+<fx:root type="javafx.scene.layout.BorderPane" xmlns:fx="http://javafx.com/fxml">
+	<center>
+	 <BorderPane BorderPane.alignment="CENTER" >
+	  	<top>
+            <VBox fx:id="vBoxMsg"  BorderPane.alignment="CENTER" />
+        </top>
+	 	<center>
+			<GridPane vgap="5" hgap="5">
+				<padding><Insets top="25" right="25" bottom="10" left="25"/></padding>   
+				<Label text="%Producto.panel.field.idproducto" GridPane.columnIndex="0" GridPane.rowIndex="1"/>   
+				<NumberField fx:id="txtidproducto" editable="false" maxWidth="100" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+				<Label text="%Producto.panel.field.nombre" GridPane.columnIndex="0" GridPane.rowIndex="2"/>   
+ 				<StringField fx:id="txtnombre"  maxWidth="200" GridPane.columnIndex="1" GridPane.rowIndex="2"/>       
+				<Label text="%Producto.panel.field.precio" GridPane.columnIndex="0" GridPane.rowIndex="3"/>   
+				<DecimalField fx:id="txtprecio" maxWidth="100" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+			</GridPane>
+       </center>
+	 </BorderPane>	
+	</center>
+</fx:root> 
