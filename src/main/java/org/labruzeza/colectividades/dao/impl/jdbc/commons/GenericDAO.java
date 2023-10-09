@@ -13,27 +13,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.sql.DataSource;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.labruzeza.colectividades.utils.MiPrinterJob;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Generic abstract class for basic JDBC DAO
- * 
+ *
  * @author Telosys Tools
  *
  * @param <T>
  */
 public abstract class GenericDAO<T> {
-	private static final Logger logger = LogManager.getLogger(GenericDAO.class);
+	private static final Logger logger = LoggerFactory.getLogger(GenericDAO.class);
 	protected final static int INITIAL_POSITION = 1 ;
-	
+
 	/**
 	 * The DataSource providing the connections
 	 */
 	private final DataSource dataSource;
-	
+
 	/**
 	 * Constructor
 	 */
@@ -47,48 +45,48 @@ public abstract class GenericDAO<T> {
 	 * @return
 	 */
 	protected abstract String  getSqlSelect();
-	
+
 	/**
 	 * Returns the SQL INSERT REQUEST to be used to insert the bean in the database
 	 * @return
 	 */
 	protected abstract String  getSqlInsert();
-	
+
 	/**
 	 * Returns the SQL UPDATE REQUEST to be used to update the bean in the database
 	 * @return
 	 */
 	protected abstract String  getSqlUpdate();
-	
+
 	/**
 	 * Returns the SQL DELETE REQUEST to be used to delete the bean from the database
 	 * @return
 	 */
 	protected abstract String  getSqlDelete();
-	
+
 	/**
 	 * Returns the SQL COUNT REQUEST to be used to check if the bean exists in the database
 	 * @return
 	 */
 	protected abstract String  getSqlCount();
-	
+
 	/**
 	 * Returns the SQL COUNT REQUEST to be used to count all the beans present in the database
 	 * @return
 	 */
 	protected abstract String  getSqlCountAll();
-	
+
 	protected abstract String  getSqlLoadAll();
-	
+
 	/**
 	 * Set the primary key value(s) in the given PreparedStatement
 	 * @param ps
-	 * @param i 
+	 * @param i
 	 * @param bean
 	 * @throws SQLException
 	 */
 	protected abstract void    setValuesForPrimaryKey(PreparedStatement ps, int i, T bean) throws SQLException ;
-	
+
 	/**
 	 * Set the bean values in the given PreparedStatement before SQL INSERT
 	 * @param ps
@@ -96,8 +94,8 @@ public abstract class GenericDAO<T> {
 	 * @param bean
 	 * @throws SQLException
 	 */
-	protected abstract void    setValuesForInsert(PreparedStatement ps, int i, T bean) throws SQLException ; 
-	
+	protected abstract void    setValuesForInsert(PreparedStatement ps, int i, T bean) throws SQLException ;
+
 	/**
 	 * Set the bean values in the given PreparedStatement before SQL UPDATE
 	 * @param ps
@@ -105,8 +103,8 @@ public abstract class GenericDAO<T> {
 	 * @param bean
 	 * @throws SQLException
 	 */
-	protected abstract void    setValuesForUpdate(PreparedStatement ps, int i, T bean) throws SQLException ; 
-	
+	protected abstract void    setValuesForUpdate(PreparedStatement ps, int i, T bean) throws SQLException ;
+
 	/**
 	 * Populates the bean attributes from the given ResultSet
 	 * @param rs
@@ -115,7 +113,7 @@ public abstract class GenericDAO<T> {
 	 * @throws SQLException
 	 */
 	protected abstract T       populateBean(ResultSet rs, T bean) throws SQLException ;
-	
+
     //-----------------------------------------------------------------------------------------
 	protected Connection getConnection() throws SQLException {
 		return dataSource.getConnection();
@@ -136,17 +134,17 @@ public abstract class GenericDAO<T> {
 	 * @return true if found and loaded, false if not found
 	 */
 	protected boolean doSelect(T bean) {
- 
+
 		boolean result = false ;
 		Connection conn = null;
- 
+
 		try {
 			conn = getConnection();
 			PreparedStatement ps = conn.prepareStatement( getSqlSelect() );
 			logger.info("Query: " + ps);
 			//--- Set the PRIMARY KEY ( SQL "WHERE ..." )
-			setValuesForPrimaryKey(ps, INITIAL_POSITION, bean); 
-			//--- Execute SQL SELECT 
+			setValuesForPrimaryKey(ps, INITIAL_POSITION, bean);
+			//--- Execute SQL SELECT
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
 				populateBean(rs, bean);
@@ -164,21 +162,21 @@ public abstract class GenericDAO<T> {
 		}
 		return result ;
 	}
-	
-	
+
+
 	protected List<T> doLoad(T bean) {
 		Connection conn = null;
- 
+
 		try {
 			conn = getConnection();
-			PreparedStatement ps = conn.prepareStatement( getSqlSelect() );		
+			PreparedStatement ps = conn.prepareStatement( getSqlSelect() );
 			List<T> array = new ArrayList<T>();
-			//--- Execute SQL SELECT 
+			//--- Execute SQL SELECT
 			ResultSet rs = ps.executeQuery();
 			logger.info("Query: " + ps);
 			while (rs.next()) {
-				array.add(populateBean(rs, bean));				
-			}			
+				array.add(populateBean(rs, bean));
+			}
 			rs.close();
 			ps.close();
 			return array;
@@ -186,22 +184,22 @@ public abstract class GenericDAO<T> {
 			throw new RuntimeException(e);
 		} finally {
 			closeConnection(conn);
-		}		
+		}
 	}
-	
+
 	protected List<T> doLoadAll() {
 		Connection conn = null;
- 
+
 		try {
 			conn = getConnection();
-			PreparedStatement ps = conn.prepareStatement( getSqlSelectAll() );		
+			PreparedStatement ps = conn.prepareStatement( getSqlSelectAll() );
 			List<T> array = new ArrayList<T>();
-			//--- Execute SQL SELECT 
+			//--- Execute SQL SELECT
 			ResultSet rs = ps.executeQuery();
 			logger.info("Query: " + ps);
 			while (rs.next()) {
-				array.add(populateBeanAll(rs));				
-			}			
+				array.add(populateBeanAll(rs));
+			}
 			rs.close();
 			ps.close();
 			return array;
@@ -209,7 +207,7 @@ public abstract class GenericDAO<T> {
 			throw new RuntimeException(e);
 		} finally {
 			closeConnection(conn);
-		}		
+		}
 	}
 
 	//-----------------------------------------------------------------------------------------
@@ -218,13 +216,13 @@ public abstract class GenericDAO<T> {
 	 * @param bean
 	 */
 	protected void doInsert(T bean) {
-		 
+
 		Connection conn = null;
 		try {
 			conn = getConnection();
 			PreparedStatement ps = conn.prepareStatement( getSqlInsert() );
 			//--- Call specific method to set the values to be inserted
-			setValuesForInsert(ps, INITIAL_POSITION, bean); 
+			setValuesForInsert(ps, INITIAL_POSITION, bean);
 			//--- Execute SQL INSERT
 			ps.executeUpdate();
 			ps.close();
@@ -233,8 +231,8 @@ public abstract class GenericDAO<T> {
 		} finally {
 			closeConnection(conn);
 		}
-	}	
-    
+	}
+
 	//-----------------------------------------------------------------------------------------
 	/**
 	 * Inserts the given bean in the database (SQL INSERT) with an auto-incremented columns
@@ -247,11 +245,11 @@ public abstract class GenericDAO<T> {
 			conn = getConnection();
 			PreparedStatement ps = conn.prepareStatement( getSqlInsert(), PreparedStatement.RETURN_GENERATED_KEYS );
 			//--- Call specific method to set the values to be inserted
-			setValuesForInsert(ps, INITIAL_POSITION, bean); 
-			//--- Execute SQL INSERT		
+			setValuesForInsert(ps, INITIAL_POSITION, bean);
+			//--- Execute SQL INSERT
 			logger.info("Query: " + ps);
 			ps.executeUpdate();
-			//--- Retrieve the generated key 
+			//--- Retrieve the generated key
 			ResultSet rs = ps.getGeneratedKeys();
 			if ( rs.next() ) {
 				generatedKey = rs.getLong(1);
@@ -265,8 +263,8 @@ public abstract class GenericDAO<T> {
 			closeConnection(conn);
 		}
 		return generatedKey ;
-	}	
-    
+	}
+
 	//-----------------------------------------------------------------------------------------
 	/**
 	 * Updates the given bean in the database (SQL UPDATE)
@@ -280,7 +278,7 @@ public abstract class GenericDAO<T> {
 			conn = getConnection();
 			PreparedStatement ps = conn.prepareStatement( getSqlUpdate() );
 			//--- Call specific method to set the values to be updated and the primary key
-			setValuesForUpdate(ps, INITIAL_POSITION, bean); 
+			setValuesForUpdate(ps, INITIAL_POSITION, bean);
 			//--- Execute SQL UPDATE
 			logger.info("Query: " + ps);
 			result = ps.executeUpdate();
@@ -291,7 +289,7 @@ public abstract class GenericDAO<T> {
 			closeConnection(conn);
 		}
 		return result ;
-	}	
+	}
 	//-----------------------------------------------------------------------------------------
 	/**
 	 * Deletes the given bean in the database (SQL DELETE)
@@ -301,12 +299,12 @@ public abstract class GenericDAO<T> {
 	protected int doDelete(T bean) {
 		int result = 0 ;
 		Connection conn = null;
- 
+
 		try {
 			conn = getConnection();
 			PreparedStatement ps = conn.prepareStatement( getSqlDelete() );
 			//--- Set the PRIMARY KEY ( SQL "WHERE ..." )
-			setValuesForPrimaryKey(ps, INITIAL_POSITION, bean); 
+			setValuesForPrimaryKey(ps, INITIAL_POSITION, bean);
 			//--- Execute SQL DELETE
 			result = ps.executeUpdate();
 			ps.close();
@@ -317,7 +315,7 @@ public abstract class GenericDAO<T> {
 		}
 		return result ;
 	}
-	
+
 	//-----------------------------------------------------------------------------------------
 	/**
 	 * Checks if the given bean exists in the database (SQL SELECT COUNT(*) )
@@ -328,13 +326,13 @@ public abstract class GenericDAO<T> {
 
 		long result = 0 ;
 		Connection conn = null;
- 
+
 		try {
 			conn = getConnection();
 			PreparedStatement ps = conn.prepareStatement( getSqlCount() );
 			//--- Set the PRIMARY KEY ( SQL "WHERE ..." )
-			setValuesForPrimaryKey(ps, INITIAL_POSITION, bean); 
-			//--- Execute SQL COUNT 
+			setValuesForPrimaryKey(ps, INITIAL_POSITION, bean);
+			//--- Execute SQL COUNT
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
 				result = rs.getLong(1);
@@ -374,7 +372,7 @@ public abstract class GenericDAO<T> {
 		}
 		return result ;
 	}
-	
+
 	//-----------------------------------------------------------------------------------------
 	protected void setValue(PreparedStatement ps, int i, String value) throws SQLException {
 		ps.setString(i, value);
@@ -385,7 +383,7 @@ public abstract class GenericDAO<T> {
 			ps.setDate(i, new java.sql.Date(value.getTime())); // Convert util.Date to sql.Date
 		}
 		else {
-			ps.setNull(i, java.sql.Types.DATE); 
+			ps.setNull(i, java.sql.Types.DATE);
 		}
 	}
 	//-----------------------------------------------------------------------------------------
@@ -442,7 +440,7 @@ public abstract class GenericDAO<T> {
 			ps.setFloat(i, value.floatValue());
 		}
 		else {
-			ps.setNull(i, java.sql.Types.FLOAT); 
+			ps.setNull(i, java.sql.Types.FLOAT);
 		}
 	}
 	//-----------------------------------------------------------------------------------------
@@ -451,7 +449,7 @@ public abstract class GenericDAO<T> {
 			ps.setDouble(i, value.doubleValue());
 		}
 		else {
-			ps.setNull(i, java.sql.Types.DOUBLE); 
+			ps.setNull(i, java.sql.Types.DOUBLE);
 		}
 	}
 	//-----------------------------------------------------------------------------------------
@@ -467,7 +465,7 @@ public abstract class GenericDAO<T> {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	protected abstract T  populateBeanAll(ResultSet rs) throws SQLException ;
 }
 

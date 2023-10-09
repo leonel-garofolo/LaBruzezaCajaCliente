@@ -10,12 +10,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.labruzeza.colectividades.dao.VentaDAO;
 import org.labruzeza.colectividades.dao.impl.jdbc.commons.GenericDAO;
 import org.labruzeza.colectividades.modelo.Venta;
-import org.labruzeza.colectividades.utils.MiPrinterJob;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Venta DAO implementation 
@@ -24,7 +23,7 @@ import org.labruzeza.colectividades.utils.MiPrinterJob;
  *
  */
 public class VentaDAOImpl extends GenericDAO<Venta> implements VentaDAO {
-	private static final Logger logger = LogManager.getLogger(VentaDAOImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger(VentaDAOImpl.class);
 	
 	private final static String SQL_SELECT = 
 		"select idventa, codigo, fecha, codFactura from venta where idventa = ?";
@@ -254,7 +253,7 @@ public class VentaDAOImpl extends GenericDAO<Venta> implements VentaDAO {
 			conn = getConnection();
 			PreparedStatement ps = conn.prepareStatement("select max(codFactura) as codFactura from venta where codigo = ?");
 			ps.setString(1, codigo);		
-			logger.info(ps);
+			logger.info(ps.toString());
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {				
 				result = (rs.getLong(1) + 1);

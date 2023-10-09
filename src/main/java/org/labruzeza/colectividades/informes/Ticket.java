@@ -13,8 +13,8 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.labruzeza.colectividades.modelo.Configuracion;
 import org.labruzeza.colectividades.modelo.Lineadeventa;
 import org.labruzeza.colectividades.modelo.Venta;
@@ -34,7 +34,7 @@ import net.sf.jasperreports.engine.util.DefaultFormatFactory;
  * @author Ricardo Mariaca (dynamicreports@gmail.com)
  */
 public class Ticket {
-	private static final Logger logger = LogManager.getLogger(Ticket.class);
+	private static final Logger logger = LoggerFactory.getLogger(Ticket.class);
 	BigDecimal itemCost=new BigDecimal(BigInteger.ZERO,  2);
      
 	public Ticket(){
