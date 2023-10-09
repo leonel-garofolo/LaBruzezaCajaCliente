@@ -297,7 +297,7 @@ public class VentaDAOImpl extends GenericDAO<Venta> implements VentaDAO {
 		Connection conn = null;
 		try {
 			conn = getConnection();
-			PreparedStatement ps = conn.prepareStatement("select count(idVenta) from venta where codigo= ? order by idVenta desc");
+			PreparedStatement ps = conn.prepareStatement("select count(idVenta) from venta where codigo= ? order by idVenta desc group by idVenta");
 			//--- Execute SQL COUNT (without where clause)						
 			ps.setString(1, codigo);
 			ResultSet rs = ps.executeQuery();

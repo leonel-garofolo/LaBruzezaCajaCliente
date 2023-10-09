@@ -1,32 +1,115 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.scene.effect.*?>
-<?import javafx.scene.control.*?>
-<?import java.lang.*?>
-<?import javafx.scene.layout.*?>
-<?import org.javafx.controls.customs.*?>
-
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import org.javafx.controls.customs.NumberField?>
+<?import org.javafx.controls.customs.StringField?>
 <fx:root prefHeight="665.0" prefWidth="572.0" type="javafx.scene.layout.BorderPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+	<top>
+		<VBox fx:id="vBoxMsg" BorderPane.alignment="CENTER" />
+	</top>
 	<center>
-	 <BorderPane BorderPane.alignment="CENTER">
-	  	<top>
-            <VBox fx:id="vBoxMsg" BorderPane.alignment="CENTER" />
-        </top>
-	 	<center>
-			<GridPane hgap="5" vgap="5">
-				<padding><Insets bottom="10" left="25" right="25" top="25" /></padding>
-  				 <children>   
-	   				<Label text="%Configuracion.panel.field.idconfiguracion" GridPane.columnIndex="0" GridPane.rowIndex="1" />   
-	   				<NumberField fx:id="txtidconfiguracion" disable="true" maxWidth="100" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-	   				<Label text="%Configuracion.panel.field.nrocaja" GridPane.rowIndex="4" />   
-	   				<NumberField fx:id="txtnrocaja" maxValue="1" maxWidth="100" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-	   				<Label text="%Configuracion.panel.field.letracaja" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-	                <StringField fx:id="txtTipoCaja" maxValue="1" GridPane.columnIndex="3" GridPane.rowIndex="4" />          				
-   				</children>                     
-			</GridPane>
-       </center>
-	 </BorderPane>	
+		<GridPane hgap="5" prefHeight="364.0" prefWidth="572.0" vgap="5">
+			<padding><Insets bottom="10" left="25" right="25" top="25" /></padding>
+			<children>
+				<Label text="%Configuracion.panel.field.idconfiguracion" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+				<NumberField fx:id="txtidconfiguracion" disable="true" maxWidth="100" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+				<Label text="%Configuracion.panel.field.nrocaja" GridPane.rowIndex="4" />
+				<NumberField fx:id="txtnrocaja" maxValue="1" maxWidth="100" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+				<Label text="%Configuracion.panel.field.letracaja" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+				<StringField fx:id="txtTipoCaja" maxValue="1" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+				<Label prefHeight="17.0" prefWidth="39.0" text="%Configuracion.panel.field.fecha" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+				<DatePicker fx:id="txtFecha" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+				<Label text="%Configuracion.panel.field.nrofactura" GridPane.rowIndex="5" />
+				<NumberField fx:id="txtnrofactura" maxWidth="100" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+			</children>
+			<columnConstraints>
+				<ColumnConstraints />
+				<ColumnConstraints />
+				<ColumnConstraints />
+				<ColumnConstraints />
+			</columnConstraints>
+			<rowConstraints>
+				<RowConstraints />
+				<RowConstraints />
+				<RowConstraints />
+				<RowConstraints />
+				<RowConstraints />
+				<RowConstraints minHeight="10.0" prefHeight="30.0" />
+			</rowConstraints>
+		</GridPane>
+
 	</center>
+	<bottom>
+		<TabPane prefHeight="509.0" prefWidth="572.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+			<tabs>
+				<Tab text="Titulo">
+					<content>
+						<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+							<children>
+								<TextArea fx:id="areaTitulo" prefHeight="251.0" prefWidth="572.0" />
+							</children></AnchorPane>
+					</content>
+				</Tab>
+				<Tab text="Subtitulo">
+					<content>
+						<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+							<children>
+								<TextArea fx:id="areaSubtitulo" prefHeight="251.0" prefWidth="572.0" />
+							</children></AnchorPane>
+					</content>
+				</Tab>
+				<Tab text="Parrafo Dirección">
+					<content>
+						<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+							<children>
+								<TextArea fx:id="areaParrafoDireccion" prefHeight="251.0" prefWidth="572.0" />
+							</children></AnchorPane>
+					</content>
+				</Tab>
+				<Tab text="Parrafo Organización">
+					<content>
+						<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+							<children>
+								<TextArea fx:id="areaParrafoOrganizacion" prefHeight="251.0" prefWidth="572.0" />
+							</children></AnchorPane>
+					</content>
+				</Tab>
+				<Tab text="Parrafo Detalle">
+					<content>
+						<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+							<children>
+								<TextArea fx:id="areaParrafoDetalle" prefHeight="251.0" prefWidth="572.0" />
+							</children></AnchorPane>
+					</content>
+				</Tab>
+				<Tab text="Parrafo Promos">
+					<content>
+						<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+							<children>
+								<TextArea fx:id="areaParrafoPromos" prefHeight="251.0" prefWidth="572.0" />
+							</children></AnchorPane>
+					</content>
+				</Tab>
+				<Tab text="Parrafo Mensaje">
+					<content>
+						<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+							<children>
+								<TextArea fx:id="areaParrafoMensaje" prefHeight="251.0" prefWidth="572.0" />
+							</children></AnchorPane>
+					</content>
+				</Tab>
+			</tabs>
+		</TabPane>
+	</bottom>
 </fx:root>

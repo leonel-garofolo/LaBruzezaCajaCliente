@@ -10,29 +10,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.javafx.controls.customs.DecimalField;
-import org.javafx.controls.customs.NumberField;
-import org.labruzeza.colectividades.dao.ConfiguracionDAO;
-import org.labruzeza.colectividades.dao.LineadeventaDAO;
-import org.labruzeza.colectividades.dao.ProductoDAO;
-import org.labruzeza.colectividades.dao.VcajaDAO;
-import org.labruzeza.colectividades.dao.VentaDAO;
-import org.labruzeza.colectividades.dao.impl.jdbc.ConfiguracionDAOImpl;
-import org.labruzeza.colectividades.dao.impl.jdbc.LineadeventaDAOImpl;
-import org.labruzeza.colectividades.dao.impl.jdbc.ProductoDAOImpl;
-import org.labruzeza.colectividades.dao.impl.jdbc.VcajaDAOImpl;
-import org.labruzeza.colectividades.dao.impl.jdbc.VentaDAOImpl;
-import org.labruzeza.colectividades.informes.CajaDiaria;
-import org.labruzeza.colectividades.informes.Ticket;
-import org.labruzeza.colectividades.modelo.Configuracion;
-import org.labruzeza.colectividades.modelo.Lineadeventa;
-import org.labruzeza.colectividades.modelo.Producto;
-import org.labruzeza.colectividades.modelo.Vcaja;
-import org.labruzeza.colectividades.modelo.Venta;
-import org.labruzeza.colectividades.utils.MiPrinterJob;
-
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -58,9 +35,31 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import net.sf.jasperreports.engine.JasperPrint;
+import org.javafx.controls.customs.DecimalField;
+import org.javafx.controls.customs.NumberField;
+import org.labruzeza.colectividades.dao.ConfiguracionDAO;
+import org.labruzeza.colectividades.dao.LineadeventaDAO;
+import org.labruzeza.colectividades.dao.ProductoDAO;
+import org.labruzeza.colectividades.dao.VcajaDAO;
+import org.labruzeza.colectividades.dao.VentaDAO;
+import org.labruzeza.colectividades.dao.impl.jdbc.ConfiguracionDAOImpl;
+import org.labruzeza.colectividades.dao.impl.jdbc.LineadeventaDAOImpl;
+import org.labruzeza.colectividades.dao.impl.jdbc.ProductoDAOImpl;
+import org.labruzeza.colectividades.dao.impl.jdbc.VcajaDAOImpl;
+import org.labruzeza.colectividades.dao.impl.jdbc.VentaDAOImpl;
+import org.labruzeza.colectividades.informes.CajaDiaria;
+import org.labruzeza.colectividades.informes.Ticket;
+import org.labruzeza.colectividades.modelo.Configuracion;
+import org.labruzeza.colectividades.modelo.Lineadeventa;
+import org.labruzeza.colectividades.modelo.Producto;
+import org.labruzeza.colectividades.modelo.Vcaja;
+import org.labruzeza.colectividades.modelo.Venta;
+import org.labruzeza.colectividades.utils.PrinterJob;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Principal extends AnchorPane implements EventHandler<ActionEvent>{
-	private static final Logger logger = LogManager.getLogger(MiPrinterJob.class);
+	private static final Logger logger = LoggerFactory.getLogger(Principal.class);
 	 
 	private ProductoDAO productoDAO;
 	private VentaDAO ventaDAO;
@@ -246,7 +245,7 @@ public class Principal extends AnchorPane implements EventHandler<ActionEvent>{
 		JasperPrint print = ticket.generar(configuracion, venta);
 		if(print != null){
 			logger.info("send PDF: " + id);
-			MiPrinterJob.sendPDF(print);	
+			PrinterJob.sendPDF(print);
 			loadPage();
 		}else{
 			Alert alert = new Alert(AlertType.ERROR);
@@ -263,7 +262,7 @@ public class Principal extends AnchorPane implements EventHandler<ActionEvent>{
 		JasperPrint print = iCaja.generar(configuracion, caja, cantVentas);		
 		if(print != null){
 			logger.info("send PDF: " + "");
-			MiPrinterJob.sendPDF(print);	
+			PrinterJob.sendPDF(print);
 			loadPage();
 		}else{
 			Alert alert = new Alert(AlertType.ERROR);
