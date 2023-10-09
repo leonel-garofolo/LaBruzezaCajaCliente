@@ -21,13 +21,13 @@ import org.labruzeza.colectividades.dao.impl.jdbc.commons.GenericDAO;
 public class ConfiguracionDAOImpl extends GenericDAO<Configuracion> implements ConfiguracionDAO {
 
 	private final static String SQL_SELECT = 
-		"select idConfiguracion, nroCaja, tipoCaja from configuracion where idConfiguracion = ?";
+		"select idConfiguracion, fecha, nroCaja, tipoCaja, nroFactura, titulo, subTitulo, parrafoDetalle, parrafoDireccion, parrafoOrganizacion, parrafoPromos, parrafoMensaje from configuracion where idConfiguracion = ?";
 
 	private final static String SQL_INSERT = 
-		"insert into configuracion ( nroCaja, tipoCaja ) values ( ?, ? )";
+		"insert into configuracion ( nroCaja, fecha, tipoCaja, nroFactura, titulo, subTitulo, parrafoDetalle, parrafoDireccion, parrafoOrganizacion, parrafoPromos, parrafoMensaje ) values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
 
 	private final static String SQL_UPDATE = 
-		"update configuracion set nroCaja = ?, tipoCaja = ? where idConfiguracion = ?";
+		"update configuracion set nroCaja = ?, tipoCaja = ?, fecha = ?, nroFactura=?, titulo=?, subTitulo=?, parrafoDetalle=?, parrafoDireccion=?, parrafoOrganizacion=?, parrafoPromos=?, parrafoMensaje=? where idConfiguracion = ?";
 
 	private final static String SQL_DELETE = 
 		"delete from configuracion where idConfiguracion = ?";
@@ -64,7 +64,6 @@ public class ConfiguracionDAOImpl extends GenericDAO<Configuracion> implements C
 	 * @param idconfiguracion;
 	 * @return the bean found or null if not found 
 	 */
-	@Override
 	public Configuracion find( Integer idconfiguracion ) {
 		Configuracion configuracion = newInstanceWithPrimaryKey( idconfiguracion ) ;
 		if ( super.doSelect(configuracion) ) {
@@ -82,7 +81,6 @@ public class ConfiguracionDAOImpl extends GenericDAO<Configuracion> implements C
 	 * @param configuracion
 	 * @return true if found, false if not found
 	 */
-	@Override
 	public boolean load( Configuracion configuracion ) {
 		return super.doSelect(configuracion) ;
 	}
@@ -91,7 +89,6 @@ public class ConfiguracionDAOImpl extends GenericDAO<Configuracion> implements C
 	 * Inserts the given bean in the database 
 	 * @param configuracion
 	 */
-	@Override
 	public Integer insert(Configuracion configuracion) {
 		Long key = super.doInsertAutoIncr(configuracion);
 		return key.intValue();
@@ -103,7 +100,6 @@ public class ConfiguracionDAOImpl extends GenericDAO<Configuracion> implements C
 	 * @param configuracion
 	 * @return
 	 */
-	@Override
 	public int update(Configuracion configuracion) {
 		return super.doUpdate(configuracion);
 	}	
@@ -114,7 +110,6 @@ public class ConfiguracionDAOImpl extends GenericDAO<Configuracion> implements C
 	 * @param idconfiguracion;
 	 * @return
 	 */
-	@Override
 	public int delete( Integer idconfiguracion ) {
 		Configuracion configuracion = newInstanceWithPrimaryKey( idconfiguracion ) ;
 		return super.doDelete(configuracion);
@@ -126,7 +121,6 @@ public class ConfiguracionDAOImpl extends GenericDAO<Configuracion> implements C
 	 * @param configuracion
 	 * @return
 	 */
-	@Override
 	public int delete( Configuracion configuracion ) {
 		return super.doDelete(configuracion);
 	}
@@ -137,7 +131,6 @@ public class ConfiguracionDAOImpl extends GenericDAO<Configuracion> implements C
 	 * @param idconfiguracion;
 	 * @return
 	 */
-	@Override
 	public boolean exists( Integer idconfiguracion ) {
 		Configuracion configuracion = newInstanceWithPrimaryKey( idconfiguracion ) ;
 		return super.doExists(configuracion);
@@ -148,7 +141,6 @@ public class ConfiguracionDAOImpl extends GenericDAO<Configuracion> implements C
 	 * @param configuracion
 	 * @return
 	 */
-	@Override
 	public boolean exists( Configuracion configuracion ) {
 		return super.doExists(configuracion);
 	}
@@ -158,7 +150,6 @@ public class ConfiguracionDAOImpl extends GenericDAO<Configuracion> implements C
 	 * Counts all the records present in the database
 	 * @return
 	 */
-	@Override
 	public long count() {
 		return super.doCountAll();
 	}
@@ -210,7 +201,18 @@ public class ConfiguracionDAOImpl extends GenericDAO<Configuracion> implements C
 		if ( rs.wasNull() ) { configuracion.setIdconfiguracion(null); }; // not primitive number => keep null value if any
 		configuracion.setNrocaja(rs.getInt("nroCaja")); // java.lang.Integer
 		if ( rs.wasNull() ) { configuracion.setNrocaja(null); }; // not primitive number => keep null value if any
-		configuracion.setTipocaja(rs.getString("tipoCaja")); // java.lang.String
+		configuracion.setTipocaja(rs.getString("tipoCaja")); // java.lang.String		
+		if ( rs.wasNull() ) { configuracion.setFecha(null); }; // not primitive number => keep null value if any
+		configuracion.setFecha(rs.getDate("fecha")); // java.lang.String
+		configuracion.setNrofactura(rs.getInt("nroFactura")); 		
+		configuracion.setTitulo(rs.getString("titulo"));
+		configuracion.setSubTitulo(rs.getString("subTitulo"));
+		configuracion.setParrafoDetalle(rs.getString("parrafoDetalle"));
+		configuracion.setParrafoDirreccion(rs.getString("parrafoDireccion"));
+		configuracion.setParrafoOrganizacion(rs.getString("parrafoOrganizacion"));		
+		configuracion.setParrafoPromos(rs.getString("parrafoPromos"));
+		configuracion.setParrafoMensaje(rs.getString("parrafoMensaje"));
+		
 		return configuracion ;
 	}
 
@@ -221,7 +223,18 @@ public class ConfiguracionDAOImpl extends GenericDAO<Configuracion> implements C
 		//--- Set PRIMARY KEY and DATA from bean to PreparedStatement ( SQL "SET x=?, y=?, ..." )
 		// "idConfiguracion" is auto-incremented => no set in insert		
 		setValue(ps, i++, configuracion.getNrocaja() ) ; // "nroCaja" : java.lang.Integer
+		setValue(ps, i++, configuracion.getFecha()) ; 
 		setValue(ps, i++, configuracion.getTipocaja() ) ; // "tipoCaja" : java.lang.String
+		setValue(ps, i++, configuracion.getNrofactura() ) ;
+		
+		setValue(ps, i++, configuracion.getTitulo() ) ;
+		setValue(ps, i++, configuracion.getSubTitulo() ) ;
+		setValue(ps, i++, configuracion.getParrafoDetalle() ) ;
+		setValue(ps, i++, configuracion.getParrafoDirreccion() ) ;
+		setValue(ps, i++, configuracion.getParrafoOrganizacion() ) ;	
+		setValue(ps, i++, configuracion.getParrafoPromos() ) ;	
+		setValue(ps, i++, configuracion.getParrafoMensaje()) ;	
+		
 	}
 
     //----------------------------------------------------------------------
@@ -232,7 +245,18 @@ public class ConfiguracionDAOImpl extends GenericDAO<Configuracion> implements C
 		setValue(ps, i++, configuracion.getNrocaja() ) ; // "nroCaja" : java.lang.Integer
 		setValue(ps, i++, configuracion.getTipocaja() ) ; // "tipoCaja" : java.lang.String
 		//--- Set PRIMARY KEY from bean to PreparedStatement ( SQL "WHERE key=?, ..." )
+		setValue(ps, i++, configuracion.getFecha()) ; // "fecha" : java.lang.Date
+		setValue(ps, i++, configuracion.getNrofactura() ) ;		
+		setValue(ps, i++, configuracion.getTitulo() ) ;
+		setValue(ps, i++, configuracion.getSubTitulo() ) ;
+		setValue(ps, i++, configuracion.getParrafoDetalle() ) ;
+		setValue(ps, i++, configuracion.getParrafoDirreccion() ) ;
+		setValue(ps, i++, configuracion.getParrafoOrganizacion() ) ;
+		setValue(ps, i++, configuracion.getParrafoPromos() ) ;	
+		setValue(ps, i++, configuracion.getParrafoMensaje()) ;	
+		
 		setValue(ps, i++, configuracion.getIdconfiguracion() ) ; // "idConfiguracion" : java.lang.Integer
+		
 	}
 
 	@Override

@@ -5,6 +5,7 @@
 package org.labruzeza.colectividades.modelo;
 
 import java.io.Serializable;
+import java.util.Date;
 
 
 /**
@@ -28,11 +29,23 @@ public class Configuracion implements Serializable {
     //----------------------------------------------------------------------    
     // DB : nroCaja INT 
     private Integer nrocaja;
+    
+    // DB : nroCaja INT 
+    private Integer nrofactura;    
 
     // DB : tipoCaja VARCHAR 
     private String tipocaja;
+    
+    // DB : tipoCaja DATE 
+    private Date fecha;
 
-
+    private String titulo;
+    private String subTitulo;
+    private String parrafoDirreccion;
+    private String parrafoOrganizacion;
+    private String parrafoDetalle;
+    private String parrafoPromos;
+    private String parrafoMensaje;  
 
     //----------------------------------------------------------------------
     // GETTER & SETTER FOR THE KEY FIELD
@@ -62,9 +75,79 @@ public class Configuracion implements Serializable {
     public String getTipocaja() {
         return this.tipocaja;
     }
+        
+    public Date getFecha() {
+		return fecha;
+	}
 
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
+	}
+	public Integer getNrofactura() {
+		return nrofactura;
+	}
 
-    //----------------------------------------------------------------------
+	public void setNrofactura(Integer nrofactura) {
+		this.nrofactura = nrofactura;
+	}	
+	
+	public String getTitulo() {
+		return titulo;
+	}
+
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
+
+	public String getSubTitulo() {
+		return subTitulo;
+	}
+
+	public void setSubTitulo(String subTitulo) {
+		this.subTitulo = subTitulo;
+	}
+
+	public String getParrafoDirreccion() {
+		return parrafoDirreccion;
+	}
+
+	public void setParrafoDirreccion(String parrafoDirreccion) {
+		this.parrafoDirreccion = parrafoDirreccion;
+	}
+
+	public String getParrafoDetalle() {
+		return parrafoDetalle;
+	}
+
+	public void setParrafoDetalle(String parrafoDetalle) {
+		this.parrafoDetalle = parrafoDetalle;
+	}
+
+	public String getParrafoOrganizacion() {
+		return parrafoOrganizacion;
+	}
+
+	public void setParrafoOrganizacion(String parrafoOrganizacion) {
+		this.parrafoOrganizacion = parrafoOrganizacion;
+	}
+
+	public String getParrafoPromos() {
+		return parrafoPromos;
+	}
+
+	public void setParrafoPromos(String parrafoPromos) {
+		this.parrafoPromos = parrafoPromos;
+	}
+
+	public String getParrafoMensaje() {
+		return parrafoMensaje;
+	}
+
+	public void setParrafoMensaje(String parrafoMensaje) {
+		this.parrafoMensaje = parrafoMensaje;
+	}
+
+	//----------------------------------------------------------------------
     // toString METHOD
     //----------------------------------------------------------------------
     public String toString() { 

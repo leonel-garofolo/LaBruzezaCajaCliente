@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -30,8 +31,10 @@ import org.labruzeza.colectividades.modelo.Lineadeventa;
 import org.labruzeza.colectividades.modelo.Producto;
 import org.labruzeza.colectividades.modelo.Vcaja;
 import org.labruzeza.colectividades.modelo.Venta;
-import org.labruzeza.colectividades.utils.PrinterJob;
+import org.labruzeza.colectividades.utils.MiPrinterJob;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -57,7 +60,7 @@ import javafx.stage.WindowEvent;
 import net.sf.jasperreports.engine.JasperPrint;
 
 public class Principal extends AnchorPane implements EventHandler<ActionEvent>{
-	private static final Logger logger = LogManager.getLogger(PrinterJob.class);
+	private static final Logger logger = LogManager.getLogger(MiPrinterJob.class);
 	 
 	private ProductoDAO productoDAO;
 	private VentaDAO ventaDAO;
@@ -173,7 +176,7 @@ public class Principal extends AnchorPane implements EventHandler<ActionEvent>{
 		}
 	}
 	
-	private void generarTicket(){
+	private void generarTicket(){		
 		Venta venta = new Venta();			
 		venta.setCodigo(codigoCaja);
 		int codfactura = 0;
@@ -186,10 +189,25 @@ public class Principal extends AnchorPane implements EventHandler<ActionEvent>{
 			alert.showAndWait();
 			return;
 		}				
-		venta.setCodfactura(codfactura);
+		venta.setCodfactura(codfactura);		
+		
+		Calendar calendarA = Calendar.getInstance();
+		calendarA.setTime(configuracion.getFecha());
+
+		Calendar calendarB = Calendar.getInstance();
+		calendarB.setTime(new Date());
+
+		calendarA.set(Calendar.HOUR_OF_DAY, calendarB.get(Calendar.HOUR_OF_DAY));
+		calendarA.set(Calendar.MINUTE, calendarB.get(Calendar.MINUTE));
+		calendarA.set(Calendar.SECOND, calendarB.get(Calendar.SECOND));
+		calendarA.set(Calendar.MILLISECOND, calendarB.get(Calendar.MILLISECOND));
+
+		Date result = calendarA.getTime();
+		venta.setFecha(result);
 		int id= ventaDAO.insert(venta);
 		venta.setIdventa(id);			
 		
+		double precio = 0;
 		Lineadeventa linea = new Lineadeventa();	
 		linea.setIdventa(id);
 		List<Lineadeventa> listOfLineadeventa = new ArrayList<Lineadeventa>();
@@ -204,7 +222,12 @@ public class Principal extends AnchorPane implements EventHandler<ActionEvent>{
 			if(child.getId() != null && child.getId().contains("txtPrecio")){
 				linea.setPrecio(((DecimalField)child).getValue());					
 			}
-			if(linea.getIdproducto() != null && linea.getCantidad() != null && linea.getPrecio() != null){
+			if(child.getId() != null && child.getId().contains("txtInvisiblePrecio")){
+				precio = ((DecimalField)child).getValue().doubleValue();					
+			}
+			
+			if(linea.getIdproducto() != null && linea.getCantidad() != null && linea.getPrecio() != null && precio > 0){
+				linea.setPrecio(new BigDecimal(linea.getCantidad().intValue() * precio));
 				lineadeventaDAO.insert(linea);
 				Producto prod = new Producto();
 				prod.setIdproducto(linea.getIdproducto());
@@ -220,10 +243,10 @@ public class Principal extends AnchorPane implements EventHandler<ActionEvent>{
 		venta.setListOfLineadeventa(listOfLineadeventa);
 		Ticket ticket = new Ticket();
 		logger.info("imprimiendo Ticket: " + id);
-		JasperPrint print = ticket.generar(venta);
+		JasperPrint print = ticket.generar(configuracion, venta);
 		if(print != null){
 			logger.info("send PDF: " + id);
-			PrinterJob.sendPDF(print);	
+			MiPrinterJob.sendPDF(print);	
 			loadPage();
 		}else{
 			Alert alert = new Alert(AlertType.ERROR);
@@ -237,10 +260,10 @@ public class Principal extends AnchorPane implements EventHandler<ActionEvent>{
 		List<Vcaja> caja =vcajaDAO.load(codigoCaja);
 		CajaDiaria iCaja = new CajaDiaria();
 		int cantVentas = ventaDAO.countVenta(codigoCaja);
-		JasperPrint print = iCaja.generar(caja, cantVentas);		
+		JasperPrint print = iCaja.generar(configuracion, caja, cantVentas);		
 		if(print != null){
 			logger.info("send PDF: " + "");
-			PrinterJob.sendPDF(print);	
+			MiPrinterJob.sendPDF(print);	
 			loadPage();
 		}else{
 			Alert alert = new Alert(AlertType.ERROR);
@@ -268,7 +291,7 @@ public class Principal extends AnchorPane implements EventHandler<ActionEvent>{
 	
 		if(configuracionDAO.load(configuracion)){
 			SimpleDateFormat format = new SimpleDateFormat("dd");
-			codigoCaja = format.format(new Date()) + configuracion.getNrocaja() + configuracion.getTipocaja();
+			codigoCaja = format.format(configuracion.getFecha()) + configuracion.getNrocaja() + configuracion.getTipocaja();
 			lblCaja.setFont(new Font("MS Sans Serif", 18));		
 			lblCaja.setStyle(""	       			       
 			        + "-fx-font-weight: bold;"
@@ -280,13 +303,13 @@ public class Principal extends AnchorPane implements EventHandler<ActionEvent>{
 			int i= 1;
 			for(Producto unProd: data){
 				Label lblProd = new Label(unProd.getNombre() + ":");
-				lblProd.setFont(new Font("MS Sans Serif", 14));			
+				lblProd.setFont(new Font("MS Sans Serif", 12));			
 				NumberField txtCant = new NumberField();
 				txtCant.setId("txtCant" + i);
 				txtCant.setPrefWidth(47);
 				txtCant.setMaxValue(2);
 				txtCant.setValue(0);			
-				txtCant.setStyle("-fx-font-size: 14px;");
+				txtCant.setStyle("-fx-font-size: 12px;");
 				
 				DecimalField txtPrecio = new DecimalField();
 				txtPrecio.setId("txtPrecio" + i);
@@ -295,7 +318,7 @@ public class Principal extends AnchorPane implements EventHandler<ActionEvent>{
 				txtPrecio.setFocusTraversable(false);
 				txtPrecio.setValue(new BigDecimal(0));
 				txtPrecio.setStyle(""
-				        + "-fx-font-size: 14px;"
+				        + "-fx-font-size: 12px;"
 				        + "-fx-font-weight: bold;"			        
 				        + "-fx-text-fill: red;");
 				
@@ -311,53 +334,22 @@ public class Principal extends AnchorPane implements EventHandler<ActionEvent>{
 				txtPrecioInvisible.setPrefWidth(47);
 				txtPrecioInvisible.setEditable(false);
 				txtPrecioInvisible.setVisible(false);
-				txtPrecioInvisible.setValue(unProd.getPrecio());			
+				txtPrecioInvisible.setValue(unProd.getPrecio());								
 							
-				txtCant.setOnAction((ActionEvent e) -> {				
-					double subTotal = txtCant.getValue() * txtPrecioInvisible.getValue().doubleValue();
-					txtPrecio.setValue(new BigDecimal(subTotal));
-					
-					double total = 0;
-					for (Node child : this.gridPane.getChildrenUnmodifiable()) {					
-						if(child.getId() != null && child.getId().contains("txtPrecio")){
-							total += ((DecimalField)child).getValue().doubleValue();
-						}
-					}
-					txtTotal.setText(new DecimalFormat("#,###.00").format(total));					
-					txtNroFactura.setText(String.valueOf(ventaDAO.doCountAll(codigoCaja))); 
-					
-				    boolean isThisField = false;
-				    for (Node child : this.gridPane.getChildrenUnmodifiable()) {			    	
-				    	if (isThisField) {
-
-				            //This code will only execute after the current Node
-				            if (child.isFocusTraversable() && !child.isDisabled()) {
-				            	if(child.getClass().equals(NumberField.class) && ((NumberField)child).isEditable()){
-				            		 child.requestFocus();
-
-						             //Reset check to prevent later Node from pulling focus
-						             isThisField = false;
-				            	}
-				            }
-				        } else {
-
-				            //Check if this is the current Node
-				            isThisField = child.equals(txtCant);
-				        }
-				    }
-				  //Check if current Node still has focus
-				    boolean focusChanged = !txtCant.isFocused();
-				    if (!focusChanged) {
-				        for (Node child : this.gridPane.getChildrenUnmodifiable()) {
-				            if (!focusChanged && child.isFocusTraversable() && !child.isDisabled()) {
-				                child.requestFocus();
-
-				                //Update to prevent later Node from pulling focus
-				                focusChanged = true;
-				            }
-				        }
-				    }
+				txtCant.setOnAction((ActionEvent e) -> {		
+					btnCantidadAction(txtCant, txtPrecio, txtPrecioInvisible);
 				});	
+				
+				txtCant.focusedProperty().addListener(new ChangeListener<Boolean>() {								 
+					@Override
+					public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue,
+							Boolean newValue) {
+						if (!newValue)
+				        {
+							btnCantidadAction(txtCant, txtPrecio, txtPrecioInvisible);
+				        }				       
+					}
+				});
 				
 				gridPane.add(lblProd, 0, i);
 				gridPane.add(txtCant, 1, i);
@@ -366,11 +358,62 @@ public class Principal extends AnchorPane implements EventHandler<ActionEvent>{
 				gridPane.add(txtIdProducto, 4, i);									
 				i++;
 			}
-			if(gridPane.getChildren().get(1) != null){
+			if(gridPane.getChildren().size() > 0 && gridPane.getChildren().get(1) != null){
 				gridPane.getChildren().get(1).requestFocus();		
 				((NumberField)gridPane.getChildren().get(1)).selectAll();		
 			}
 		}		
+	}
+	
+	
+	private void btnCantidadAction(NumberField txtCant, DecimalField txtPrecio, DecimalField txtPrecioInvisible){
+		double subTotal = txtCant.getValue() * txtPrecioInvisible.getValue().doubleValue();
+		txtPrecio.setValue(new BigDecimal(subTotal));
+		
+		double total = 0;
+		for (Node child : gridPane.getChildrenUnmodifiable()) {					
+			if(child.getId() != null && child.getId().contains("txtPrecio")){
+				total += ((DecimalField)child).getValue().doubleValue();							
+			}
+		}
+		txtTotal.setText(new DecimalFormat("#,###.00").format(total));	
+		
+		long cantVentas = ventaDAO.doCountAll(codigoCaja);
+		if(cantVentas < configuracion.getNrofactura())
+			cantVentas = configuracion.getNrofactura();
+		txtNroFactura.setText(String.valueOf(cantVentas)); 
+		
+		 boolean isThisField = false;
+		    for (Node child : gridPane.getChildrenUnmodifiable()) {			    	
+		    	if (isThisField) {
+
+		            //This code will only execute after the current Node
+		            if (child.isFocusTraversable() && !child.isDisabled()) {
+		            	if(child.getClass().equals(NumberField.class) && ((NumberField)child).isEditable()){
+		            		 child.requestFocus();
+
+				             //Reset check to prevent later Node from pulling focus
+				             isThisField = false;
+		            	}
+		            }
+		        } else {
+
+		            //Check if this is the current Node
+		            isThisField = child.equals(txtCant);
+		        }
+		    }
+		  //Check if current Node still has focus
+		    boolean focusChanged = !txtCant.isFocused();
+		    if (!focusChanged) {
+		        for (Node child : gridPane.getChildrenUnmodifiable()) {
+		            if (!focusChanged && child.isFocusTraversable() && !child.isDisabled()) {
+		                child.requestFocus();
+
+		                //Update to prevent later Node from pulling focus
+		                focusChanged = true;
+		            }
+		        }
+		    }
 	}
 	
 	private void loadUltimo(){
@@ -418,7 +461,7 @@ public class Principal extends AnchorPane implements EventHandler<ActionEvent>{
 				}								
 			}	
 			total++;
-			dTotal += linea.getCantidad() * linea.getPrecio().doubleValue();
+			dTotal += linea.getPrecio().doubleValue();
 		}
 		txtTotal.setText(new DecimalFormat("#,###.00").format(dTotal));
 	}

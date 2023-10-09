@@ -1,6 +1,9 @@
 package org.labruzeza.colectividades.view;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.Set;
 
@@ -18,12 +21,13 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.control.TextArea;
 
-public class PanelConfiguracion extends BorderPane implements EventHandler<ActionEvent>{
-	private boolean modoEdit = false;
+public class PanelConfiguracion extends BorderPane implements EventHandler<ActionEvent>{	
 	private ConfiguracionDAO configuracionDao;
 	
 	@FXML
@@ -35,14 +39,41 @@ public class PanelConfiguracion extends BorderPane implements EventHandler<Actio
 
 	@FXML
 	private NumberField txtnrocaja;	
+	@FXML
+	private NumberField txtnrofactura;
 	
 	@FXML
 	private StringField txtTipoCaja;
 	
 	private PanelControlesABM panelControles;
 	
-	public PanelConfiguracion() {
-		this.modoEdit = false;		
+	@FXML
+	private DatePicker txtFecha;
+	
+	
+	@FXML
+	private TextArea areaTitulo;
+	
+	@FXML
+	private TextArea areaSubtitulo;
+	
+	@FXML
+	private TextArea areaParrafoDireccion;
+		
+	@FXML
+	private TextArea areaParrafoDetalle;
+		
+	@FXML
+	private TextArea areaParrafoOrganizacion;
+	
+	@FXML
+	private TextArea areaParrafoPromos;
+	
+	@FXML
+	private TextArea areaParrafoMensaje;
+	
+	
+	public PanelConfiguracion() {	
 		initComponentes();
 		loadEntity(1);		
     }
@@ -94,7 +125,39 @@ public class PanelConfiguracion extends BorderPane implements EventHandler<Actio
 			}
 			if(configuracion.getTipocaja() != null){
 				txtTipoCaja.setValue(configuracion.getTipocaja());
-			}					
+			}
+			if(configuracion.getFecha() != null){								
+				LocalDate date = new java.sql.Date(configuracion.getFecha().getTime()).toLocalDate();
+				txtFecha.setValue(date);
+			}	
+			if(configuracion.getNrofactura()!= null){
+				txtnrofactura.setValue(configuracion.getNrofactura());
+			}
+			
+			if(configuracion.getTitulo()!= null){
+				areaTitulo.setText(configuracion.getTitulo());
+			}
+			if(configuracion.getSubTitulo()!= null){
+				areaSubtitulo.setText(configuracion.getSubTitulo());
+			}
+			if(configuracion.getParrafoDirreccion()!= null){
+				areaParrafoDireccion.setText(configuracion.getParrafoDirreccion());
+			}
+			if(configuracion.getParrafoDetalle()!= null){
+				areaParrafoDetalle.setText(configuracion.getParrafoDetalle());
+			}
+			if(configuracion.getParrafoOrganizacion()!= null){
+				areaParrafoOrganizacion.setText(configuracion.getParrafoOrganizacion());
+			}
+			
+			if(configuracion.getParrafoPromos()!= null){
+				areaParrafoPromos.setText(configuracion.getParrafoPromos());
+			}
+			
+			if(configuracion.getParrafoMensaje()!= null){
+				areaParrafoMensaje.setText(configuracion.getParrafoMensaje());
+			}
+			
 		}
 	}
 
@@ -111,6 +174,25 @@ public class PanelConfiguracion extends BorderPane implements EventHandler<Actio
 			unConfiguracion.setNrocaja(null);
 		}		
 		unConfiguracion.setTipocaja(txtTipoCaja.getText());
+		
+		if(txtFecha.getValue() != null){
+			unConfiguracion.setFecha(Date.from(txtFecha.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+		}
+		
+		try{
+			unConfiguracion.setNrofactura(txtnrofactura.getValue());
+		}catch (NumberFormatException e) {
+			unConfiguracion.setNrofactura(null);
+		}	
+		
+		unConfiguracion.setTitulo(areaTitulo.getText());
+		unConfiguracion.setSubTitulo(areaSubtitulo.getText());
+		unConfiguracion.setParrafoDetalle(areaParrafoDetalle.getText());
+		unConfiguracion.setParrafoDirreccion(areaParrafoDireccion.getText());
+		unConfiguracion.setParrafoOrganizacion(areaParrafoOrganizacion.getText());
+		unConfiguracion.setParrafoPromos(areaParrafoPromos.getText());
+		unConfiguracion.setParrafoMensaje(areaParrafoMensaje.getText());
+		
 		
 		Label label = null;	
 		vBoxMsg.getChildren().clear();
@@ -134,10 +216,8 @@ public class PanelConfiguracion extends BorderPane implements EventHandler<Actio
 			if(unConfiguracion != null){
 				try {
 					if(unConfiguracion.getIdconfiguracion() != null){
-						unConfiguracion.setIdconfiguracion(1);
 						configuracionDao.update(unConfiguracion);
 					}else{
-						unConfiguracion.setIdconfiguracion(1);
 						configuracionDao.insert(unConfiguracion);
 					}
 										

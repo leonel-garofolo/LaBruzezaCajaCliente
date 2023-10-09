@@ -2,22 +2,14 @@ package org.labruzeza.colectividades;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.labruzeza.colectividades.utils.PrinterJob;
 
 public class GargareCollection extends Thread {
-	private static final Logger logger = LogManager.getLogger(PrinterJob.class);
+	private static final Logger logger = LogManager.getLogger(GargareCollection.class);
 	
 	
 	@SuppressWarnings("static-access")
 	@Override
 	public void run() {
-		try{
-			AppClient.iniciar();
-		}catch (Exception e) {
-			logger.error(e);
-			e.printStackTrace();		
-		}
-		
 		do{
 			try {
 				this.sleep(100000);
@@ -34,6 +26,5 @@ public class GargareCollection extends Thread {
 			logger.info("MEMORIA [FREE] 'JVM' [DESPUES]: " + basurero.freeMemory());
 			logger.info("********** FIN: 'LIMPIEZA GARBAGE COLECTOR' **********");
 		}while(true);
-		
 	}
 }

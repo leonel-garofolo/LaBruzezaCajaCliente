@@ -67,7 +67,6 @@ public class LineadeventaDAOImpl extends GenericDAO<Lineadeventa> implements Lin
 	 * @param idlineadeventa;
 	 * @return the bean found or null if not found 
 	 */
-	@Override
 	public Lineadeventa find( Integer idlineadeventa ) {
 		Lineadeventa lineadeventa = newInstanceWithPrimaryKey( idlineadeventa ) ;
 		if ( super.doSelect(lineadeventa) ) {
@@ -85,7 +84,6 @@ public class LineadeventaDAOImpl extends GenericDAO<Lineadeventa> implements Lin
 	 * @param lineadeventa
 	 * @return true if found, false if not found
 	 */
-	@Override
 	public boolean load( Lineadeventa lineadeventa ) {
 		return super.doSelect(lineadeventa) ;
 	}
@@ -94,7 +92,6 @@ public class LineadeventaDAOImpl extends GenericDAO<Lineadeventa> implements Lin
 	 * Inserts the given bean in the database 
 	 * @param lineadeventa
 	 */
-	@Override
 	public Integer insert(Lineadeventa lineadeventa) {
 		Long key = super.doInsertAutoIncr(lineadeventa);
 		return key.intValue();
@@ -106,7 +103,6 @@ public class LineadeventaDAOImpl extends GenericDAO<Lineadeventa> implements Lin
 	 * @param lineadeventa
 	 * @return
 	 */
-	@Override
 	public int update(Lineadeventa lineadeventa) {
 		return super.doUpdate(lineadeventa);
 	}	
@@ -117,7 +113,6 @@ public class LineadeventaDAOImpl extends GenericDAO<Lineadeventa> implements Lin
 	 * @param idlineadeventa;
 	 * @return
 	 */
-	@Override
 	public int delete( Integer idlineadeventa ) {
 		Lineadeventa lineadeventa = newInstanceWithPrimaryKey( idlineadeventa ) ;
 		return super.doDelete(lineadeventa);
@@ -129,7 +124,6 @@ public class LineadeventaDAOImpl extends GenericDAO<Lineadeventa> implements Lin
 	 * @param lineadeventa
 	 * @return
 	 */
-	@Override
 	public int delete( Lineadeventa lineadeventa ) {
 		return super.doDelete(lineadeventa);
 	}
@@ -140,7 +134,6 @@ public class LineadeventaDAOImpl extends GenericDAO<Lineadeventa> implements Lin
 	 * @param idlineadeventa;
 	 * @return
 	 */
-	@Override
 	public boolean exists( Integer idlineadeventa ) {
 		Lineadeventa lineadeventa = newInstanceWithPrimaryKey( idlineadeventa ) ;
 		return super.doExists(lineadeventa);
@@ -151,7 +144,6 @@ public class LineadeventaDAOImpl extends GenericDAO<Lineadeventa> implements Lin
 	 * @param lineadeventa
 	 * @return
 	 */
-	@Override
 	public boolean exists( Lineadeventa lineadeventa ) {
 		return super.doExists(lineadeventa);
 	}
@@ -161,7 +153,6 @@ public class LineadeventaDAOImpl extends GenericDAO<Lineadeventa> implements Lin
 	 * Counts all the records present in the database
 	 * @return
 	 */
-	@Override
 	public long count() {
 		return super.doCountAll();
 	}

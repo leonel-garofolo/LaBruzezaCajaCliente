@@ -32,6 +32,8 @@ public class PanelProducto extends BorderPane implements EventHandler<ActionEven
 
 	@FXML
 	private DecimalField txtprecio;
+	@FXML
+	private DecimalField txtOrden;
 
 	public PanelProducto(PanelGrillaProducto father) {
 		this.modoEdit = false;
@@ -97,6 +99,9 @@ public class PanelProducto extends BorderPane implements EventHandler<ActionEven
 			if(producto.getPrecio() != null){
 				txtprecio.setText(String.valueOf(producto.getPrecio()));
 			}
+			if(producto.getOrden() != null){
+				txtOrden.setText(String.valueOf(producto.getOrden()));
+			}
 		}
 	}
 
@@ -109,6 +114,7 @@ public class PanelProducto extends BorderPane implements EventHandler<ActionEven
 		}
 		unProducto.setNombre(txtnombre.getText());
 		unProducto.setPrecio(txtprecio.getValue());
+		unProducto.setOrden(txtOrden.getValue().intValue());
 				
 		vBoxMsg.getChildren().clear();		
 		return unProducto;

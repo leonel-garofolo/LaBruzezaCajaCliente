@@ -22,16 +22,16 @@ import org.labruzeza.colectividades.modelo.Producto;
 public class ProductoDAOImpl extends GenericDAO<Producto> implements ProductoDAO {
 
 	private final static String SQL_SELECT = 
-		"select idproducto, nombre, precio from producto where idproducto = ?";
+		"select idproducto, nombre, precio, orden from producto where idproducto = ?";
 	
 	private final static String SQL_SELECT_AlL = 
-			"select idproducto, nombre, precio from producto";
+			"select idproducto, nombre, precio, orden from producto order by orden asc";
 
 	private final static String SQL_INSERT = 
-		"insert into producto ( nombre, precio ) values ( ?, ? )";
+		"insert into producto ( nombre, precio, orden ) values ( ?, ?, ? )";
 
 	private final static String SQL_UPDATE = 
-		"update producto set nombre = ?, precio = ? where idproducto = ?";
+		"update producto set nombre = ?, precio = ?, orden = ? where idproducto = ?";
 
 	private final static String SQL_DELETE = 
 		"delete from producto where idproducto = ?";
@@ -71,7 +71,7 @@ public class ProductoDAOImpl extends GenericDAO<Producto> implements ProductoDAO
 	 * @param idproducto;
 	 * @return the bean found or null if not found 
 	 */
-	@Override
+	
 	public Producto find( Integer idproducto ) {
 		Producto producto = newInstanceWithPrimaryKey( idproducto ) ;
 		if ( super.doSelect(producto) ) {
@@ -89,12 +89,12 @@ public class ProductoDAOImpl extends GenericDAO<Producto> implements ProductoDAO
 	 * @param producto
 	 * @return true if found, false if not found
 	 */
-	@Override
+	
 	public boolean load( Producto producto ) {
 		return super.doSelect(producto) ;
 	}
 	
-	@Override
+	
 	public List<Producto> loadAll() {		
 		return super.doLoadAll();
 	}
@@ -103,7 +103,7 @@ public class ProductoDAOImpl extends GenericDAO<Producto> implements ProductoDAO
 	 * Inserts the given bean in the database 
 	 * @param producto
 	 */
-	@Override
+	
 	public Integer insert(Producto producto) {
 		Long key = super.doInsertAutoIncr(producto);
 		return key.intValue();
@@ -115,7 +115,7 @@ public class ProductoDAOImpl extends GenericDAO<Producto> implements ProductoDAO
 	 * @param producto
 	 * @return
 	 */
-	@Override
+	
 	public int update(Producto producto) {
 		return super.doUpdate(producto);
 	}	
@@ -126,7 +126,7 @@ public class ProductoDAOImpl extends GenericDAO<Producto> implements ProductoDAO
 	 * @param idproducto;
 	 * @return
 	 */
-	@Override
+	
 	public int delete( Integer idproducto ) {
 		Producto producto = newInstanceWithPrimaryKey( idproducto ) ;
 		return super.doDelete(producto);
@@ -138,7 +138,7 @@ public class ProductoDAOImpl extends GenericDAO<Producto> implements ProductoDAO
 	 * @param producto
 	 * @return
 	 */
-	@Override
+	
 	public int delete( Producto producto ) {
 		return super.doDelete(producto);
 	}
@@ -149,7 +149,7 @@ public class ProductoDAOImpl extends GenericDAO<Producto> implements ProductoDAO
 	 * @param idproducto;
 	 * @return
 	 */
-	@Override
+	
 	public boolean exists( Integer idproducto ) {
 		Producto producto = newInstanceWithPrimaryKey( idproducto ) ;
 		return super.doExists(producto);
@@ -160,7 +160,7 @@ public class ProductoDAOImpl extends GenericDAO<Producto> implements ProductoDAO
 	 * @param producto
 	 * @return
 	 */
-	@Override
+	
 	public boolean exists( Producto producto ) {
 		return super.doExists(producto);
 	}
@@ -170,7 +170,7 @@ public class ProductoDAOImpl extends GenericDAO<Producto> implements ProductoDAO
 	 * Counts all the records present in the database
 	 * @return
 	 */
-	@Override
+	
 	public long count() {
 		return super.doCountAll();
 	}
@@ -230,6 +230,8 @@ public class ProductoDAOImpl extends GenericDAO<Producto> implements ProductoDAO
 		producto.setNombre(rs.getString("nombre")); // java.lang.String
 		producto.setPrecio(rs.getBigDecimal("precio")); // java.math.BigDecimal
 		if ( rs.wasNull() ) { producto.setPrecio(null); }; // not primitive number => keep null value if any
+		producto.setOrden(rs.getInt("orden"));
+		
 		return producto ;
 	}
 	
@@ -242,7 +244,9 @@ public class ProductoDAOImpl extends GenericDAO<Producto> implements ProductoDAO
 		if ( rs.wasNull() ) { producto.setIdproducto(null); }; // not primitive number => keep null value if any
 		producto.setNombre(rs.getString("nombre")); // java.lang.String
 		producto.setPrecio(rs.getBigDecimal("precio")); // java.math.BigDecimal
-		if ( rs.wasNull() ) { producto.setPrecio(null); }; // not primitive number => keep null value if any
+		if ( rs.wasNull() ) { producto.setPrecio(null); };
+		producto.setOrden(rs.getInt("orden"));
+		 // not primitive number => keep null value if any
 		return producto ;
 	}
 
@@ -254,6 +258,7 @@ public class ProductoDAOImpl extends GenericDAO<Producto> implements ProductoDAO
 		// "idproducto" is auto-incremented => no set in insert		
 		setValue(ps, i++, producto.getNombre() ) ; // "nombre" : java.lang.String
 		setValue(ps, i++, producto.getPrecio() ) ; // "precio" : java.math.BigDecimal
+		setValue(ps, i++, producto.getOrden() ) ;
 	}
 
     //----------------------------------------------------------------------
@@ -263,6 +268,7 @@ public class ProductoDAOImpl extends GenericDAO<Producto> implements ProductoDAO
 		//--- Set DATA from bean to PreparedStatement ( SQL "SET x=?, y=?, ..." )
 		setValue(ps, i++, producto.getNombre() ) ; // "nombre" : java.lang.String
 		setValue(ps, i++, producto.getPrecio() ) ; // "precio" : java.math.BigDecimal
+		setValue(ps, i++, producto.getOrden() ) ; // "precio" : java.math.BigDecimal
 		//--- Set PRIMARY KEY from bean to PreparedStatement ( SQL "WHERE key=?, ..." )
 		setValue(ps, i++, producto.getIdproducto() ) ; // "idproducto" : java.lang.Integer
 	}

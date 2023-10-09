@@ -64,7 +64,7 @@ public class VcajaDAOImpl extends GenericDAO<Vcaja> implements VcajaDAO {
 	 * Finds a bean by its primary key 
 	 * @return the bean found or null if not found 
 	 */
-	@Override
+	
 	public Vcaja find(  ) {
 		Vcaja vcaja = newInstanceWithPrimaryKey(  ) ;
 		if ( super.doSelect(vcaja) ) {
@@ -82,7 +82,7 @@ public class VcajaDAOImpl extends GenericDAO<Vcaja> implements VcajaDAO {
 	 * @param vcaja
 	 * @return true if found, false if not found
 	 */
-	@Override
+	
 	public boolean load( Vcaja vcaja ) {
 		return super.doSelect(vcaja) ;
 	}
@@ -91,7 +91,7 @@ public class VcajaDAOImpl extends GenericDAO<Vcaja> implements VcajaDAO {
 	 * Inserts the given bean in the database 
 	 * @param vcaja
 	 */
-	@Override
+	
 	public void insert(Vcaja vcaja) {
 		super.doInsert(vcaja);
 	}	
@@ -102,7 +102,7 @@ public class VcajaDAOImpl extends GenericDAO<Vcaja> implements VcajaDAO {
 	 * @param vcaja
 	 * @return
 	 */
-	@Override
+	
 	public int update(Vcaja vcaja) {
 		return super.doUpdate(vcaja);
 	}	
@@ -112,7 +112,7 @@ public class VcajaDAOImpl extends GenericDAO<Vcaja> implements VcajaDAO {
 	 * Deletes the record in the database using the given primary key value(s) 
 	 * @return
 	 */
-	@Override
+	
 	public int delete(  ) {
 		Vcaja vcaja = newInstanceWithPrimaryKey(  ) ;
 		return super.doDelete(vcaja);
@@ -124,7 +124,7 @@ public class VcajaDAOImpl extends GenericDAO<Vcaja> implements VcajaDAO {
 	 * @param vcaja
 	 * @return
 	 */
-	@Override
+	
 	public int delete( Vcaja vcaja ) {
 		return super.doDelete(vcaja);
 	}
@@ -134,7 +134,7 @@ public class VcajaDAOImpl extends GenericDAO<Vcaja> implements VcajaDAO {
 	 * Checks the existence of a record in the database using the given primary key value(s)
 	 * @return
 	 */
-	@Override
+	
 	public boolean exists(  ) {
 		Vcaja vcaja = newInstanceWithPrimaryKey(  ) ;
 		return super.doExists(vcaja);
@@ -145,7 +145,7 @@ public class VcajaDAOImpl extends GenericDAO<Vcaja> implements VcajaDAO {
 	 * @param vcaja
 	 * @return
 	 */
-	@Override
+	
 	public boolean exists( Vcaja vcaja ) {
 		return super.doExists(vcaja);
 	}
@@ -155,7 +155,7 @@ public class VcajaDAOImpl extends GenericDAO<Vcaja> implements VcajaDAO {
 	 * Counts all the records present in the database
 	 * @return
 	 */
-	@Override
+	
 	public long count() {
 		return super.doCountAll();
 	}
@@ -248,13 +248,12 @@ public class VcajaDAOImpl extends GenericDAO<Vcaja> implements VcajaDAO {
 		return null;
 	}
 
-	@Override
 	public List<Vcaja> load(String codigo) {
 		Connection conn = null;
 		 
 		try {
 			conn = getConnection();
-			PreparedStatement ps = conn.prepareStatement( "select * from vcaja where codigo = ?" );		
+			PreparedStatement ps = conn.prepareStatement( "select * from vcaja where codigo like ? order by idProducto asc" );
 			List<Vcaja> array = new ArrayList<Vcaja>();
 			ps.setString(1, codigo);
 			ResultSet rs = ps.executeQuery();

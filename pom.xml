@@ -3,13 +3,14 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.labruzeza.colectividades</groupId>
 	<artifactId>LaBruzezaCajaCliente</artifactId>
-	<version>0.0.1</version>
+	<version>1.0.0</version>
 	<packaging>jar</packaging>
 	<properties>
 		<compileSource>1.8</compileSource>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jersey.version>1.19</jersey.version>
 		<hibernate.version>4.2.0.Final</hibernate.version>
+		<JavaFxControls.version>1.0.1</JavaFxControls.version>
 	</properties>
 
 	<build>
@@ -20,7 +21,7 @@
 					<source>${compileSource}</source>
 					<target>${compileSource}</target>
 					<encoding>${project.build.sourceEncoding}</encoding>
-					<executable>C:\Program Files\Java\jdk1.8.0_101\bin\javac.exe</executable>
+					<executable>C:\Colectividades\jre\bin\javac.exe</executable>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -36,7 +37,7 @@
 				<configuration>
 					<source>${compileSource}</source>
 					<target>${compileSource}</target>
-					<executable>C:/Program Files/Java/jdk1.8.0_101/bin/java</executable>
+					<executable>C:/Colectividades/jre/bin/java</executable>
 					<arguments>
 						<argument>-classpath</argument>
 						<classpath />
@@ -51,7 +52,7 @@
 				<configuration>
 					<source>${compileSource}</source>
 					<target>${compileSource}</target>
-					<executable>C:/Program Files/Java/jdk1.8.0_101/bin/java</executable>
+					<executable>C:/Colectividades/jre/bin/java</executable>
 					<archive>
 						<manifest>
 							<mainClass>org.labruzeza.colectividades.App</mainClass>
@@ -75,7 +76,7 @@
 				<configuration>
 					<source>${compileSource}</source>
 					<target>${compileSource}</target>
-					<executable>C:/Program Files/Java/jdk1.8.0_101/bin/java</executable>
+					<executable>C:/Colectividades/jre/bin/java</executable>
 					<shadedArtifactAttached>true</shadedArtifactAttached>
 					<shadedClassifierName>shaded</shadedClassifierName>
 					<createDependencyReducedPom>true</createDependencyReducedPom>
@@ -127,10 +128,15 @@
 								<mainClass>org.labruzeza.colectividades.App</mainClass>
 								<preCp>anything</preCp>
 							</classPath>
-
+<!--
 							<jre>
+								<path>%JAVA_HOME%;%PATH%</path>
 								<minVersion>${compileSource}.0</minVersion>
 								<jdkPreference>preferJre</jdkPreference>
+							</jre>
+							-->
+							<jre>
+								<path>jre</path>
 							</jre>
 							<versionInfo>
 								<fileVersion>1.0.0.0</fileVersion>
@@ -152,6 +158,14 @@
 	</build>
 
 	<dependencies>
+		<!-- JavaFX -->
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-fxml</artifactId>
+			<version>19.0.2.1</version>
+			<scope>compile</scope>
+		</dependency>
+
 		<!-- dinamic report -->
 		<dependency>
 			<groupId>net.sourceforge.dynamicreports</groupId>
@@ -186,7 +200,7 @@
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-core</artifactId>
-			<version>2.6.2</version>
+			<version>2.20.0</version>
 		</dependency>
 		<!-- Dependencies for Unit Testing -->
 		<dependency>
@@ -198,7 +212,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.11</version>
+			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
 		<!-- test panel -->
@@ -223,7 +237,7 @@
 		<dependency>
 			<groupId>org.javafx.controls.customs</groupId>
 			<artifactId>JavaFxControls</artifactId>
-			<version>0.0.1</version>
+			<version>${JavaFxControls.version}</version>
 		</dependency>
 	</dependencies>
 </project>

@@ -14,6 +14,10 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.labruzeza.colectividades.utils.MiPrinterJob;
+
 /**
  * Generic abstract class for basic JDBC DAO
  * 
@@ -22,7 +26,7 @@ import javax.sql.DataSource;
  * @param <T>
  */
 public abstract class GenericDAO<T> {
-	
+	private static final Logger logger = LogManager.getLogger(GenericDAO.class);
 	protected final static int INITIAL_POSITION = 1 ;
 	
 	/**
@@ -139,6 +143,7 @@ public abstract class GenericDAO<T> {
 		try {
 			conn = getConnection();
 			PreparedStatement ps = conn.prepareStatement( getSqlSelect() );
+			logger.info("Query: " + ps);
 			//--- Set the PRIMARY KEY ( SQL "WHERE ..." )
 			setValuesForPrimaryKey(ps, INITIAL_POSITION, bean); 
 			//--- Execute SQL SELECT 
@@ -170,6 +175,7 @@ public abstract class GenericDAO<T> {
 			List<T> array = new ArrayList<T>();
 			//--- Execute SQL SELECT 
 			ResultSet rs = ps.executeQuery();
+			logger.info("Query: " + ps);
 			while (rs.next()) {
 				array.add(populateBean(rs, bean));				
 			}			
@@ -192,6 +198,7 @@ public abstract class GenericDAO<T> {
 			List<T> array = new ArrayList<T>();
 			//--- Execute SQL SELECT 
 			ResultSet rs = ps.executeQuery();
+			logger.info("Query: " + ps);
 			while (rs.next()) {
 				array.add(populateBeanAll(rs));				
 			}			
@@ -241,7 +248,8 @@ public abstract class GenericDAO<T> {
 			PreparedStatement ps = conn.prepareStatement( getSqlInsert(), PreparedStatement.RETURN_GENERATED_KEYS );
 			//--- Call specific method to set the values to be inserted
 			setValuesForInsert(ps, INITIAL_POSITION, bean); 
-			//--- Execute SQL INSERT
+			//--- Execute SQL INSERT		
+			logger.info("Query: " + ps);
 			ps.executeUpdate();
 			//--- Retrieve the generated key 
 			ResultSet rs = ps.getGeneratedKeys();
@@ -274,6 +282,7 @@ public abstract class GenericDAO<T> {
 			//--- Call specific method to set the values to be updated and the primary key
 			setValuesForUpdate(ps, INITIAL_POSITION, bean); 
 			//--- Execute SQL UPDATE
+			logger.info("Query: " + ps);
 			result = ps.executeUpdate();
 			ps.close();
 		} catch (SQLException e) {

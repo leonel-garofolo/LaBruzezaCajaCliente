@@ -19,11 +19,11 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperPrint;
 
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class PrinterJob {
-	 private static final Logger logger = LogManager.getLogger(PrinterJob.class);
+	 private static final Logger logger = LoggerFactory.getLogger(PrinterJob.class);
 	public static void sendPDF(JasperPrint print){
 		logger.info("imprimio");
 		File baseDir = new File(System.getProperty("java.io.tmpdir"));		

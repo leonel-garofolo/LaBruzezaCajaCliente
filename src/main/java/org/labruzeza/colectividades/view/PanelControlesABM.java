@@ -26,7 +26,7 @@ public class PanelControlesABM extends Pane {
 		Image imageDecline = new Image(getClass().getResourceAsStream("/image/agregar.png"));
 		btnAgregar.setGraphic(new ImageView(imageDecline));
 		btnAgregar.setTooltip(new Tooltip("Agregar Elemento"));
-		btnAgregar.setId("btnAgregar");
+		btnAgregar.setId("btnAgregar");		
 		
 		imageDecline = new Image(getClass().getResourceAsStream("/image/edit.png"));
 		btnEditar.setGraphic(new ImageView(imageDecline));

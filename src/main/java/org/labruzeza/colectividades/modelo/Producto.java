@@ -31,6 +31,8 @@ public class Producto implements Serializable {
 
     // DB : precio DECIMAL 
     private BigDecimal precio;
+    // DB : precio DECIMAL 
+    private Integer orden;
 
 
 
@@ -63,8 +65,15 @@ public class Producto implements Serializable {
         return this.precio;
     }
 
+    public Integer getOrden() {
+		return orden;
+	}
 
-    //----------------------------------------------------------------------
+	public void setOrden(Integer orden) {
+		this.orden = orden;
+	}
+
+	//----------------------------------------------------------------------
     // toString METHOD
     //----------------------------------------------------------------------
     public String toString() { 
