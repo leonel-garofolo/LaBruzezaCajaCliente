@@ -4,14 +4,8 @@
  */
 package org.labruzeza.colectividades.dao.commons;
 
-import java.sql.SQLException;
-
-import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.labruzeza.colectividades.dao.ConfiguracionDAO;
 import org.labruzeza.colectividades.dao.impl.jdbc.commons.CreateSchemaDB;
-import org.labruzeza.colectividades.modelo.Configuracion;
 
 /**
  * JUnit tests for ConfiguracionDAO
