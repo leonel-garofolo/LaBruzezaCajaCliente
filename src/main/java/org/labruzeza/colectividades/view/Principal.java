@@ -54,12 +54,12 @@ import org.labruzeza.colectividades.modelo.Lineadeventa;
 import org.labruzeza.colectividades.modelo.Producto;
 import org.labruzeza.colectividades.modelo.Vcaja;
 import org.labruzeza.colectividades.modelo.Venta;
-import org.labruzeza.colectividades.utils.PrinterJob;
+import org.labruzeza.colectividades.utils.MyPrinterJob;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class Principal extends AnchorPane implements EventHandler<ActionEvent>{
-	private static final Logger logger = LoggerFactory.getLogger(Principal.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(Principal.class);
 	 
 	private ProductoDAO productoDAO;
 	private VentaDAO ventaDAO;
@@ -241,11 +241,11 @@ public class Principal extends AnchorPane implements EventHandler<ActionEvent>{
 		}						
 		venta.setListOfLineadeventa(listOfLineadeventa);
 		Ticket ticket = new Ticket();
-		logger.info("imprimiendo Ticket: " + id);
+		LOGGER.info("imprimiendo Ticket: " + id);
 		JasperPrint print = ticket.generar(configuracion, venta);
 		if(print != null){
-			logger.info("send PDF: " + id);
-			PrinterJob.sendPDF(print);
+			LOGGER.info("send PDF: " + id);
+			MyPrinterJob.sendPDF(print);
 			loadPage();
 		}else{
 			Alert alert = new Alert(AlertType.ERROR);
@@ -261,8 +261,8 @@ public class Principal extends AnchorPane implements EventHandler<ActionEvent>{
 		int cantVentas = ventaDAO.countVenta(codigoCaja);
 		JasperPrint print = iCaja.generar(configuracion, caja, cantVentas);		
 		if(print != null){
-			logger.info("send PDF: " + "");
-			PrinterJob.sendPDF(print);
+			LOGGER.info("send PDF: " + "");
+			MyPrinterJob.sendPDF(print);
 			loadPage();
 		}else{
 			Alert alert = new Alert(AlertType.ERROR);

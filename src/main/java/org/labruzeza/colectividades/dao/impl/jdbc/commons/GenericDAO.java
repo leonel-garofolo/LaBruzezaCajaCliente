@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
  * @param <T>
  */
 public abstract class GenericDAO<T> {
-	private static final Logger logger = LoggerFactory.getLogger(GenericDAO.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(GenericDAO.class);
 	protected final static int INITIAL_POSITION = 1 ;
 
 	/**
@@ -141,7 +141,7 @@ public abstract class GenericDAO<T> {
 		try {
 			conn = getConnection();
 			PreparedStatement ps = conn.prepareStatement( getSqlSelect() );
-			logger.info("Query: " + ps);
+			LOGGER.info("Query: " + ps);
 			//--- Set the PRIMARY KEY ( SQL "WHERE ..." )
 			setValuesForPrimaryKey(ps, INITIAL_POSITION, bean);
 			//--- Execute SQL SELECT
@@ -173,7 +173,7 @@ public abstract class GenericDAO<T> {
 			List<T> array = new ArrayList<T>();
 			//--- Execute SQL SELECT
 			ResultSet rs = ps.executeQuery();
-			logger.info("Query: " + ps);
+			LOGGER.info("Query: " + ps);
 			while (rs.next()) {
 				array.add(populateBean(rs, bean));
 			}
@@ -196,7 +196,7 @@ public abstract class GenericDAO<T> {
 			List<T> array = new ArrayList<T>();
 			//--- Execute SQL SELECT
 			ResultSet rs = ps.executeQuery();
-			logger.info("Query: " + ps);
+			LOGGER.info("Query: " + ps);
 			while (rs.next()) {
 				array.add(populateBeanAll(rs));
 			}
@@ -247,7 +247,7 @@ public abstract class GenericDAO<T> {
 			//--- Call specific method to set the values to be inserted
 			setValuesForInsert(ps, INITIAL_POSITION, bean);
 			//--- Execute SQL INSERT
-			logger.info("Query: " + ps);
+			LOGGER.info("Query: " + ps);
 			ps.executeUpdate();
 			//--- Retrieve the generated key
 			ResultSet rs = ps.getGeneratedKeys();
@@ -280,7 +280,7 @@ public abstract class GenericDAO<T> {
 			//--- Call specific method to set the values to be updated and the primary key
 			setValuesForUpdate(ps, INITIAL_POSITION, bean);
 			//--- Execute SQL UPDATE
-			logger.info("Query: " + ps);
+			LOGGER.info("Query: " + ps);
 			result = ps.executeUpdate();
 			ps.close();
 		} catch (SQLException e) {
@@ -462,7 +462,6 @@ public abstract class GenericDAO<T> {
 	}
 
 	protected String getSqlSelectAll() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

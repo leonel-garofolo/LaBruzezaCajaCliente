@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 @SuppressWarnings("rawtypes")
 public class UpdateDB extends UtilDB{
 	
-	final static Logger logger = LoggerFactory.getLogger(UpdateDB.class);
+	final static Logger LOGGER = LoggerFactory.getLogger(UpdateDB.class);
 	
 	private int newVersion;
 
@@ -25,15 +25,17 @@ public class UpdateDB extends UtilDB{
 			if (lastVersionExecuted < newVersion) {
 				CreateSchemaDB createSchemaDB = new CreateSchemaDB();
 				createSchemaDB.execute();
+				new UpdateVersionDB(newVersion).execute();
 			}
 
 			newVersion = 2;
 			if (lastVersionExecuted < newVersion) {
 				InsertDataDB insertDataDB = new InsertDataDB();
 				insertDataDB.execute();
+				new UpdateVersionDB(newVersion).execute();
 			}
 		} catch (Exception e) {
-			logger.error("update DDBB ERROR", e);
+			LOGGER.error("update DDBB ERROR", e);
 		} finally {
 			closeConnection(conn, st);
 		}
@@ -47,7 +49,7 @@ public class UpdateDB extends UtilDB{
 			conn = DataSourceProvider.getDataSource().getConnection();
 			st = conn.createStatement();
 			boolean existTable = false;
-			ResultSet rs = conn.getMetaData().getTables(null, null, "versionado", null);
+			ResultSet rs = conn.getMetaData().getTables(null, null, "VERSIONADO", null);
 			if (rs.next())
 			{
 				existTable = true;
@@ -63,7 +65,7 @@ public class UpdateDB extends UtilDB{
 			}
 			st.close();
 		} catch (Exception e) {
-			logger.error("createTableVersion ERROR", e);
+			LOGGER.error("createTableVersion ERROR", e);
 		} finally {
 			if (conn != null) {
 				closeConnection(conn);

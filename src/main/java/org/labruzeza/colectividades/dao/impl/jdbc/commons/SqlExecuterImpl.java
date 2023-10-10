@@ -13,7 +13,7 @@ public class SqlExecuterImpl extends UtilDB implements SqlExecuter {
 			conn = DataSourceProvider.getDataSource().getConnection();
 			RunScript.execute(conn, new FileReader(this.getClass().getClassLoader().getResource(fileName).getFile()));
 		} catch (Exception e) {
-			logger.error("createTableVersion ERROR", e);
+			LOGGER.error("createTableVersion ERROR", e);
 		} finally {
 			if (conn != null) {
 				closeConnection(conn);

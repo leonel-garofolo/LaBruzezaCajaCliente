@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
  *
  */
 public class VentaDAOImpl extends GenericDAO<Venta> implements VentaDAO {
-	private static final Logger logger = LoggerFactory.getLogger(VentaDAOImpl.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(VentaDAOImpl.class);
 	
 	private final static String SQL_SELECT = 
 		"select idventa, codigo, fecha, codFactura from venta where idventa = ?";
@@ -253,7 +253,7 @@ public class VentaDAOImpl extends GenericDAO<Venta> implements VentaDAO {
 			conn = getConnection();
 			PreparedStatement ps = conn.prepareStatement("select max(codFactura) as codFactura from venta where codigo = ?");
 			ps.setString(1, codigo);		
-			logger.info(ps.toString());
+			LOGGER.info(ps.toString());
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {				
 				result = (rs.getLong(1) + 1);
@@ -361,13 +361,11 @@ public class VentaDAOImpl extends GenericDAO<Venta> implements VentaDAO {
 
 	@Override
 	protected String getSqlLoadAll() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	protected Venta populateBeanAll(ResultSet rs) throws SQLException {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	

@@ -240,13 +240,11 @@ public class LineadeventaDAOImpl extends GenericDAO<Lineadeventa> implements Lin
 
 	@Override
 	protected String getSqlLoadAll() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	protected Lineadeventa populateBeanAll(ResultSet rs) throws SQLException {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	

@@ -101,7 +101,6 @@ public class PanelGrillaProducto extends PanelControlesABM implements Initializa
 			data = FXCollections.observableArrayList(productoServicio.loadAll());
 			tblProducto.setItems(data);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}	

@@ -34,7 +34,7 @@ import net.sf.jasperreports.engine.util.DefaultFormatFactory;
  * @author Ricardo Mariaca (dynamicreports@gmail.com)
  */
 public class CajaDiaria {
-	private static final Logger logger = LoggerFactory.getLogger(CajaDiaria.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(CajaDiaria.class);
 	BigDecimal itemCost=new BigDecimal(BigInteger.ZERO,  2);
      
 	public CajaDiaria(){
@@ -107,7 +107,7 @@ public class CajaDiaria {
 			return print;
 			
 		} catch (Throwable e) {	
-			logger.error("Ops!", e);			
+			LOGGER.error("Ops!", e);			
 			return null;
 		}
 	}		

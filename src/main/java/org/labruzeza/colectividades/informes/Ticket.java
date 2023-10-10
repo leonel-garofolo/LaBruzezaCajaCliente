@@ -34,7 +34,7 @@ import net.sf.jasperreports.engine.util.DefaultFormatFactory;
  * @author Ricardo Mariaca (dynamicreports@gmail.com)
  */
 public class Ticket {
-	private static final Logger logger = LoggerFactory.getLogger(Ticket.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(Ticket.class);
 	BigDecimal itemCost=new BigDecimal(BigInteger.ZERO,  2);
      
 	public Ticket(){
@@ -102,7 +102,7 @@ public class Ticket {
 			return print;
 			
 		} catch (Throwable e) {	
-			logger.error("Ops!", e);			
+			LOGGER.error("Ops!", e);			
 			return null;
 		}
 	}		

@@ -261,13 +261,11 @@ public class ConfiguracionDAOImpl extends GenericDAO<Configuracion> implements C
 
 	@Override
 	protected String getSqlLoadAll() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	protected Configuracion populateBeanAll(ResultSet rs) throws SQLException {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

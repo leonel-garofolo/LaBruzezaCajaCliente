@@ -238,13 +238,11 @@ public class VcajaDAOImpl extends GenericDAO<Vcaja> implements VcajaDAO {
 
 	@Override
 	protected String getSqlLoadAll() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	protected Vcaja populateBeanAll(ResultSet rs) throws SQLException {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
