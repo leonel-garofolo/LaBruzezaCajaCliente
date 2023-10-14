@@ -24,7 +24,7 @@ import org.labruzeza.colectividades.dao.impl.jdbc.commons.GenericDAO;
 public class VcajaDAOImpl extends GenericDAO<Vcaja> implements VcajaDAO {
 
 	private final static String SQL_SELECT = 
-		"select idProducto, nombre, cantidad, subtotal from vcaja where ";
+		"select idProducto, nombre, cantidad, subtotal from VCAJA where ";
 
 	private final static String SQL_INSERT = 
 		"insert into vcaja ( idProducto, nombre, cantidad, subtotal ) values ( ?, ?, ?, ? )";

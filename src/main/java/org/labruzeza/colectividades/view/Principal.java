@@ -35,6 +35,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import net.sf.jasperreports.engine.JasperPrint;
+import org.apache.commons.collections.CollectionUtils;
 import org.javafx.controls.customs.DecimalField;
 import org.javafx.controls.customs.NumberField;
 import org.labruzeza.colectividades.dao.ConfiguracionDAO;
@@ -257,19 +258,22 @@ public class Principal extends AnchorPane implements EventHandler<ActionEvent>{
 	
 	private void generarCajaDiaria(){		
 		List<Vcaja> caja =vcajaDAO.load(codigoCaja);
-		CajaDiaria iCaja = new CajaDiaria();
-		int cantVentas = ventaDAO.countVenta(codigoCaja);
-		JasperPrint print = iCaja.generar(configuracion, caja, cantVentas);		
-		if(print != null){
-			LOGGER.info("send PDF: " + "");
-			MyPrinterJob.sendPDF(print);
-			loadPage();
-		}else{
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("Error Ticket");
-			alert.setHeaderText("No se ha podido imprimir el ticket, reintente mas tarde.");				
-			alert.showAndWait();
-		}	
+		if(CollectionUtils.isNotEmpty(caja)){
+			CajaDiaria iCaja = new CajaDiaria();
+			int cantVentas = ventaDAO.countVenta(codigoCaja);
+			LOGGER.info("Generar Caja Diaria [codigoCaja:{}, cantVentas:{}] ",codigoCaja, cantVentas);
+			JasperPrint print = iCaja.generar(configuracion, caja, cantVentas);
+			if(print != null){
+				LOGGER.info("send PDF");
+				MyPrinterJob.sendPDF(print);
+				loadPage();
+			}else{
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Error Ticket");
+				alert.setHeaderText("No se ha podido imprimir el ticket, reintente mas tarde.");
+				alert.showAndWait();
+			}
+		}
 	}
 	
 	private void loadPage(){
@@ -358,8 +362,8 @@ public class Principal extends AnchorPane implements EventHandler<ActionEvent>{
 				i++;
 			}
 			if(gridPane.getChildren().size() > 0 && gridPane.getChildren().get(1) != null){
-				gridPane.getChildren().get(1).requestFocus();		
-				((NumberField)gridPane.getChildren().get(1)).selectAll();		
+				gridPane.getChildren().get(1).requestFocus();
+				((NumberField)gridPane.getChildren().get(1)).selectAll();
 			}
 		}		
 	}
