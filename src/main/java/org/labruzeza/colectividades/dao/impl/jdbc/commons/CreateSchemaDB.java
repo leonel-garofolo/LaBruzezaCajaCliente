@@ -2,7 +2,7 @@ package org.labruzeza.colectividades.dao.impl.jdbc.commons;
 
 public class CreateSchemaDB implements ScriptExecuter {
 
-	private static String SQL_FILE = "/dababase/schema.sql";
+	private static String SQL_FILE = "/database/builder/schema.sql";
 
 	private SqlExecuter sqlExecuter;
 
