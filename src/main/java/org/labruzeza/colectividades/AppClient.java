@@ -17,7 +17,7 @@ public class AppClient extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		primaryStage.setTitle("La Bruzeza");
+		primaryStage.setTitle("Familia Abruzzesa");
 		
 		Screen screen = Screen.getPrimary();
 		Rectangle2D bounds = screen.getVisualBounds();
